@@ -2,7 +2,7 @@
 /*
 * Template for the output of the Network Posts List
 * Override by placing a file called plugins/anp-network-content/anp-post-list-template.php in your active theme
-*/ 
+*/
 
 $html .= '<li class="type-post post-item siteid-' . $post_detail['site_id'] . '">';
 $html .= '<header class="entry-header">';

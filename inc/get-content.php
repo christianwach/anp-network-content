@@ -33,10 +33,10 @@ function get_merged_settings( $user_selections_array, $default_values_array ) {
 
             unset( $settings[$parameter] );
 
-        } 
-        
+        }
+
     }
-    
+
     return $settings;
 
 }
@@ -48,11 +48,11 @@ function get_merged_settings( $user_selections_array, $default_values_array ) {
 function get_sites_list( $options_array ) {
 
     $settings = $options_array;
-    
+
     // Make each parameter as its own variable
     extract( $settings, EXTR_SKIP );
-        
-    $siteargs = array( 
+
+    $siteargs = array(
         'limit'      => null,
         'public'     => 1,
         'archived'   => 0,
@@ -71,15 +71,15 @@ function get_sites_list( $options_array ) {
 
     // CALL EXCLUDE SITES FUNCTION
     $sites = ( !empty( $exclude_sites ) ) ? exclude_sites( $exclude_sites, $sites ) : $sites;
-    
+
     $site_list = array();
-    
+
     foreach( $sites as $site ) {
-        
+
         $site_id = $site['blog_id'];
         $site_details = get_blog_details( $site_id );
-        
-        $site_list[$site_id] = array( 
+
+        $site_list[$site_id] = array(
             'blog_id' => $site_id,  // Put site ID into array
             'blogname' => $site_details->blogname,  // Put site name into array
             'siteurl' => $site_details->siteurl,  // Put site URL into array
@@ -88,10 +88,10 @@ function get_sites_list( $options_array ) {
             'last_updated' => $site_details->last_updated,
             'post_count' => intval( $site_details->post_count ),
         );
-        
+
         // CALL GET SITE IMAGE FUNCTION
         $site_image = get_site_header_image( $site_id );
-        
+
         if( $site_image ) {
             $site_list[$site_id]['site-image'] = $site_image;
         }
@@ -101,13 +101,13 @@ function get_sites_list( $options_array ) {
         else {
             $site_list[$site_id]['site-image'] = '';
         }
-        
+
         $site_list[$site_id]['recent_post'] = get_most_recent_post( $site_id );
-    
+
     }
-    
+
     return $site_list;
-    
+
 }
 
 /**
@@ -117,7 +117,7 @@ function get_sites_list( $options_array ) {
 function exclude_sites( $exclude_array ) {
 
     // Site statuses to include
-    $siteargs = array( 
+    $siteargs = array(
         'limit'      => null,
         'public'     => 1,
         'archived'   => 0,
@@ -162,15 +162,15 @@ function get_posts_list( $sites_array, $options_array ) {
     foreach( $sites as $site ) {
 
         $site_id = $site['blog_id'];
-        
+
         // Switch to the site to get details and posts
         switch_to_blog( $site_id );
-        
+
         // CALL GET SITE'S POST FUNCTION
         // And add to array of posts
-        
+
         // If get_sites_posts( $site_id, $settings ) isn't null, add it to the array, else skip it
-        // Trying to add a null value to the array using this syntax produces a fatal error. 
+        // Trying to add a null value to the array using this syntax produces a fatal error.
 
         $site_posts = get_sites_posts( $site_id, $settings );
 
@@ -178,8 +178,8 @@ function get_posts_list( $sites_array, $options_array ) {
 
             $post_list = $post_list + get_sites_posts( $site_id, $settings );
 
-        } 
-        
+        }
+
         // Unswitch the site
         restore_current_blog();
 
@@ -191,7 +191,7 @@ function get_posts_list( $sites_array, $options_array ) {
     } else {
         $post_list = sort_by_date( $post_list );
     }
-    
+
     // CALL LIMIT FUNCTIONS
     $post_list = ( isset( $number_posts ) ) ? limit_number_posts( $post_list, $number_posts ) : $post_list;
 
@@ -204,13 +204,13 @@ function get_posts_list( $sites_array, $options_array ) {
  * Ouput: array of posts for site
  */
 function get_sites_posts( $site_id, $options_array ) {
-    
+
     $site_id = $site_id;
     $settings = $options_array;
 
     // Make each parameter as its own variable
     extract( $settings, EXTR_SKIP );
-    
+
     $site_details = get_blog_details( $site_id );
 
     $post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'post' ;
@@ -269,7 +269,7 @@ function get_sites_posts( $site_id, $options_array ) {
     foreach( $recent_posts as $post => $postdetail ) {
 
         //global $post;
-        
+
         $post_id = $postdetail['ID'];
         $author_id = $postdetail['post_author'];
 
@@ -289,7 +289,7 @@ function get_sites_posts( $site_id, $options_array ) {
             $excerpt = wp_trim_words( $postdetail['post_content'], $excerpt_length, '... <a href="'. get_permalink( $post_id ) .'">Read More</a>' );
         }
 
-        $post_list[$prefix] = array( 
+        $post_list[$prefix] = array(
             'post_id' => $post_id,
             'post_title' => $postdetail['post_title'],
             'post_date' => $postdetail['post_date'],
@@ -344,8 +344,8 @@ function get_sites_posts( $site_id, $options_array ) {
         return $post_list;
 
     }
-        
-    
+
+
 }
 
 /**
@@ -355,19 +355,19 @@ function get_sites_posts( $site_id, $options_array ) {
 function get_most_recent_post( $site_id ) {
 
     $site_id = $site_id;
-    
+
     // Switch to current blog
     switch_to_blog( $site_id );
 
     // Get most recent post
     $recent_posts = wp_get_recent_posts( 'numberposts=1' );
-    
+
     // Get most recent post info
     foreach( $recent_posts as $post ) {
         $post_id = $post['ID'];
 
         // Post into $site_list array
-        $recent_post_data = array ( 
+        $recent_post_data = array (
             'post_id' => $post_id,
             'post_author' => $post['post_author'],
             'post_slug' => $post['post_name'],
@@ -387,7 +387,7 @@ function get_most_recent_post( $site_id ) {
 
     // Exit
     restore_current_blog();
-    
+
     return $recent_post_data;
 
 }
@@ -400,7 +400,7 @@ function get_most_recent_post( $site_id ) {
 function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 
     // Site statuses to include
-    $siteargs = array( 
+    $siteargs = array(
         'limit'      => null,
         'public'     => 1,
         'archived'   => 0,
@@ -464,7 +464,7 @@ if( !function_exists( 'anp_get_event_meta_list' ) ) {
 
     $event_id = (int) ( empty( $event_id ) ? get_the_ID() : $event_id );
 
-    if( empty( $event_id ) ){ 
+    if( empty( $event_id ) ){
       return false;
     }
 

@@ -26,11 +26,11 @@
  *
  */
 function anp_network_posts_shortcode_ui() {
-    
+
     if( ! function_exists( 'shortcode_ui_register_for_shortcode' ) )
         return;
-        
-    shortcode_ui_register_for_shortcode( 'anp_network_posts', array( 
+
+    shortcode_ui_register_for_shortcode( 'anp_network_posts', array(
         'label'         => 'Network Posts',
         'listItemImage' => 'dashicons-admin-post',
         'attrs'         => array(
@@ -44,7 +44,7 @@ function anp_network_posts_shortcode_ui() {
 
     // Requires that Event Organizer plugin is active
     if( function_exists( 'eventorganiser_register_script' ) ) {
-        shortcode_ui_register_for_shortcode( 'anp_network_events', array( 
+        shortcode_ui_register_for_shortcode( 'anp_network_events', array(
                 'label'         => __( 'Network Events', 'anp-network-content' ),
                 'listItemImage' => 'dashicons-calendar-alt',
                 'attrs'         => array(
@@ -65,7 +65,7 @@ function anp_network_posts_shortcode_ui() {
                     ),
                 )
             )
-            
+
         );
     }
 

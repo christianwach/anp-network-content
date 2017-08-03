@@ -17,7 +17,7 @@
 
 if(! function_exists( 'load_highlight_styles' ) ) {
 
-    function load_highlight_styles() {    
+    function load_highlight_styles() {
         wp_enqueue_style( 'anp-network-posts', ANP_NETWORK_CONTENT_PLUGIN_URL . 'stylesheets/css/style.min.css' );
     }
 

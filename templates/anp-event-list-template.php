@@ -2,7 +2,7 @@
 /*
 * Template for the output of the Network Event List
 * Override by placing a file called plugins/anp-network-content/anp-event-list-template.php in your active theme
-*/ 
+*/
 
 $venue_id = $post_detail['event_venue']['venue_id'];
 $venue_name = $post_detail['event_venue']['venue_name'];

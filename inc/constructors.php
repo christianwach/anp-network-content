@@ -20,7 +20,7 @@
 
 /************* Parameters *****************
     @post_type (string) - post type to display ( default: 'post' )
-    @event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event' 
+    @event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event'
     @number_posts (int) - the total number of posts to display ( default: 10 )
     @posts_per_site (int) - the number of posts for each site ( default: no limit )
     @include_categories - the categories of posts to include ( default: all categories )
@@ -36,7 +36,7 @@
     @show_excerpt (bool) - if excerpt should be displayed ( default: True ) - ignored if @output is 'array' or if @show_meta is False
     @excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is False
     @show_site_name (bool) - if site name should be displayed ( default: True ) - ignored if @output is 'array'
-    
+
     Editable Templates
     ---
     Display of Network Content can be customized by adding a custom template to your theme
@@ -55,7 +55,7 @@
 function glocal_networkwide_posts_module( $parameters = [] ) {
 
     // Default parameters
-    $defaults = array( 
+    $defaults = array(
         'post_type' => (string) 'post', // (string) - post, event
         'number_posts' => (int) 10, // (int)
         'exclude_sites' => array(),
@@ -113,18 +113,18 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
     $posts_list = get_posts_list( $sites_list, $settings );
 
     if( $output == 'array' ) {
-        
+
         // Return an array
         return $posts_list;
-        
+
         //Debug
         //return '<pre>glocal_networkwide_posts_module $posts_list ' . var_dump( $posts_list ) . '</pre>';
-            
+
     } else {
         // CALL RENDER FUNCTION
-        
+
         return render_html( $posts_list, $settings );
-            
+
     }
 
 }
@@ -151,10 +151,10 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
 function glocal_networkwide_sites_module( $parameters = [] ) {
 
     /** Default parameters **/
-    $defaults = array( 
+    $defaults = array(
         'return' => (string) 'display',
         'number_sites' => (int) null,
-        'exclude_sites' => array(), 
+        'exclude_sites' => array(),
         'sort_by' => (string) 'alpha',
         'default_image' => (string) null,
         'show_meta' => (bool) False,
@@ -162,46 +162,46 @@ function glocal_networkwide_sites_module( $parameters = [] ) {
         'id' => (string) 'network-sites-' . rand(),
         'class' => (string) 'network-sites-list',
     );
-    
+
     // CALL MERGE FUNCTION
     $settings = wp_parse_args( $parameters, $defaults );
 
     // Extract each parameter as its own variable
     extract( $settings, EXTR_SKIP );
-    
+
     // CALL GET SITES FUNCTION
     $sites_list = get_sites_list( $settings );
-    
+
     // Sorting
     switch ( $sort_by ) {
         case 'newest':
             $sites_list = sort_array_by_key( $sites_list, 'registered', 'DESC' );
             break;
-        
+
         case 'updated':
             $sites_list = sort_array_by_key( $sites_list, 'last_updated', 'DESC' );
             break;
-        
+
         case 'active':
             $sites_list = sort_array_by_key( $sites_list, 'post_count', 'DESC' );
             break;
-        
+
         default:
             $sites_list = sort_array_by_key( $sites_list, 'blogname' );
-        
+
     }
-        
+
     if( $return == 'array' ) {
-        
+
         return $sites_list;
-        
+
     }
     else {
-        
+
     // CALL RENDER FUNCTION
-    
+
         return render_sites_list( $sites_list, $settings );
-        
+
     }
-    
+
 }

@@ -80,7 +80,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
     public function form( $instance ) {
 
         // Set default values
-        $instance = wp_parse_args( (array) $instance, array( 
+        $instance = wp_parse_args( (array) $instance, array(
             'title' => '',
             'number_posts' => '',
             'exclude_sites' => '',
@@ -91,7 +91,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
             'show_site_name' => true,
             'event_scope' => '',
             'include_event_categories' => '',
-            'include_event_tags' => '', 
+            'include_event_tags' => '',
         ) );
 
         // Retrieve an existing value from the database
@@ -106,7 +106,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
         $excerpt_length = !empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '';
         $show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
         $event_scope = !empty( $instance['event_scope'] ) ? $instance['event_scope'] : '';
-    
+
         $include_event_categories = !empty( $instance['include_event_categories'] ) ? $instance['include_event_categories'] : '';
         $include_event_tags = !empty( $instance['include_event_tags'] ) ? $instance['include_event_tags'] : '';
 
@@ -136,7 +136,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
 
         $sites = wp_get_sites($siteargs);
 
-        foreach( $sites as $site ) { 
+        foreach( $sites as $site ) {
             $site_id = $site['blog_id'];
             $site_name = get_blog_details( $site_id )->blogname;
             echo '      <option id="' . $site_id . '" value="' . $site_id . '"', ( !empty( $exclude_sites ) && in_array( $site_id,  $exclude_sites) )  ? ' selected="selected"' : '','>' . $site_name . '</option>';
@@ -153,7 +153,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
 
         $categories = get_sitewide_taxonomy_terms( 'event-category' );
 
-        foreach( $categories as $key => $value ) { 
+        foreach( $categories as $key => $value ) {
             echo '      <option id="' . $key . '" value="' . $key . '"', ( !empty( $include_event_categories ) && in_array( $key,  $include_event_categories) ) ? ' selected="selected"' : '','>' . $value . '</option>';
         }
 
@@ -169,7 +169,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
 
         $tags = get_sitewide_taxonomy_terms( 'event-tag' );
 
-        foreach( $tags as $key => $value ) { 
+        foreach( $tags as $key => $value ) {
             echo '      <option id="' . $key . '" value="' . $key . '"', ( !empty( $include_event_tags ) && in_array( $key,  $include_event_tags ) ) ? ' selected="selected"' : '','>' . $value . '</option>';
         }
 
@@ -195,7 +195,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
 
         echo '  </select>';
         echo '</p>';
-    
+
 
         // Style
         echo '<p>';
@@ -209,7 +209,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
 
         foreach( $styles as $key => $value ) {
 
-            echo '<option value="' . $key . '" ' . selected( $style, $key, false ) . '> ' . $value;  
+            echo '<option value="' . $key . '" ' . selected( $style, $key, false ) . '> ' . $value;
 
         }
 
@@ -231,7 +231,7 @@ class ANP_Network_Events_Widget extends WP_Widget {
         // Show meta
         echo '<p>';
         echo '  <label for="' . $this->get_field_id( 'show_meta' ) . '" class="show_meta_label">' . __( 'Show Meta', 'anp-network-content' ) . '</label>';
-        echo '  <input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';        
+        echo '  <input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';
         echo '</p>';
 
         // Excerpt Length

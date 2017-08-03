@@ -57,9 +57,9 @@ class ANP_Network_Sites_Widget extends WP_Widget {
             unset( $instance['exclude_sites'] );
         }
 
-       
+
         echo $before_widget;
-                
+
         // if the title is set
         if ( $title ) {
             echo $before_title . $title . $after_title;
@@ -69,7 +69,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
         if( function_exists( 'glocal_networkwide_sites_module' ) ) {
             echo glocal_networkwide_sites_module( $instance );
         }
-                
+
         echo $after_widget;
 
     }
@@ -78,7 +78,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
     public function form( $instance ) {
 
         // Set default values
-        $instance = wp_parse_args( (array) $instance, array( 
+        $instance = wp_parse_args( (array) $instance, array(
             'title' => '',
             'number_sites' => '',
             'exclude_sites' => '',
@@ -129,7 +129,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 
         $sites = wp_get_sites($siteargs);
 
-        foreach( $sites as $site ) { 
+        foreach( $sites as $site ) {
             $site_id = $site['blog_id'];
             $site_name = get_blog_details( $site_id )->blogname;
             echo '      <option id="' . $site_id . '" value="' . $site_id . '"', ( ! empty( $exclude_sites ) && in_array( $site_id,  $exclude_sites ) ) ? ' selected="selected"' : '','>' . $site_name . '</option>';
@@ -164,7 +164,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
         // Default Meta
         echo '<p>';
         echo '  <label for="' . $this->get_field_id( 'show_meta' ) . '" class="show_meta_label">' . __( 'Show Meta', 'anp-network-content' ) . '</label>';
-        echo '  <input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';        
+        echo '  <input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';
         echo '</p>';
 
         // Show Image

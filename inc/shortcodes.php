@@ -28,7 +28,7 @@ function glocal_networkwide_posts_shortcode( $atts ) {
     if( function_exists( 'glocal_networkwide_posts_module' ) ) {
         return glocal_networkwide_posts_module( $atts );
     }
-    
+
 }
 add_shortcode( 'anp_network_posts', 'glocal_networkwide_posts_shortcode' );
 
@@ -49,7 +49,7 @@ function glocal_networkwide_events_shortcode( $atts, $content = null ) {
     if( function_exists( 'glocal_networkwide_posts_module' ) ) {
         return glocal_networkwide_posts_module( $atts );
     }
-    
+
 }
 add_shortcode( 'anp_network_events', 'glocal_networkwide_events_shortcode' );
 
@@ -68,6 +68,6 @@ function glocal_networkwide_sites_shortcode( $atts, $content = null ) {
     if(function_exists('glocal_networkwide_sites_module')) {
         return glocal_networkwide_sites_module( $atts );
     }
-    
+
 }
 add_shortcode( 'anp_network_sites', 'glocal_networkwide_sites_shortcode' );
