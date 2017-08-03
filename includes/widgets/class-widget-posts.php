@@ -60,7 +60,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 
 		extract( $args );
 
-		$title = apply_filters('widget_title', $instance['title']);
+		$title = apply_filters( 'widget_title', $instance['title'] );
 
 		// Convert $exclude_sites array to comma-separated string
 		if ( is_array( $instance['exclude_sites'] ) && ( ! empty( $instance['exclude_sites'][0] ) ) ) {
@@ -86,7 +86,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 
-		// Use glocal_networkwide_sites function to display sites
+		//  display posts
 		echo wp_network_content_display()->components->posts->get_network_posts( $instance );
 
 		echo $after_widget;
