@@ -49,7 +49,7 @@
  *    show_site_name (bool) - if site name should be displayed ( default: True ) - ignored if @output is 'array'
  * @return array $posts_list The array of posts.
  */
-function glocal_networkwide_posts_module( $parameters = [] ) {
+function glocal_networkwide_posts_module( $parameters = array() ) {
 
     // Default parameters
     $defaults = array(
@@ -106,9 +106,6 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
         // Return an array
         return $posts_list;
 
-        // Debug
-        //return '<pre>glocal_networkwide_posts_module $posts_list ' . var_dump( $posts_list ) . '</pre>';
-
     } else {
 
         // CALL RENDER FUNCTION
@@ -117,6 +114,7 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
     }
 
 }
+
 
 
 /**
@@ -138,7 +136,7 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
  *    join_text - Future
  * @return array $sites_list The array of sites.
  */
-function glocal_networkwide_sites_module( $parameters = [] ) {
+function glocal_networkwide_sites_module( $parameters = array() ) {
 
     /** Default parameters **/
     $defaults = array(

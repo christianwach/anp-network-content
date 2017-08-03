@@ -16,7 +16,7 @@
  *
  * @since 1.0.0
  */
-class Glocal_Network_Posts_Widget extends WP_Widget {
+class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 
 
 
@@ -275,4 +275,4 @@ class Glocal_Network_Posts_Widget extends WP_Widget {
 
 
 
-} // end class Glocal_Network_Posts_Widget
+} // end class WP_Network_Content_Display_Posts_Widget

@@ -16,7 +16,7 @@
  *
  * @since 1.6.0
  */
-class Glocal_Network_Events_Widget extends WP_Widget {
+class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 
 
 
@@ -311,4 +311,4 @@ class Glocal_Network_Events_Widget extends WP_Widget {
 
 
 
-} // end class Glocal_Network_Events_Widget
+} // end class WP_Network_Content_Display_Events_Widget

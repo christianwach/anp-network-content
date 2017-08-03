@@ -217,16 +217,16 @@ class WP_Network_Content_Display {
 
 		// register Network Posts Widget
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-posts.php' );
-		register_widget( 'Glocal_Network_Posts_Widget' );
+		register_widget( 'WP_Network_Content_Display_Posts_Widget' );
 
 		// register Network Sites Widget
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-sites.php' );
-		register_widget( 'Glocal_Network_Sites_Widget' );
+		register_widget( 'WP_Network_Content_Display_Sites_Widget' );
 
 		// register Network Events Widget if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
 			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-events.php' );
-			register_widget( 'Glocal_Network_Events_Widget' );
+			register_widget( 'WP_Network_Content_Display_Events_Widget' );
 		}
 
 	}
