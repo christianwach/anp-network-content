@@ -59,7 +59,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 
 		wp_enqueue_script( 'media-upload' );
 		wp_enqueue_script( 'thickbox' );
-		wp_enqueue_script( 'upload_media_widget', ANP_NETWORK_CONTENT_PLUGIN_URL . 'js/upload-media.js', array( 'jquery' ) );
+		wp_enqueue_script( 'upload_media_widget', WP_NETWORK_CONTENT_DISPLAY_URL . 'js/upload-media.js', array( 'jquery' ) );
 
 		wp_enqueue_style( 'thickbox' );
 
