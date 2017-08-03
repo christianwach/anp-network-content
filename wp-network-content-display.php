@@ -202,7 +202,7 @@ class WP_Network_Content_Display {
 	public function enqueue_styles() {
 
 		wp_enqueue_style(
-			'glocal-network-posts',
+			'wp-network-content-styles',
 			WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/css/style.min.css',
 			false, // dependencies
 			WP_NETWORK_CONTENT_DISPLAY_VERSION, // version
