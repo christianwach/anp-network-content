@@ -174,7 +174,7 @@ function get_posts_list( $sites_array, $options_array ) {
 	// For each site, get the posts
 	foreach( $sites as $site ) {
 
-		$site_id = $site->blog_id;
+		$site_id = $site['blog_id'];
 
 		// Switch to the site to get details and posts
 		switch_to_blog( $site_id );
