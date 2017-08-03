@@ -146,14 +146,14 @@ class WP_Network_Content_Display {
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
 
 		// include Posts Entity class file
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-posts.php' );
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/components/class-posts.php' );
 
 		// include Sites Entity class file
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-sites.php' );
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/components/class-sites.php' );
 
 		// include Network Events Entity if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
-			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-events.php' );
+			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/components/class-events.php' );
 		}
 
 	}
