@@ -60,21 +60,21 @@ $delta: 22; // h4
 $epsilon: 18; // h5, p
 $zeta: 16; // h6
 
-$milli: 14; 
-$micro: 12; 
-$nano: 11; 
+$milli: 14;
+$micro: 12;
+$nano: 11;
 
 
 // SPACING
 
-$space-triple: 72px; 
+$space-triple: 72px;
 $space-double: 48px;
-$space-32: 30px; 
+$space-32: 30px;
 $space: 24px; // equal to body line-height
-$space-34: 18px; 
-$space-half: 12px; 
-$space-third: 8px; 
-$space-fourth: 6px; 
+$space-34: 18px;
+$space-half: 12px;
+$space-third: 8px;
+$space-fourth: 6px;
 
 
 // BORDERS
@@ -83,13 +83,13 @@ $frame-border: 5px solid $white;
 
 
 
-// RWD BREAKPOINTS 
+// RWD BREAKPOINTS
 // mobile first! so you only have to use floats etc in larger sizes
 // set breakpoints where your content breaks, not particular devices
 
 @mixin breakpoint($point) {
 	@if $point == xs {
-		@media (min-width: 321px)  { @content; } 
+		@media (min-width: 321px)  { @content; }
 	}
 	@if $point == sm {
 		@media (min-width: 481px) { @content; }
