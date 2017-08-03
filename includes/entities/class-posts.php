@@ -18,7 +18,64 @@ class WP_Network_Content_Display_Posts {
 	 */
 	public function __construct() {
 
-		// nothing
+		// include files
+		$this->include_files();
+
+		// set up objects and references
+		$this->setup_objects();
+
+		// add widgets
+		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+
+	}
+
+
+
+	/**
+	 * Include files.
+	 *
+	 * @since 2.0.0
+	 */
+	public function include_files() {
+
+		// include Shortcode class file
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-posts.php' );
+
+	}
+
+
+
+	/**
+	 * Set up this plugin's objects and references.
+	 *
+	 * @since 2.0.0
+	 */
+	public function setup_objects() {
+
+		// only do this once
+		static $done;
+		if ( isset( $done ) AND $done === true ) return;
+
+		// instantiate Posts Shortcode class
+		$this->posts_shortcode = new WP_Network_Content_Display_Posts_Shortcode;
+
+		// we're done
+		$done = true;
+
+	}
+
+
+
+	/**
+	 * Register widgets for this component.
+	 *
+	 * @since 2.0.0
+	 */
+	public function register_widgets() {
+
+		// register Network Posts Widget
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-posts.php' );
+		register_widget( 'WP_Network_Content_Display_Posts_Widget' );
 
 	}
 

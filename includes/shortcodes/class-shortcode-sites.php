@@ -67,7 +67,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 		extract( shortcode_atts( array(
 		), $attr ) );
 
-		return wp_network_content_display()->sites->get_network_sites( $attr );
+		return wp_network_content_display()->sites_entity->get_network_sites( $attr );
 
 	}
 

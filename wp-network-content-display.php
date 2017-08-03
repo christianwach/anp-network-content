@@ -56,34 +56,34 @@ if ( ! defined( 'WP_NETWORK_CONTENT_DISPLAY_URL' ) ) {
 class WP_Network_Content_Display {
 
 	/**
-	 * Posts Shortcode object.
+	 * Posts Entity object.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @access public
-	 * @var object $posts_shortcode The Posts Shortcode object
+	 * @var object $posts_entity The Posts Entity object
 	 */
-	public $posts_shortcode;
+	public $posts_entity;
 
 	/**
-	 * Sites Shortcode object.
+	 * Sites Entity object.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @access public
-	 * @var object $sites_shortcode The Sites Shortcode object
+	 * @var object $sites_entity The Sites Entity object
 	 */
-	public $sites_shortcode;
+	public $sites_entity;
 
 	/**
-	 * Events Shortcode object.
+	 * Events Entity object.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @access public
-	 * @var object $events_shortcode The Events Shortcode object
+	 * @var object $events_entity The Events Entity object
 	 */
-	public $events_shortcode;
+	public $events_entity;
 
 
 
@@ -145,9 +145,6 @@ class WP_Network_Content_Display {
 		// set up objects and references
 		$this->setup_objects();
 
-		// add widgets
-		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-
 		// enqueue styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ), 200 );
 
@@ -168,18 +165,15 @@ class WP_Network_Content_Display {
 		// include helper class
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
 
-		// include Posts class files
+		// include Posts Entity class file
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-posts.php' );
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-posts.php' );
 
-		// include Sites class files
+		// include Sites Entity class file
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-sites.php' );
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-sites.php' );
 
-		// include Network Events Shortcode if Event Organiser plugin is present and active
+		// include Network Events Entity if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
 			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-events.php' );
-			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-events.php' );
 		}
 
 	}
@@ -197,47 +191,19 @@ class WP_Network_Content_Display {
 		static $done;
 		if ( isset( $done ) AND $done === true ) return;
 
-		// instantiate Posts classes
-		$this->posts = new WP_Network_Content_Display_Posts;
-		$this->posts_shortcode = new WP_Network_Content_Display_Posts_Shortcode;
+		// instantiate Posts class
+		$this->posts_entity = new WP_Network_Content_Display_Posts;
 
-		// instantiate Sites classes
-		$this->sites = new WP_Network_Content_Display_Sites;
-		$this->sites_shortcode = new WP_Network_Content_Display_Sites_Shortcode;
+		// instantiate Sites class
+		$this->sites_entity = new WP_Network_Content_Display_Sites;
 
 		// instantiate Network Events if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
-			$this->events = new WP_Network_Content_Display_Events;
-			$this->events_shortcode = new WP_Network_Content_Display_Events_Shortcode;
+			$this->events_entity = new WP_Network_Content_Display_Events;
 		}
 
 		// we're done
 		$done = true;
-
-	}
-
-
-
-	/**
-	 * Register widgets for this plugin.
-	 *
-	 * @since 2.0.0
-	 */
-	public function register_widgets() {
-
-		// register Network Posts Widget
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-posts.php' );
-		register_widget( 'WP_Network_Content_Display_Posts_Widget' );
-
-		// register Network Sites Widget
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-sites.php' );
-		register_widget( 'WP_Network_Content_Display_Sites_Widget' );
-
-		// register Network Events Widget if Event Organiser plugin is present and active
-		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
-			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-events.php' );
-			register_widget( 'WP_Network_Content_Display_Events_Widget' );
-		}
 
 	}
 

@@ -73,7 +73,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 		// enforce post type
 		$attr['post_type'] = 'event';
 
-		return wp_network_content_display()->events->get_network_posts( $attr );
+		return wp_network_content_display()->events_entity->get_network_posts( $attr );
 
 	}
 

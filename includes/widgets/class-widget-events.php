@@ -93,7 +93,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		}
 
 		// Use glocal_networkwide_sites function to display sites
-		echo wp_network_content_display()->events->get_network_posts( $instance );
+		echo wp_network_content_display()->events_entity->get_network_posts( $instance );
 
 		echo $after_widget;
 

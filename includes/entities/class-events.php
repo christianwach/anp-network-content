@@ -27,6 +27,56 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 
 	/**
+	 * Include files.
+	 *
+	 * @since 2.0.0
+	 */
+	public function include_files() {
+
+		// include Shortcode class file
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-events.php' );
+
+	}
+
+
+
+	/**
+	 * Set up this component's objects and references.
+	 *
+	 * @since 2.0.0
+	 */
+	public function setup_objects() {
+
+		// only do this once
+		static $done;
+		if ( isset( $done ) AND $done === true ) return;
+
+		// instantiate Events Shortcode class
+		$this->events_shortcode = new WP_Network_Content_Display_Events_Shortcode;
+
+		// we're done
+		$done = true;
+
+	}
+
+
+
+	/**
+	 * Register widgets for this component.
+	 *
+	 * @since 2.0.0
+	 */
+	public function register_widgets() {
+
+		// register Network Events Widget
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-events.php' );
+		register_widget( 'WP_Network_Content_Display_Events_Widget' );
+
+	}
+
+
+
+	/**
 	 * Get sitewide taxonomy terms.
 	 *
 	 * @param str $taxonomy The name of of the taxonomy.

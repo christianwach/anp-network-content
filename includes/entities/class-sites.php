@@ -18,7 +18,64 @@ class WP_Network_Content_Display_Sites {
 	 */
 	public function __construct() {
 
-		// nothing
+		// include files
+		$this->include_files();
+
+		// set up objects and references
+		$this->setup_objects();
+
+		// add widgets
+		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+
+	}
+
+
+
+	/**
+	 * Include files.
+	 *
+	 * @since 2.0.0
+	 */
+	public function include_files() {
+
+		// include Shortcode class file
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-sites.php' );
+
+	}
+
+
+
+	/**
+	 * Set up this component's objects and references.
+	 *
+	 * @since 2.0.0
+	 */
+	public function setup_objects() {
+
+		// only do this once
+		static $done;
+		if ( isset( $done ) AND $done === true ) return;
+
+		// instantiate Sites Shortcode class
+		$this->sites_shortcode = new WP_Network_Content_Display_Sites_Shortcode;
+
+		// we're done
+		$done = true;
+
+	}
+
+
+
+	/**
+	 * Register widgets for this component.
+	 *
+	 * @since 2.0.0
+	 */
+	public function register_widgets() {
+
+		// register Network Sites Widget
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-widget-sites.php' );
+		register_widget( 'WP_Network_Content_Display_Sites_Widget' );
 
 	}
 
