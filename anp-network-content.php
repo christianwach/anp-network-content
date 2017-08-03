@@ -17,6 +17,8 @@ Author: Pea, Glocal
 Author URI: http://glocal.coop
 Version: 1.7.0
 License: GPLv3
+Text Domain: anp-network-content
+Domain Path: /languages
 */
 
 // If this file is called directly, abort.
