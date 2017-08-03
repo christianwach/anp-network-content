@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Event List
-* Override by placing a file called plugins/wp-network-content-display/list-event.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/event-list.php in your active theme
 */
 
 $venue_id = $post_detail['event_venue']['venue_id'];

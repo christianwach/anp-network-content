@@ -22,12 +22,12 @@
  * Editable Templates
  * ---
  * Display of Network Content can be customized by adding a custom template to your theme in 'plugins/wp-network-content-display/'
- * block-event.php
- * list-event.php
- * block-post.php
- * highlights-post.php
- * list-post.php
- * list-sites.php
+ * event-block.php
+ * event-list.php
+ * post-block.php
+ * post-highlights.php
+ * post-list.php
+ * sites-list.php
  *
  * @param array $parameters An array of settings with the following options:
  *    post_type (string) - post type to display ( default: 'post' )
