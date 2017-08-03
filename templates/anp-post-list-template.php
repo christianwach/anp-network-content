@@ -47,5 +47,3 @@ if( !empty( $show_meta ) ) {
 	$html .= '</div>';
 }
 $html .= '</li>';
-
-?>

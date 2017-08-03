@@ -56,5 +56,3 @@ if( !empty( $show_meta ) ) {
 }
 
 $html .= '</article>';
-
-?>

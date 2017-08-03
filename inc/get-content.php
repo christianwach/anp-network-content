@@ -485,5 +485,3 @@ if( !function_exists( 'anp_get_event_meta_list' ) ) {
   }
 
 }
-
-?>
