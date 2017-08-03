@@ -1,5 +1,5 @@
 {
-  "name": "glocal-network-content",
+  "name": "wp-network-content-display",
   "version": "1.0.0",
   "description": "Widgets that display network content on the site.",
   "main": "gulpfile.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/glocalcoop/activist-network.git"
+    "url": "https://github.com/glocalcoop/anp-network-content.git"
   },
   "keywords": [
     "Wordpress",
@@ -19,9 +19,9 @@
   "author": "Pea, Glocal",
   "license": "GPLv3",
   "bugs": {
-    "url": "https://github.com/glocalcoop/activist-network/issues"
+    "url": "https://github.com/glocalcoop/anp-network-content/issues"
   },
-  "homepage": "https://github.com/glocalcoop/activist-network",
+  "homepage": "https://github.com/glocalcoop/anp-network-content",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",

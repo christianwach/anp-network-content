@@ -39,16 +39,16 @@ if ( !defined( 'WP_NETWORK_CONTENT_DISPLAY_URL' ) ) {
     define( 'WP_NETWORK_CONTENT_DISPLAY_URL', plugin_dir_url( __FILE__ ) );
 }
 
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/constructors.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/get-content.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/helpers.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/render.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/shortcodes.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/shortcake.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/enqueue.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/constructors.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/get-content.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/helpers.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/render.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcake.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/enqueue.php' );
 
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/class-network-posts.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/class-network-events.php' );
-include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'inc/class-network-sites.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-network-posts-widget.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-network-events-widget.php' );
+include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-network-sites-widget.php' );
 
 include_once( WP_NETWORK_CONTENT_DISPLAY_DIR . 'glocal-network-content-widgets.php' );

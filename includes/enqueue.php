@@ -25,7 +25,7 @@ if ( ! function_exists( 'glocal_load_highlight_styles' ) ) {
 
 		wp_enqueue_style(
 			'glocal-network-posts',
-			WP_NETWORK_CONTENT_DISPLAY_URL . 'stylesheets/css/style.min.css'
+			WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/css/style.min.css'
 		);
 
 	}

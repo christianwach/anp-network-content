@@ -21,17 +21,17 @@ var onError = function( error ) {
 
 // Styles
 gulp.task( 'styles', function() {
-	return gulp.src( './stylesheets/sass/style.scss', {
+	return gulp.src( './assets/sass/style.scss', {
 		sourceComments: 'map',
 		sourceMap: 'scss',
 		outputStyle: 'nested'
 	} )
 	.pipe( plumber( { errorHandler: onError } ) )
 	.pipe( sass() )
-	.pipe( gulp.dest( './stylesheets/css' ) )
+	.pipe( gulp.dest( './assets/css' ) )
 	.pipe( minifycss() )
 	.pipe( rename( { suffix: '.min' } ) )
-	.pipe( gulp.dest( './stylesheets/css' ) )
+	.pipe( gulp.dest( './assets/css' ) )
 	.pipe( livereload() )
 	.pipe( notify({ message: 'Styles task complete' }));
 } );
@@ -52,10 +52,10 @@ gulp.task( 'styles', function() {
 gulp.task('watch', function() {
 
 	// Watch .scss files
-	gulp.watch('./stylesheets/sass/**/*.scss', ['styles']);
+	gulp.watch('./assets/sass/**/*.scss', ['styles']);
 
 	// Watch .js files
-	//gulp.watch('./js/**/*.js', ['scripts']);
+	//gulp.watch('./assets/js/**/*.js', ['scripts']);
 
 	gulp.watch( './**/*.php' ).on( 'change', function( file ) {
 		livereload.changed( file );
@@ -64,8 +64,9 @@ gulp.task('watch', function() {
 	// Create LiveReload server
 	livereload.listen();
 
-	// Watch any files in dist/, reload on change
-	gulp.watch(['./stylesheets/**']).on('change', livereload.changed);
+	// Watch any files in assets/css/, reload on change
+	gulp.watch(['./assets/css/**']).on('change', livereload.changed);
+	gulp.watch(['./assets/sass/**']).on('change', livereload.changed);
 
 });
 
