@@ -167,7 +167,6 @@ class WP_Network_Content_Display {
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/get-content.php' );
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/helpers.php' );
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/render.php' );
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/enqueue.php' );
 
 		// include Shortcode class files
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-posts.php' );
