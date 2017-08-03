@@ -162,7 +162,7 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 			'deleted' => 0,
 		);
 
-		$sites = wp_get_sites($siteargs);
+		$sites = get_sites( $siteargs );
 
 		foreach( $sites as $site ) {
 			$site_id = $site['blog_id'];

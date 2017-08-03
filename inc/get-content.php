@@ -73,7 +73,7 @@ function get_sites_list( $options_array ) {
 	}
 
 	// Allow the $siteargs to be changed
-	$sites = wp_get_sites( $siteargs );
+	$sites = get_sites( $siteargs );
 
 	// CALL EXCLUDE SITES FUNCTION
 	$sites = ( !empty( $exclude_sites ) ) ? exclude_sites( $exclude_sites, $sites ) : $sites;
@@ -140,7 +140,7 @@ function exclude_sites( $exclude_array ) {
 	}
 
 	// Get a list of sites
-	$sites = wp_get_sites( $siteargs );
+	$sites = get_sites( $siteargs );
 
 	$exclude = ( !is_array( $exclude_array ) ) ? explode( ',', $exclude_array ) : $exclude_array ;
 
@@ -442,7 +442,7 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 		$siteargs = apply_filters( 'anp_network_tax_term_siteargs_arguments', $siteargs );
 	}
 
-	$sites_list = ( $exclude_sites ) ? exclude_sites( $exclude_sites ) : wp_get_sites( $siteargs );
+	$sites_list = ( $exclude_sites ) ? exclude_sites( $exclude_sites ) : get_sites( $siteargs );
 
 	$termargs = array();
 

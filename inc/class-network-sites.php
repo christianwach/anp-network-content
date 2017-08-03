@@ -166,7 +166,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 			'public' => 1,
 		);
 
-		$sites = wp_get_sites( $siteargs );
+		$sites = get_sites( $siteargs );
 
 		foreach( $sites as $site ) {
 			$site_id = $site['blog_id'];
