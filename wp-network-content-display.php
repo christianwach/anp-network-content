@@ -148,6 +148,9 @@ class WP_Network_Content_Display {
 		// add widgets
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 
+		// enqueue styles
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ), 200 );
+
 	}
 
 
@@ -226,6 +229,27 @@ class WP_Network_Content_Display {
 			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/class-network-events-widget.php' );
 			register_widget( 'Glocal_Network_Events_Widget' );
 		}
+
+	}
+
+
+
+	/**
+	 * Enqueue stylesheets for this plugin.
+	 *
+	 * Bumping the plugin version will cause the styles to be reloaded.
+	 *
+	 * @since 2.0.0
+	 */
+	public function enqueue_styles() {
+
+		wp_enqueue_style(
+			'glocal-network-posts',
+			WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/css/style.min.css',
+			false, // dependencies
+			WP_NETWORK_CONTENT_DISPLAY_VERSION, // version
+			'all' // media
+		);
 
 	}
 
