@@ -328,4 +328,39 @@ class WP_Network_Content_Display_Helpers {
 
 
 
+	/**
+	 * Find a template file.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param str $template The relative path to the template file.
+	 */
+	public static function find_template( $template ) {
+
+		// first check active theme
+		if ( file_exists( get_stylesheet_directory() . '/' . $template ) ) {
+			$template = get_stylesheet_directory() . '/' . $template;
+
+		// next look in parent theme
+		} elseif ( is_child_theme() && file_exists( get_template_directory() . '/' . $template ) ) {
+			$template = get_template_directory() . '/' . $template;
+
+		// lastly, use supplied template
+		} else {
+			$template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/' . $template;
+		}
+
+		/**
+		 * Filter path and return.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param str $template The path to the found template file.
+		 */
+		return apply_filters( 'wncd_load_template_filter', $template );
+
+	}
+
+
+
 } // end class WP_Network_Content_Display_Helpers
