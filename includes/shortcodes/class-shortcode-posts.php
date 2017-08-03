@@ -70,9 +70,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 		// set style
 		$attr['style'] = 'normal';
 
-		if ( function_exists( 'glocal_networkwide_posts_module' ) ) {
-			return glocal_networkwide_posts_module( $attr );
-		}
+		return wp_network_content_display()->posts->get_network_posts( $attr );
 
 	}
 

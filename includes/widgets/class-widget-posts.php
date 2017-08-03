@@ -87,9 +87,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		}
 
 		// Use glocal_networkwide_sites function to display sites
-		if ( function_exists( 'glocal_networkwide_posts_module' ) ) {
-			echo glocal_networkwide_posts_module( $instance );
-		}
+		echo wp_network_content_display()->posts->get_network_posts( $instance );
 
 		echo $after_widget;
 

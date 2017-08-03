@@ -162,18 +162,23 @@ class WP_Network_Content_Display {
 	 */
 	public function include_files() {
 
-		// legacy files
+		// global scope functions
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/functions.php' );
 
-		// include new classes
+		// include helper class
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
 
-		// include Shortcode class files
+		// include Posts class files
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-posts.php' );
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-posts.php' );
+
+		// include Sites class files
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-sites.php' );
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-sites.php' );
 
 		// include Network Events Shortcode if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
+			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-events.php' );
 			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-events.php' );
 		}
 
@@ -192,12 +197,17 @@ class WP_Network_Content_Display {
 		static $done;
 		if ( isset( $done ) AND $done === true ) return;
 
-		// instantiate default Shortcode classes
+		// instantiate Posts classes
+		$this->posts = new WP_Network_Content_Display_Posts;
 		$this->posts_shortcode = new WP_Network_Content_Display_Posts_Shortcode;
+
+		// instantiate Sites classes
+		$this->sites = new WP_Network_Content_Display_Sites;
 		$this->sites_shortcode = new WP_Network_Content_Display_Sites_Shortcode;
 
-		// instantiate Network Events Shortcode if Event Organiser plugin is present and active
+		// instantiate Network Events if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
+			$this->events = new WP_Network_Content_Display_Events;
 			$this->events_shortcode = new WP_Network_Content_Display_Events_Shortcode;
 		}
 

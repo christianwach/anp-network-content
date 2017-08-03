@@ -67,9 +67,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 		extract( shortcode_atts( array(
 		), $attr ) );
 
-		if ( function_exists( 'glocal_networkwide_sites_module' ) ) {
-			return glocal_networkwide_sites_module( $attr );
-		}
+		return wp_network_content_display()->sites->get_network_sites( $attr );
 
 	}
 

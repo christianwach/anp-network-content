@@ -95,10 +95,8 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 
-		// Use glocal_networkwide_sites function to display sites
-		if ( function_exists( 'glocal_networkwide_sites_module' ) ) {
-			echo glocal_networkwide_sites_module( $instance );
-		}
+		// Use common method to display sites
+		echo wp_network_content_display()->sites->get_network_sites( $instance );
 
 		echo $after_widget;
 
