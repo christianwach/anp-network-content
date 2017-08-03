@@ -226,7 +226,7 @@ function render_sites_list( $sites_array, $options_array ) {
 
 	foreach ( $sites as $site ) {
 
-		$site_id = $site['blog_id'];
+		$site_id = $site->blog_id;
 
 		// CALL GET SLUG FUNCTION
 		$slug = get_site_slug($site['path']);

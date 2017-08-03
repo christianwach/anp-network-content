@@ -76,13 +76,13 @@ function get_sites_list( $options_array ) {
 	$sites = get_sites( $siteargs );
 
 	// CALL EXCLUDE SITES FUNCTION
-	$sites = ( !empty( $exclude_sites ) ) ? exclude_sites( $exclude_sites, $sites ) : $sites;
+	$sites = ( ! empty( $exclude_sites ) ) ? exclude_sites( $exclude_sites, $sites ) : $sites;
 
 	$site_list = array();
 
 	foreach( $sites as $site ) {
 
-		$site_id = $site['blog_id'];
+		$site_id = $site->blog_id;
 		$site_details = get_blog_details( $site_id );
 
 		$site_list[$site_id] = array(
@@ -145,7 +145,7 @@ function exclude_sites( $exclude_array ) {
 	$exclude = ( !is_array( $exclude_array ) ) ? explode( ',', $exclude_array ) : $exclude_array ;
 
 	$sites = array_filter( $sites, function( $site ) use ( $exclude ) {
-		return !in_array( $site['blog_id'], $exclude );
+		return !in_array( $site->blog_id, $exclude );
 	} );
 
 	return $sites;
@@ -174,7 +174,7 @@ function get_posts_list( $sites_array, $options_array ) {
 	// For each site, get the posts
 	foreach( $sites as $site ) {
 
-		$site_id = $site['blog_id'];
+		$site_id = $site->blog_id;
 
 		// Switch to the site to get details and posts
 		switch_to_blog( $site_id );
@@ -455,7 +455,7 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 
 	foreach( $sites_list as $site ) {
 
-		$site_id = $site['blog_id'];
+		$site_id = $site->blog_id;
 
 		// Switch to the site to get details and posts
 		switch_to_blog( $site_id );

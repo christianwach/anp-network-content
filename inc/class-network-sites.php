@@ -169,7 +169,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 		$sites = get_sites( $siteargs );
 
 		foreach( $sites as $site ) {
-			$site_id = $site['blog_id'];
+			$site_id = $site->blog_id;
 			$site_name = get_blog_details( $site_id )->blogname;
 			echo '		<option id="' . $site_id . '" value="' . $site_id . '"', ( ! empty( $exclude_sites ) && in_array( $site_id,	$exclude_sites ) ) ? ' selected="selected"' : '','>' . $site_name . '</option>';
 		}
