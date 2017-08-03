@@ -9,6 +9,16 @@
  */
 class WP_Network_Content_Display_Sites {
 
+	/**
+	 * Shortcode object.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @access public
+	 * @var object $shortcode The Shortcode object
+	 */
+	public $shortcode;
+
 
 
 	/**
@@ -56,8 +66,8 @@ class WP_Network_Content_Display_Sites {
 		static $done;
 		if ( isset( $done ) AND $done === true ) return;
 
-		// instantiate Sites Shortcode class
-		$this->sites_shortcode = new WP_Network_Content_Display_Sites_Shortcode;
+		// instantiate Shortcode class
+		$this->shortcode = new WP_Network_Content_Display_Sites_Shortcode;
 
 		// we're done
 		$done = true;

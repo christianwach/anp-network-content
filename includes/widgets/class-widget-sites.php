@@ -96,7 +96,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		}
 
 		// Use common method to display sites
-		echo wp_network_content_display()->sites_entity->get_network_sites( $instance );
+		echo wp_network_content_display()->components->sites->get_network_sites( $instance );
 
 		echo $after_widget;
 

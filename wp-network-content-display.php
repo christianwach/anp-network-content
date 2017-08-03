@@ -56,34 +56,14 @@ if ( ! defined( 'WP_NETWORK_CONTENT_DISPLAY_URL' ) ) {
 class WP_Network_Content_Display {
 
 	/**
-	 * Posts Entity object.
+	 * Components object.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @access public
-	 * @var object $posts_entity The Posts Entity object
+	 * @var object $components The Components object
 	 */
-	public $posts_entity;
-
-	/**
-	 * Sites Entity object.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @access public
-	 * @var object $sites_entity The Sites Entity object
-	 */
-	public $sites_entity;
-
-	/**
-	 * Events Entity object.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @access public
-	 * @var object $events_entity The Events Entity object
-	 */
-	public $events_entity;
+	public $components;
 
 
 
@@ -191,15 +171,18 @@ class WP_Network_Content_Display {
 		static $done;
 		if ( isset( $done ) AND $done === true ) return;
 
+		// init components
+		$this->components = new stdClass;
+
 		// instantiate Posts class
-		$this->posts_entity = new WP_Network_Content_Display_Posts;
+		$this->components->posts = new WP_Network_Content_Display_Posts;
 
 		// instantiate Sites class
-		$this->sites_entity = new WP_Network_Content_Display_Sites;
+		$this->components->sites = new WP_Network_Content_Display_Sites;
 
 		// instantiate Network Events if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
-			$this->events_entity = new WP_Network_Content_Display_Events;
+			$this->components->events = new WP_Network_Content_Display_Events;
 		}
 
 		// we're done

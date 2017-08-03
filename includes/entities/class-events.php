@@ -10,6 +10,16 @@
  */
 class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts {
 
+	/**
+	 * Shortcode object.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @access public
+	 * @var object $shortcode The Shortcode object
+	 */
+	public $shortcode;
+
 
 
 	/**
@@ -51,8 +61,8 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		static $done;
 		if ( isset( $done ) AND $done === true ) return;
 
-		// instantiate Events Shortcode class
-		$this->events_shortcode = new WP_Network_Content_Display_Events_Shortcode;
+		// instantiate Shortcode class
+		$this->shortcode = new WP_Network_Content_Display_Events_Shortcode;
 
 		// we're done
 		$done = true;
