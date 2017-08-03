@@ -34,11 +34,11 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 			'anp-network-posts',
 
 			// title
-			__( 'Network Posts', 'anp-network-content' ),
+			__( 'Network Posts', 'wp-network-content-display' ),
 
 			// args
 			array(
-				'description' => __( 'Display list of posts from your network.', 'anp-network-content' ),
+				'description' => __( 'Display list of posts from your network.', 'wp-network-content-display' ),
 				'classname'	 => 'widget__anp-network-posts',
 			)
 
@@ -141,20 +141,20 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 
 		// Form fields
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'title' ) . '" class="title_label">' . __( 'Title', 'anp-network-content' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter Widget Title', 'anp-network-content' ) . '" value="' . esc_attr( $title ) . '">';
+		echo '	<label for="' . $this->get_field_id( 'title' ) . '" class="title_label">' . __( 'Title', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="text" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter Widget Title', 'wp-network-content-display' ) . '" value="' . esc_attr( $title ) . '">';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'number_posts' ) . '" class="number_posts_label">' . __( 'Number of Posts', 'anp-network-content' ) . '</label>';
-		echo '	<input type="number" id="' . $this->get_field_id( 'number_posts' ) . '" name="' . $this->get_field_name( 'number_posts' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'anp-network-content' ) . '" value="' . esc_attr( $number_posts ) . '">';
+		echo '	<label for="' . $this->get_field_id( 'number_posts' ) . '" class="number_posts_label">' . __( 'Number of Posts', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="number" id="' . $this->get_field_id( 'number_posts' ) . '" name="' . $this->get_field_name( 'number_posts' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'wp-network-content-display' ) . '" value="' . esc_attr( $number_posts ) . '">';
 		echo '</p>';
 
 		// Exclude Sites
 		echo '<p>';
-		echo '	<label for="exclude_sites" class="exclude_sites_label">' . __( 'Exclude Sites', 'anp-network-content' ) . '</label>';
+		echo '	<label for="exclude_sites" class="exclude_sites_label">' . __( 'Exclude Sites', 'wp-network-content-display' ) . '</label>';
 		echo '	<select id="' . $this->get_field_id( 'exclude_sites' ) . '" name="' . $this->get_field_name( 'exclude_sites' ) . '[]" multiple="multiple" class="widefat">';
-		echo '		<option value="" ' . selected( $exclude_sites, '', false ) . '> ' . __( 'None', 'anp-network-content' );
+		echo '		<option value="" ' . selected( $exclude_sites, '', false ) . '> ' . __( 'None', 'wp-network-content-display' );
 
 		$siteargs = array(
 			'archived' => 0,
@@ -175,9 +175,9 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 
 		// Include Categories
 		echo '<p>';
-		echo '	<label for="include_categories" class="include_categories_label">' . __( 'Include Categories', 'anp-network-content' ) . '</label>';
+		echo '	<label for="include_categories" class="include_categories_label">' . __( 'Include Categories', 'wp-network-content-display' ) . '</label>';
 		echo '	<select id="' . $this->get_field_id( 'include_categories' ) . '" name="' . $this->get_field_name( 'include_categories' ) . '[]" multiple="multiple" class="widefat">';
-		echo '		<option value="" ' . selected( $include_categories, '', false ) . '> ' . __( 'None', 'anp-network-content' );
+		echo '		<option value="" ' . selected( $include_categories, '', false ) . '> ' . __( 'None', 'wp-network-content-display' );
 
 		$categories = get_categories();
 
@@ -190,51 +190,51 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 
 		// Posts per Site
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'posts_per_site' ) . '" class="posts_per_site_label">' . __( 'Posts per Site', 'anp-network-content' ) . '</label>';
-		echo '	<input type="number" id="' . $this->get_field_id( 'posts_per_site' ) . '" name="' . $this->get_field_name( 'posts_per_site' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'anp-network-content' ) . '" value="' . esc_attr( $posts_per_site ) . '">';
+		echo '	<label for="' . $this->get_field_id( 'posts_per_site' ) . '" class="posts_per_site_label">' . __( 'Posts per Site', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="number" id="' . $this->get_field_id( 'posts_per_site' ) . '" name="' . $this->get_field_name( 'posts_per_site' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'wp-network-content-display' ) . '" value="' . esc_attr( $posts_per_site ) . '">';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'style' ) . '" class="style_label">' . __( 'Display Style', 'anp-network-content' ) . '</label>';
+		echo '	<label for="' . $this->get_field_id( 'style' ) . '" class="style_label">' . __( 'Display Style', 'wp-network-content-display' ) . '</label>';
 		echo '	<select id="' . $this->get_field_id( 'style' ) . '" name="' . $this->get_field_name( 'style' ) . '" class="widefat">';
-		echo '		<option value="" ' . selected( $style, '', false ) . '> ' . __( 'List (Default)', 'anp-network-content' );
-		echo '		<option value="block" ' . selected( $style, 'block', false ) . '> ' . __( 'Block', 'anp-network-content' );
+		echo '		<option value="" ' . selected( $style, '', false ) . '> ' . __( 'List (Default)', 'wp-network-content-display' );
+		echo '		<option value="block" ' . selected( $style, 'block', false ) . '> ' . __( 'Block', 'wp-network-content-display' );
 		echo '	</select>';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'id' ) . '" class="id_label">' . __( 'ID', 'anp-network-content' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'id' ) . '" name="' . $this->get_field_name( 'id' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter ID', 'anp-network-content' ) . '" value="' . esc_attr( $id ) . '">';
+		echo '	<label for="' . $this->get_field_id( 'id' ) . '" class="id_label">' . __( 'ID', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="text" id="' . $this->get_field_id( 'id' ) . '" name="' . $this->get_field_name( 'id' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter ID', 'wp-network-content-display' ) . '" value="' . esc_attr( $id ) . '">';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'class' ) . '" class="class_label">' . __( 'Class', 'anp-network-content' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'class' ) . '" name="' . $this->get_field_name( 'class' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter Class', 'anp-network-content' ) . '" value="' . esc_attr( $class ) . '">';
+		echo '	<label for="' . $this->get_field_id( 'class' ) . '" class="class_label">' . __( 'Class', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="text" id="' . $this->get_field_id( 'class' ) . '" name="' . $this->get_field_name( 'class' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter Class', 'wp-network-content-display' ) . '" value="' . esc_attr( $class ) . '">';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'show_meta' ) . '" class="show_meta_label">' . __( 'Show Meta', 'anp-network-content' ) . '</label>';
-		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';
+		echo '	<label for="' . $this->get_field_id( 'show_meta' ) . '" class="show_meta_label">' . __( 'Show Meta', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'wp-network-content-display' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'show_thumbnail' ) . '" class="show_thumbnail_label">' . __( 'Show Thumbnail', 'anp-network-content' ) . '</label>';
-		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_thumbnail' ) . '" name="' . $this->get_field_name( 'show_thumbnail' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_thumbnail, true, false ) . '>';
+		echo '	<label for="' . $this->get_field_id( 'show_thumbnail' ) . '" class="show_thumbnail_label">' . __( 'Show Thumbnail', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_thumbnail' ) . '" name="' . $this->get_field_name( 'show_thumbnail' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'wp-network-content-display' ) . '" value="1" ' . checked( $show_thumbnail, true, false ) . '>';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'show_excerpt' ) . '" class="show_excerpt_label">' . __( 'Show Excerpt', 'anp-network-content' ) . '</label>';
-		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_excerpt' ) . '" name="' . $this->get_field_name( 'show_excerpt' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_excerpt, true, false ) . '>';
+		echo '	<label for="' . $this->get_field_id( 'show_excerpt' ) . '" class="show_excerpt_label">' . __( 'Show Excerpt', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_excerpt' ) . '" name="' . $this->get_field_name( 'show_excerpt' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'wp-network-content-display' ) . '" value="1" ' . checked( $show_excerpt, true, false ) . '>';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'excerpt_length' ) . '" class="excerpt_length_label">' . __( 'Excerpt Length', 'anp-network-content' ) . '</label>';
-		echo '	<input type="number" id="' . $this->get_field_id( 'excerpt_length' ) . '" name="' . $this->get_field_name( 'excerpt_length' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'anp-network-content' ) . '" value="' . esc_attr( $excerpt_length ) . '">';
+		echo '	<label for="' . $this->get_field_id( 'excerpt_length' ) . '" class="excerpt_length_label">' . __( 'Excerpt Length', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="number" id="' . $this->get_field_id( 'excerpt_length' ) . '" name="' . $this->get_field_name( 'excerpt_length' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'wp-network-content-display' ) . '" value="' . esc_attr( $excerpt_length ) . '">';
 		echo '</p>';
 
 		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'show_site_name' ) . '" class="show_site_name_label">' . __( 'Show Site Name', 'anp-network-content' ) . '</label>';
-		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_site_name' ) . '" name="' . $this->get_field_name( 'show_site_name' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'anp-network-content' ) . '" value="1" ' . checked( $show_site_name, true, false ) . '>';
+		echo '	<label for="' . $this->get_field_id( 'show_site_name' ) . '" class="show_site_name_label">' . __( 'Show Site Name', 'wp-network-content-display' ) . '</label>';
+		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_site_name' ) . '" name="' . $this->get_field_name( 'show_site_name' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'wp-network-content-display' ) . '" value="1" ' . checked( $show_site_name, true, false ) . '>';
 		echo '</p>';
 
 	}

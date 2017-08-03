@@ -303,7 +303,7 @@ function get_sites_posts( $site_id, $options_array ) {
 			$excerpt = wp_trim_words(
 				$postdetail['post_content'],
 				$excerpt_length,
-				sprintf( __( '... <a href="%s">Read More</a>', 'anp-network-content' ), get_permalink( $post_id ) )
+				sprintf( __( '... <a href="%s">Read More</a>', 'wp-network-content-display' ), get_permalink( $post_id ) )
 			);
 		}
 

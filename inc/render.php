@@ -84,7 +84,7 @@ function render_list_html( $posts_array, $options_array ) {
 
 		// // use a template for the output so that it can easily be overridden by theme
 		// // check for template in active theme
-		// $template = locate_template( array( 'plugins/anp-network-content/anp-' . $post_type . '-list-template.php' ) );
+		// $template = locate_template( array( 'plugins/wp-network-content-display/anp-' . $post_type . '-list-template.php' ) );
 		//
 		// // if none found use the default template
 		// if ( $template == '' ) $template = ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/anp-' . $post_type . '-list-template.php';
@@ -135,8 +135,8 @@ function render_block_html( $posts_array, $options_array ) {
 
 		$template_name = 'anp-' . $post_type . '-block-template.php';
 
-		if( file_exists( trailingslashit( get_stylesheet_directory() ) . 'plugins/anp-network-content/' . $template_name ) ) {
-			$template = trailingslashit( get_stylesheet_directory() ) . 'plugins/anp-network-content/' . $template_name;
+		if( file_exists( trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name ) ) {
+			$template = trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name;
 		} else {
 			$template = ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/' . $template_name;
 		}
@@ -145,12 +145,12 @@ function render_block_html( $posts_array, $options_array ) {
 
 		// // use a template for the output so that it can easily be overridden by theme
 		// // check for template in active theme
-		// $template = locate_template( trailingslashit( get_stylesheet_directory() ) . 'plugins/anp-network-content/' . $template_name );
+		// $template = locate_template( trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name );
 		//
 		// // if none found use the default template
-		// $template = ( '' != $template ) ? trailingslashit( get_stylesheet_directory() ) . 'plugins/anp-network-content/' . $template_name : ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/' . $template_name;
+		// $template = ( '' != $template ) ? trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name : ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/' . $template_name;
 		//
-		// $template = trailingslashit( get_stylesheet_directory() ) . 'plugins/anp-network-content/' . $template_name;
+		// $template = trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name;
 
 		include( $template );
 
@@ -185,7 +185,7 @@ function render_highlights_html( $posts_array, $options_array ) {
 
 	// use a template for the output so that it can easily be overridden by theme
 	// check for template in active theme
-	$template = locate_template(array( 'plugins/anp-network-content/anp-post-highlights-template.php'));
+	$template = locate_template(array( 'plugins/wp-network-content-display/anp-post-highlights-template.php'));
 
 	// if none found use the default template
 	$template = ( $template == '' ) ? ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/anp-post-highlights-template.php' : '';
@@ -233,7 +233,7 @@ function render_sites_list( $sites_array, $options_array ) {
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme
-		$template = locate_template( array( 'plugins/anp-network-content/anp-sites-list-template.php' ) );
+		$template = locate_template( array( 'plugins/wp-network-content-display/anp-sites-list-template.php' ) );
 
 		// if none found use the default template
 		$template = ( $template == '' ) ? ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/anp-sites-list-template.php' : '';
@@ -300,7 +300,7 @@ function render_event_list_html( $events_array, $options_array ) {
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme
-		$template = locate_template( array( 'plugins/anp-network-content/anp-event-list-template.php' ) );
+		$template = locate_template( array( 'plugins/wp-network-content-display/anp-event-list-template.php' ) );
 
 		// if none found use the default template
 		include( $template );
@@ -346,7 +346,7 @@ function render_event_block_html( $posts_array, $options_array ) {
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme
-		$template = locate_template( array( 'plugins/anp-network-content/anp-post-block-template.php' ) );
+		$template = locate_template( array( 'plugins/wp-network-content-display/anp-post-block-template.php' ) );
 
 		// if none found use the default template
 		$template = ( $template == '' ) ? ANP_NETWORK_CONTENT_PLUGIN_DIR . 'templates/anp-post-block-template.php' : '';

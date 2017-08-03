@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Sites as list
-* Override by placing a file called plugins/anp-network-content/anp-sites-list-template.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/anp-sites-list-template.php in your active theme
 */
 
 
@@ -20,17 +20,17 @@ $html .= '</header>';
 if( !empty( $show_meta ) ) {
 	$html .= '<div class="entry-meta">';
 
-	$html .= '<span class="meta-label">' . __( 'Last Updated', 'anp-network-content' ) . '</span> <time>';
+	$html .= '<span class="meta-label">' . __( 'Last Updated', 'wp-network-content-display' ) . '</span> <time>';
 	$html .= date_i18n( get_option( 'date_format' ), strtotime( $site['last_updated'] ) );
 	$html .= '</time>';
 
 	$html .= '<div class="recent-post">';
-	$html .= '<span class="meta-label">' . __( 'Latest Post', 'anp-network-content' ) . '</span> ';
+	$html .= '<span class="meta-label">' . __( 'Latest Post', 'wp-network-content-display' ) . '</span> ';
 	$html .= '<a href="'. esc_url( $site['recent_post']['permalink'] ) .'">';
 	$html .= $site['recent_post']['post_title'];
 	$html .= '</a>';
 	$html .= '<div class="entry-meta">';
-	$html .= '<span class="meta-label">' . __( 'Posted On', 'anp-network-content' ) . '</span> ';
+	$html .= '<span class="meta-label">' . __( 'Posted On', 'wp-network-content-display' ) . '</span> ';
 	$html .= '<time>';
 	$html .= date_i18n( get_option( 'date_format' ), strtotime( $site['recent_post']['post_date'] ) );
 	$html .= '</time>';

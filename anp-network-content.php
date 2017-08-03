@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ANP Network Content
+ * Network Content Widgets and Shortcodes
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
@@ -11,13 +11,13 @@
  */
 
 /*
-Plugin Name: Activist Network Content
+Plugin Name: Network Content Widgets and Shortcodes
 Description: Widgets and shortcodes that display network content on your multi-site install.
 Author: Pea, Glocal
 Author URI: http://glocal.coop
 Version: 1.7.0
 License: GPLv3
-Text Domain: anp-network-content
+Text Domain: wp-network-content-display
 Domain Path: /languages
 */
 

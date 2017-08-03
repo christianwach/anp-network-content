@@ -21,7 +21,7 @@
  *
  * Editable Templates
  * ---
- * Display of Network Content can be customized by adding a custom template to your theme in 'plugins/anp-network-content/'
+ * Display of Network Content can be customized by adding a custom template to your theme in 'plugins/wp-network-content-display/'
  * anp-event-block-template.php
  * anp-event-list-template.php
  * anp-post-block-template.php

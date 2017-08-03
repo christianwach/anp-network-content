@@ -25,11 +25,11 @@ function anp_network_posts_shortcode_ui() {
 	}
 
 	shortcode_ui_register_for_shortcode( 'anp_network_posts', array(
-		'label' => __( 'Network Posts', 'anp-network-content' ),
+		'label' => __( 'Network Posts', 'wp-network-content-display' ),
 		'listItemImage' => 'dashicons-admin-post',
 		'attrs' => array(
 			array(
-				'label' => __( 'Number of Posts', 'anp-network-content' ),
+				'label' => __( 'Number of Posts', 'wp-network-content-display' ),
 				'attr' => 'number_posts',
 				'type' => 'number',
 			)
@@ -40,22 +40,22 @@ function anp_network_posts_shortcode_ui() {
 	if ( function_exists( 'eventorganiser_register_script' ) ) {
 
 		shortcode_ui_register_for_shortcode( 'anp_network_events', array(
-			'label' => __( 'Network Events', 'anp-network-content' ),
+			'label' => __( 'Network Events', 'wp-network-content-display' ),
 			'listItemImage' => 'dashicons-calendar-alt',
 			'attrs' => array(
 				array(
-					'label' => __( 'Number of Events', 'anp-network-content' ),
+					'label' => __( 'Number of Events', 'wp-network-content-display' ),
 					'attr' => 'number_posts',
 					'type' => 'number',
 				),
 				array(
-					'label' => __( 'Event Scope', 'anp-network-content' ),
+					'label' => __( 'Event Scope', 'wp-network-content-display' ),
 					'attr' => 'event_scope',
 					'type' => 'select',
 					'options' => array(
-						'future' => __( 'Future', 'anp-network-content' ),
-						'past' => __( 'Past', 'anp-network-content' ),
-						'all' => __( 'All', 'anp-network-content' ),
+						'future' => __( 'Future', 'wp-network-content-display' ),
+						'past' => __( 'Past', 'wp-network-content-display' ),
+						'all' => __( 'All', 'wp-network-content-display' ),
 					),
 				),
 			)

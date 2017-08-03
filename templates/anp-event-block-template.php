@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Event List as blocks
-* Override by placing a file called plugins/anp-network-content/anp-event-block-template.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/anp-event-block-template.php in your active theme
 */
 
 $venue_id = $post_detail['event_venue']['venue_id'];
