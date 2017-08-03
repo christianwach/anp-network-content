@@ -169,16 +169,16 @@ class WP_Network_Content_Display {
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
 
 		// include Posts class files
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-posts.php' );
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-posts.php' );
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-posts.php' );
 
 		// include Sites class files
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-sites.php' );
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-sites.php' );
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-sites.php' );
 
 		// include Network Events Shortcode if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
-			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-events.php' );
+			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/entities/class-events.php' );
 			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/shortcodes/class-shortcode-events.php' );
 		}
 
