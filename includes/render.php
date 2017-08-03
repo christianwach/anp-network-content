@@ -229,7 +229,7 @@ function render_sites_list( $sites_array, $options_array ) {
 		$site_id = $site['blog_id'];
 
 		// CALL GET SLUG FUNCTION
-		$slug = get_site_slug($site['path']);
+		$slug = WP_Network_Content_Display_Helpers::get_site_slug( $site['path'] );
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme

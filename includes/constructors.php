@@ -75,7 +75,7 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
     );
 
     // SANITIZE INPUT
-    $parameters = sanitize_input( $parameters );
+    $parameters = WP_Network_Content_Display_Helpers::sanitize_input( $parameters );
 
     if ( isset( $parameters['exclude_sites'] ) && !empty( $parameters['exclude_sites'] ) ) {
         $parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
@@ -90,7 +90,7 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
     }
 
     // CALL MERGE FUNCTION
-    $settings = get_merged_settings( $parameters, $defaults );
+    $settings = WP_Network_Content_Display_Helpers::get_merged_settings( $parameters, $defaults );
 
     // Extract each parameter as its own variable
     extract( $settings, EXTR_SKIP );
@@ -166,19 +166,19 @@ function glocal_networkwide_sites_module( $parameters = [] ) {
     switch ( $sort_by ) {
 
         case 'newest':
-            $sites_list = sort_array_by_key( $sites_list, 'registered', 'DESC' );
+            $sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'registered', 'DESC' );
             break;
 
         case 'updated':
-            $sites_list = sort_array_by_key( $sites_list, 'last_updated', 'DESC' );
+            $sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'last_updated', 'DESC' );
             break;
 
         case 'active':
-            $sites_list = sort_array_by_key( $sites_list, 'post_count', 'DESC' );
+            $sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'post_count', 'DESC' );
             break;
 
         default:
-            $sites_list = sort_array_by_key( $sites_list, 'blogname' );
+            $sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'blogname' );
 
     }
 

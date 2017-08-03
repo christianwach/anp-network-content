@@ -17,35 +17,6 @@
 
 
 /**
- * Merge settings and remove unused items.
- *
- * @param array $user_selections_array The provided array of settings.
- * @param array $default_values_array The default array of settings.
- * @return array $settings The merged array of settings.
- */
-function get_merged_settings( $user_selections_array, $default_values_array ) {
-
-	$parameters = $user_selections_array;
-	$defaults = $default_values_array;
-
-	// Parse & merge parameters with the defaults - http://codex.wordpress.org/Function_Reference/wp_parse_args
-	// This function converts all arguments to strings
-	$settings = wp_parse_args( $parameters, $defaults );
-
-	// Remove unset items
-	foreach( $settings as $parameter => $value ) {
-		if ( empty( $settings[$parameter] ) ) {
-			unset( $settings[$parameter] );
-		}
-	}
-
-	return $settings;
-
-}
-
-
-
-/**
  * Retrieve an array of site data.
  *
  * @param array $options_array The array of parameters.
@@ -96,7 +67,7 @@ function get_sites_list( $options_array ) {
 		);
 
 		// CALL GET SITE IMAGE FUNCTION
-		$site_image = get_site_header_image( $site_id );
+		$site_image = WP_Network_Content_Display_Helpers::get_site_header_image( $site_id );
 
 		if ( $site_image ) {
 			$site_list[$site_id]['site-image'] = $site_image;
@@ -198,13 +169,15 @@ function get_posts_list( $sites_array, $options_array ) {
 
 	// SORT ARRAY
 	if ( 'event' === $post_type ) {
-		$post_list = sort_array_by_key( $post_list, 'event_start_date' );
+		$post_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $post_list, 'event_start_date' );
 	} else {
-		$post_list = sort_by_date( $post_list );
+		$post_list = WP_Network_Content_Display_Helpers::sort_by_date( $post_list );
 	}
 
 	// CALL LIMIT FUNCTIONS
-	$post_list = ( isset( $number_posts ) ) ? limit_number_posts( $post_list, $number_posts ) : $post_list;
+	$post_list = ( isset( $number_posts ) ) ?
+				 WP_Network_Content_Display_Helpers::limit_number_posts( $post_list, $number_posts ) :
+				 $post_list;
 
 	return $post_list;
 
@@ -291,7 +264,7 @@ function get_sites_posts( $site_id, $options_array ) {
 				  $postdetail['post_date'] . '-' . $postdetail['post_name'];
 
 		//CALL POST MARKUP FUNCTION
-		$post_markup_class = get_post_markup_class( $post_id );
+		$post_markup_class = WP_Network_Content_Display_Helpers::get_post_markup_class( $post_id );
 		$post_markup_class .= ' siteid-' . $site_id;
 
 		//Returns an array
@@ -437,7 +410,7 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 		'mature' => null,
 	);
 
-	// Allow the $siteargs to be	changed
+	// Allow the $siteargs to be changed
 	if ( has_filter( 'glocal_network_tax_term_siteargs_arguments' ) ) {
 		$siteargs = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $siteargs );
 	}
@@ -446,7 +419,7 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 
 	$termargs = array();
 
-	// Allow the $siteargs to be	changed
+	// Allow the $siteargs to be changed
 	if ( has_filter( 'glocal_network_tax_termarg_arguments' ) ) {
 		$termargs = apply_filters( 'glocal_network_tax_termarg_arguments', $termargs );
 	}
@@ -487,7 +460,7 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
  * @param int $event_id The numeric ID of the event.
  * @return str $html The formatted event meta.
  */
-if ( ! function_exists( 'glocal_get_event_meta_list' ) ) {
+if ( ! function_exists( 'glocal_get_event_taxonomy' ) ) {
 
 	function glocal_get_event_taxonomy( $event_id = 0 ) {
 
