@@ -145,13 +145,13 @@ class WP_Network_Content_Display {
 		// include helper class
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
 
-		// include Posts Entity class file
+		// include Posts Component class file
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/components/class-posts.php' );
 
-		// include Sites Entity class file
+		// include Sites Component class file
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/components/class-sites.php' );
 
-		// include Network Events Entity if Event Organiser plugin is present and active
+		// include Network Events Component if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
 			require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/components/class-events.php' );
 		}
@@ -174,13 +174,13 @@ class WP_Network_Content_Display {
 		// init components
 		$this->components = new stdClass;
 
-		// instantiate Posts class
+		// instantiate Posts Component class
 		$this->components->posts = new WP_Network_Content_Display_Posts;
 
-		// instantiate Sites class
+		// instantiate Sites Component class
 		$this->components->sites = new WP_Network_Content_Display_Sites;
 
-		// instantiate Network Events if Event Organiser plugin is present and active
+		// instantiate Network Events Component if Event Organiser plugin is present and active
 		if ( ! defined( 'EVENT_ORGANISER_VER' ) ) {
 			$this->components->events = new WP_Network_Content_Display_Events;
 		}
