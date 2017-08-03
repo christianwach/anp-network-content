@@ -11,47 +11,44 @@
  */
 
 
-/************* NETWORK POSTS MAIN FUNCTION *****************/
 
 /**
- * 1/5/2016
- * Updates to allow for custom post types
+ * NETWORK POSTS MAIN FUNCTION.
+ *
+ * Get (or render) posts from sites across the network.
+ *
+ * 1/5/2016: Updated to allow for custom post types.
+ *
+ * Editable Templates
+ * ---
+ * Display of Network Content can be customized by adding a custom template to your theme in 'plugins/anp-network-content/'
+ * anp-event-block-template.php
+ * anp-event-list-template.php
+ * anp-post-block-template.php
+ * anp-post-highlights-template.php
+ * anp-post-list-template.php
+ * anp-sites-list-template.php
+ *
+ * @param array $parameters An array of settings with the following options:
+ *    post_type (string) - post type to display ( default: 'post' )
+ *    event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event'
+ *    number_posts (int) - the total number of posts to display ( default: 10 )
+ *    posts_per_site (int) - the number of posts for each site ( default: no limit )
+ *    include_categories (array) - the categories of posts to include ( default: all categories )
+ *    exclude_sites (array) - the sites from which posts should be excluded ( default: all sites ( public sites, except archived, deleted and spam ) )
+ *    output (string) - HTML or array ( default: HTML )
+ *    style - (string) normal ( list ), block or highlights ( default: normal ) - ignored if @output is 'array'
+ *    id (int) - ID used in list markup ( default: network-posts-RAND ) - ignored if @output is 'array'
+ *    class (string) - class used in list markup ( default: post-list ) - ignored if @output is 'array'
+ *    title (string) - title displayed for list ( default: Posts ) - ignored unless @style is 'highlights'
+ *    title_image (string) - image displayed behind title ( default: home-highlight.png ) - ignored unless @style is 'highlights'
+ *    show_thumbnail (bool) - display post thumbnail ( default: False ) - ignored if @output is 'array'
+ *    show_meta (bool) - if meta info should be displayed ( default: True ) - ignored if @output is 'array'
+ *    show_excerpt (bool) - if excerpt should be displayed ( default: True ) - ignored if @output is 'array' or if @show_meta is False
+ *    excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is False
+ *    show_site_name (bool) - if site name should be displayed ( default: True ) - ignored if @output is 'array'
+ * @return array $posts_list The array of posts.
  */
-
-/************* Parameters *****************
-    @post_type (string) - post type to display ( default: 'post' )
-    @event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event'
-    @number_posts (int) - the total number of posts to display ( default: 10 )
-    @posts_per_site (int) - the number of posts for each site ( default: no limit )
-    @include_categories - the categories of posts to include ( default: all categories )
-    @exclude_sites - the site from which posts should be excluded ( default: all sites ( public sites, except archived, deleted and spam ) )
-    @output (string) - HTML or array ( default: HTML )
-    @style - (string) normal ( list ), block or highlights ( default: normal ) - ignored if @output is 'array'
-    @id - ID used in list markup ( default: network-posts-RAND ) - ignored if @output is 'array'
-    @class (string) - class used in list markup ( default: post-list ) - ignored if @output is 'array'
-    @title (string) - title displayed for list ( default: Posts ) - ignored unless @style is 'highlights'
-    @title_image (string) - image displayed behind title ( default: home-highlight.png ) - ignored unless @style is 'highlights'
-    @show_thumbnail (bool) - display post thumbnail ( default: False ) - ignored if @output is 'array'
-    @show_meta (bool) - if meta info should be displayed ( default: True ) - ignored if @output is 'array'
-    @show_excerpt (bool) - if excerpt should be displayed ( default: True ) - ignored if @output is 'array' or if @show_meta is False
-    @excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is False
-    @show_site_name (bool) - if site name should be displayed ( default: True ) - ignored if @output is 'array'
-
-    Editable Templates
-    ---
-    Display of Network Content can be customized by adding a custom template to your theme
-    plugins/anp-network-content/
-        anp-event-block-template.php
-        anp-event-list-template.php
-        anp-post-block-template.php
-        anp-post-highlights-template.php
-        anp-post-list-template.php
-        anp-sites-list-template.php
-*/
-
-
-// Input: user-selected options array
-// Output: list of posts from all sites, rendered as HTML or returned as array
 function glocal_networkwide_posts_module( $parameters = [] ) {
 
     // Default parameters
@@ -80,23 +77,16 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
     // SANITIZE INPUT
     $parameters = sanitize_input( $parameters );
 
-    if( isset( $parameters['exclude_sites'] ) && !empty( $parameters['exclude_sites'] ) ) {
-
+    if ( isset( $parameters['exclude_sites'] ) && !empty( $parameters['exclude_sites'] ) ) {
         $parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
-
     }
 
-    if( isset( $parameters['include_event_categories'] ) && !empty( $parameters['include_event_categories'] ) ) {
-
+    if ( isset( $parameters['include_event_categories'] ) && !empty( $parameters['include_event_categories'] ) ) {
         $parameters['include_event_categories'] = explode( ',', $parameters['include_event_categories'] );
-
     }
 
-
-    if( isset( $parameters['include_event_tags'] ) && !empty( $parameters['include_event_tags'] ) ) {
-
+    if ( isset( $parameters['include_event_tags'] ) && !empty( $parameters['include_event_tags'] ) ) {
         $parameters['include_event_tags'] = explode( ',', $parameters['include_event_tags'] );
-
     }
 
     // CALL MERGE FUNCTION
@@ -108,21 +98,20 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
     // CALL SITES FUNCTION
     $sites_list = get_sites_list( $settings );
 
-
     // CALL GET POSTS FUNCTION
     $posts_list = get_posts_list( $sites_list, $settings );
 
-    if( $output == 'array' ) {
+    if ( $output == 'array' ) {
 
         // Return an array
         return $posts_list;
 
-        //Debug
+        // Debug
         //return '<pre>glocal_networkwide_posts_module $posts_list ' . var_dump( $posts_list ) . '</pre>';
 
     } else {
-        // CALL RENDER FUNCTION
 
+        // CALL RENDER FUNCTION
         return render_html( $posts_list, $settings );
 
     }
@@ -130,24 +119,25 @@ function glocal_networkwide_posts_module( $parameters = [] ) {
 }
 
 
-/************* NETWORK SITES MAIN FUNCTION *****************/
-
-/************* Parameters *****************
-    @return - Return ( display list of sites or return array of sites ) ( default: display )
-    @number_sites - Number of sites to display/return ( default: no limit )
-    @exclude_sites - ID of sites to exclude ( default: 1 ( usually, the main site ) )
-    @sort_by - newest, updated, active, alpha ( registered, last_updated, post_count, blogname ) ( default: alpha )
-    @default_image - Default image to display if site doesn't have a custom header image ( default: none )
-    @instance_id - ID name for site list instance ( default: network-sites-RAND )
-    @class_name - CSS class name( s ) ( default: network-sites-list )
-    @hide_meta - Select in order to update date and latest post. Only relevant when return = 'display'. ( default: false )
-    @show_image - Select in order to hide site image. ( default: false )
-    @show_join - Future
-    @join_text - Future
-*/
-
-// Input: user-selected options array
-// Output: list of sites, rendered as HTML or returned as array
+/**
+ * NETWORK SITES MAIN FUNCTION.
+ *
+ * Gets (or renders) a list of sites.
+ *
+ * @param array $parameters An array of settings with the following options:
+ *    return - Return ( display list of sites or return array of sites ) ( default: display )
+ *    number_sites - Number of sites to display/return ( default: no limit )
+ *    exclude_sites - ID of sites to exclude ( default: 1 ( usually, the main site ) )
+ *    sort_by - newest, updated, active, alpha ( registered, last_updated, post_count, blogname ) ( default: alpha )
+ *    default_image - Default image to display if site doesn't have a custom header image ( default: none )
+ *    instance_id - ID name for site list instance ( default: network-sites-RAND )
+ *    class_name - CSS class name( s ) ( default: network-sites-list )
+ *    hide_meta - Select in order to update date and latest post. Only relevant when return = 'display'. ( default: false )
+ *    show_image - Select in order to hide site image. ( default: false )
+ *    show_join - Future
+ *    join_text - Future
+ * @return array $sites_list The array of sites.
+ */
 function glocal_networkwide_sites_module( $parameters = [] ) {
 
     /** Default parameters **/
@@ -174,6 +164,7 @@ function glocal_networkwide_sites_module( $parameters = [] ) {
 
     // Sorting
     switch ( $sort_by ) {
+
         case 'newest':
             $sites_list = sort_array_by_key( $sites_list, 'registered', 'DESC' );
             break;
@@ -191,17 +182,11 @@ function glocal_networkwide_sites_module( $parameters = [] ) {
 
     }
 
-    if( $return == 'array' ) {
-
+    if ( $return == 'array' ) {
         return $sites_list;
-
-    }
-    else {
-
-    // CALL RENDER FUNCTION
-
+    } else {
+	    // CALL RENDER FUNCTION
         return render_sites_list( $sites_list, $settings );
-
     }
 
 }

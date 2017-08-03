@@ -11,16 +11,25 @@
  */
 
 
-// Inputs: uses global variable $styles
-// Output: conditionally renders stylesheet using WP add_action() method
-// Conditionals don't work. Loading on all pages...
 
-if(! function_exists( 'load_highlight_styles' ) ) {
+/**
+ * Enqueue styles.
+ *
+ * @todo Enqueue only when there is a shortcode present.
+ *
+ * @since 1.0.1
+ */
+if ( ! function_exists( 'load_highlight_styles' ) ) {
 
-    function load_highlight_styles() {
-        wp_enqueue_style( 'anp-network-posts', ANP_NETWORK_CONTENT_PLUGIN_URL . 'stylesheets/css/style.min.css' );
-    }
+	function load_highlight_styles() {
 
-    add_action('wp_enqueue_scripts','load_highlight_styles', 200);
+		wp_enqueue_style(
+			'anp-network-posts',
+			ANP_NETWORK_CONTENT_PLUGIN_URL . 'stylesheets/css/style.min.css'
+		);
+
+	}
+
+	add_action( 'wp_enqueue_scripts', 'load_highlight_styles', 200 );
 
 }
