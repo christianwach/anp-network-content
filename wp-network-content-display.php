@@ -163,7 +163,7 @@ class WP_Network_Content_Display {
 	public function include_files() {
 
 		// legacy files
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/constructors.php' );
+		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/functions.php' );
 
 		// include new classes
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
