@@ -240,7 +240,10 @@ function render_list_html( $posts_array, $options_array ) {
 
 	$html = '<ul class="wp-network-posts ' . $post_type . '-list">';
 
-	foreach( $posts_array as $post => $post_detail ) {
+	// find template
+	$template = WP_Network_Content_Display_Helpers::find_template( $post_type . '-list.php' );
+
+	foreach( $posts_array as $key => $post_detail ) {
 
 		global $post;
 
@@ -250,18 +253,9 @@ function render_list_html( $posts_array, $options_array ) {
 			$post_categories = implode( ", ", $post_detail['categories'] );
 		}
 
-		$template_name = $post_type . '-list.php';
-
-		// // use a template for the output so that it can easily be overridden by theme
-		// // check for template in active theme
-		// $template = locate_template( array( 'plugins/wp-network-content-display/' . $post_type . '-list.php' ) );
-		//
-		// // if none found use the default template
-		// if ( $template == '' ) $template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/' . $post_type . '-list.php';
-		//
-		// include ( $template );
-
-		glocal_content_locate_template( $template_name, true );
+		// show template
+		// TODO: use output buffering
+		include( $template );
 
 	}
 
@@ -290,7 +284,10 @@ function render_block_html( $posts_array, $options_array ) {
 
 	$html = '<div class="wp-network-posts ' . $post_type . '-list">';
 
-	foreach( $posts_array as $post => $post_detail ) {
+	// find template
+	$template = WP_Network_Content_Display_Helpers::find_template( $post_type . '-block.php' );
+
+	foreach( $posts_array as $key => $post_detail ) {
 
 		global $post;
 
@@ -303,25 +300,8 @@ function render_block_html( $posts_array, $options_array ) {
 		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
 		$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
 
-		$template_name = $post_type . '-block.php';
-
-		if( file_exists( trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name ) ) {
-			$template = trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name;
-		} else {
-			$template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/' . $template_name;
-		}
-
-		$template = apply_filters( 'glocal_network_content_block_template', $template );
-
-		// // use a template for the output so that it can easily be overridden by theme
-		// // check for template in active theme
-		// $template = locate_template( trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name );
-		//
-		// // if none found use the default template
-		// $template = ( '' != $template ) ? trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name : WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/' . $template_name;
-		//
-		// $template = trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name;
-
+		// show template
+		// TODO: use output buffering
 		include( $template );
 
 	}
@@ -353,13 +333,11 @@ function render_highlights_html( $posts_array, $options_array ) {
 
 	$html = '';
 
-	// use a template for the output so that it can easily be overridden by theme
-	// check for template in active theme
-	$template = locate_template(array( 'plugins/wp-network-content-display/post-highlights.php'));
+	// look for template
+	$template = WP_Network_Content_Display_Helpers::find_template( 'post-highlights.php' );
 
-	// if none found use the default template
-	$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/post-highlights.php' : '';
-
+	// show it
+	// TODO: use output buffering
 	include( $template );
 
 	return $html;
@@ -394,6 +372,9 @@ function render_sites_list( $sites_array, $options_array ) {
 
 	$html = '<ul id="' . $id . '" class="sites-list ' . $class . '">';
 
+	// find template
+	$template = WP_Network_Content_Display_Helpers::find_template( 'sites-list.php' );
+
 	foreach ( $sites as $site ) {
 
 		$site_id = $site['blog_id'];
@@ -401,13 +382,8 @@ function render_sites_list( $sites_array, $options_array ) {
 		// CALL GET SLUG FUNCTION
 		$slug = WP_Network_Content_Display_Helpers::get_site_slug( $site['path'] );
 
-		// use a template for the output so that it can easily be overridden by theme
-		// check for template in active theme
-		$template = locate_template( array( 'plugins/wp-network-content-display/sites-list.php' ) );
-
-		// if none found use the default template
-		$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/sites-list.php' : '';
-
+		// show template
+		// TODO: use output buffering
 		include( $template );
 
 	}
@@ -466,17 +442,17 @@ function render_event_list_html( $events_array, $options_array ) {
 
 	$html = '<ul class="network-event-list ' . $post_type . '-list">';
 
-	foreach( $events_array as $event => $event_detail ) {
+	// find template
+	$template = WP_Network_Content_Display_Helpers::find_template( 'event-list.php' );
+
+	foreach( $events_array as $key => $event_detail ) {
 
 		global $post;
 
 		$post_id = $event_detail['post_id'];
 
-		// use a template for the output so that it can easily be overridden by theme
-		// check for template in active theme
-		$template = locate_template( array( 'plugins/wp-network-content-display/event-list.php' ) );
-
-		// if none found use the default template
+		// show template
+		// TODO: use output buffering
 		include( $template );
 
 	}
@@ -508,6 +484,9 @@ function render_event_block_html( $posts_array, $options_array ) {
 
 	$html = '<div class="network-posts-list style-' . $style . '">';
 
+	// find template
+	$template = WP_Network_Content_Display_Helpers::find_template( 'event-block.php' );
+
 	foreach( $posts_array as $post => $post_detail ) {
 
 		global $post;
@@ -520,13 +499,8 @@ function render_event_block_html( $posts_array, $options_array ) {
 		$show_thumbnail = ( filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) );
 		$show_site_name = ( filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) );
 
-		// use a template for the output so that it can easily be overridden by theme
-		// check for template in active theme
-		$template = locate_template( array( 'plugins/wp-network-content-display/post-block.php' ) );
-
-		// if none found use the default template
-		$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/post-block.php' : '';
-
+		// show template
+		// TODO: use output buffering
 		include( $template );
 
 	}
