@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Sites as list
-* Override by placing a file called plugins/wp-network-content-display/anp-sites-list-template.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/list-sites.php in your active theme
 */
 
 

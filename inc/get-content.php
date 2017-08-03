@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ANP Network Content Fetch Content
+ * Network Content Fetch Content
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.0.1
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 
@@ -68,8 +68,8 @@ function get_sites_list( $options_array ) {
 	);
 
 	 // Allow the $siteargs to be	changed
-	if ( has_filter( 'anp_network_sites_site_arguments' ) ) {
-		$siteargs = apply_filters( 'anp_network_sites_site_arguments', $siteargs );
+	if ( has_filter( 'glocal_network_sites_site_arguments' ) ) {
+		$siteargs = apply_filters( 'glocal_network_sites_site_arguments', $siteargs );
 	}
 
 	// Allow the $siteargs to be changed
@@ -135,8 +135,8 @@ function exclude_sites( $exclude_array ) {
 	);
 
 	// Allow the $siteargs to be	changed
-	if ( has_filter( 'anp_network_exclude_sites_arguments' ) ) {
-		$siteargs = apply_filters( 'anp_network_exclude_sites_arguments', $siteargs );
+	if ( has_filter( 'glocal_network_exclude_sites_arguments' ) ) {
+		$siteargs = apply_filters( 'glocal_network_exclude_sites_arguments', $siteargs );
 	}
 
 	// Get a list of sites
@@ -438,8 +438,8 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 	);
 
 	// Allow the $siteargs to be	changed
-	if ( has_filter( 'anp_network_tax_term_siteargs_arguments' ) ) {
-		$siteargs = apply_filters( 'anp_network_tax_term_siteargs_arguments', $siteargs );
+	if ( has_filter( 'glocal_network_tax_term_siteargs_arguments' ) ) {
+		$siteargs = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $siteargs );
 	}
 
 	$sites_list = ( $exclude_sites ) ? exclude_sites( $exclude_sites ) : get_sites( $siteargs );
@@ -447,8 +447,8 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 	$termargs = array();
 
 	// Allow the $siteargs to be	changed
-	if ( has_filter( 'anp_network_tax_termarg_arguments' ) ) {
-		$termargs = apply_filters( 'anp_network_tax_termarg_arguments', $termargs );
+	if ( has_filter( 'glocal_network_tax_termarg_arguments' ) ) {
+		$termargs = apply_filters( 'glocal_network_tax_termarg_arguments', $termargs );
 	}
 
 	$term_list = array();
@@ -487,9 +487,9 @@ function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
  * @param int $event_id The numeric ID of the event.
  * @return str $html The formatted event meta.
  */
-if ( ! function_exists( 'anp_get_event_meta_list' ) ) {
+if ( ! function_exists( 'glocal_get_event_meta_list' ) ) {
 
-	function anp_get_event_taxonomy( $event_id = 0 ) {
+	function glocal_get_event_taxonomy( $event_id = 0 ) {
 
 		$event_id = (int) ( empty( $event_id ) ? get_the_ID() : $event_id );
 

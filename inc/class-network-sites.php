@@ -1,12 +1,12 @@
 <?php
 /**
- * ANP Network Sites Widget
+ * Network Sites Display Widget.
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.0.0
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 
@@ -16,7 +16,7 @@
  *
  * @since 1.0.0
  */
-class ANP_Network_Sites_Widget extends WP_Widget {
+class Glocal_Network_Sites_Widget extends WP_Widget {
 
 
 
@@ -31,7 +31,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 		parent::__construct(
 
 			// base ID
-			'anp-network-sites',
+			'glocal-network-sites',
 
 			// title
 			__( 'Network Sites', 'wp-network-content-display' ),
@@ -39,7 +39,7 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 			// args
 			array(
 				'description' => __( 'Display list of sites in your network.', 'wp-network-content-display' ),
-				'classname'	 => 'widget__anp-network-sites',
+				'classname'	 => 'widget__glocal-network-sites',
 			)
 
 		);
@@ -253,4 +253,4 @@ class ANP_Network_Sites_Widget extends WP_Widget {
 
 
 
-} // end ANP_Network_Sites_Widget
+} // end class Glocal_Network_Sites_Widget

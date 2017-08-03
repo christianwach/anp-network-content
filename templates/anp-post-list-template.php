@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Posts List
-* Override by placing a file called plugins/wp-network-content-display/anp-post-list-template.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/list-post.php in your active theme
 */
 
 $html .= '<li class="type-post post-item siteid-' . $post_detail['site_id'] . '">';

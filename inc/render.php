@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ANP Network Content Render
+ * Network Content Render Functions
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.0.1
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 
@@ -68,7 +68,7 @@ function render_list_html( $posts_array, $options_array ) {
 	$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
 	$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
 
-	$html = '<ul class="anp-network-posts ' . $post_type . '-list">';
+	$html = '<ul class="wp-network-posts ' . $post_type . '-list">';
 
 	foreach( $posts_array as $post => $post_detail ) {
 
@@ -80,18 +80,18 @@ function render_list_html( $posts_array, $options_array ) {
 			$post_categories = implode( ", ", $post_detail['categories'] );
 		}
 
-		$template_name = 'anp-' . $post_type . '-list-template.php';
+		$template_name = 'list-' . $post_type . '.php';
 
 		// // use a template for the output so that it can easily be overridden by theme
 		// // check for template in active theme
-		// $template = locate_template( array( 'plugins/wp-network-content-display/anp-' . $post_type . '-list-template.php' ) );
+		// $template = locate_template( array( 'plugins/wp-network-content-display/list-' . $post_type . '.php' ) );
 		//
 		// // if none found use the default template
-		// if ( $template == '' ) $template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/anp-' . $post_type . '-list-template.php';
+		// if ( $template == '' ) $template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/list-' . $post_type . '.php';
 		//
 		// include ( $template );
 
-		anp_content_locate_template( $template_name, true );
+		glocal_content_locate_template( $template_name, true );
 
 	}
 
@@ -118,7 +118,7 @@ function render_block_html( $posts_array, $options_array ) {
 	// Make each parameter as its own variable
 	extract( $settings, EXTR_SKIP );
 
-	$html = '<div class="anp-network-posts ' . $post_type . '-list">';
+	$html = '<div class="wp-network-posts ' . $post_type . '-list">';
 
 	foreach( $posts_array as $post => $post_detail ) {
 
@@ -133,7 +133,7 @@ function render_block_html( $posts_array, $options_array ) {
 		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
 		$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
 
-		$template_name = 'anp-' . $post_type . '-block-template.php';
+		$template_name = 'block-' . $post_type . '.php';
 
 		if( file_exists( trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name ) ) {
 			$template = trailingslashit( get_stylesheet_directory() ) . 'plugins/wp-network-content-display/' . $template_name;
@@ -141,7 +141,7 @@ function render_block_html( $posts_array, $options_array ) {
 			$template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/' . $template_name;
 		}
 
-		$template = apply_filters( 'anp_network_content_block_template', $template );
+		$template = apply_filters( 'glocal_network_content_block_template', $template );
 
 		// // use a template for the output so that it can easily be overridden by theme
 		// // check for template in active theme
@@ -185,10 +185,10 @@ function render_highlights_html( $posts_array, $options_array ) {
 
 	// use a template for the output so that it can easily be overridden by theme
 	// check for template in active theme
-	$template = locate_template(array( 'plugins/wp-network-content-display/anp-post-highlights-template.php'));
+	$template = locate_template(array( 'plugins/wp-network-content-display/highlights-post.php'));
 
 	// if none found use the default template
-	$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/anp-post-highlights-template.php' : '';
+	$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/highlights-post.php' : '';
 
 	include( $template );
 
@@ -233,10 +233,10 @@ function render_sites_list( $sites_array, $options_array ) {
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme
-		$template = locate_template( array( 'plugins/wp-network-content-display/anp-sites-list-template.php' ) );
+		$template = locate_template( array( 'plugins/wp-network-content-display/list-sites.php' ) );
 
 		// if none found use the default template
-		$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/anp-sites-list-template.php' : '';
+		$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/list-sites.php' : '';
 
 		include( $template );
 
@@ -300,7 +300,7 @@ function render_event_list_html( $events_array, $options_array ) {
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme
-		$template = locate_template( array( 'plugins/wp-network-content-display/anp-event-list-template.php' ) );
+		$template = locate_template( array( 'plugins/wp-network-content-display/list-event.php' ) );
 
 		// if none found use the default template
 		include( $template );
@@ -346,10 +346,10 @@ function render_event_block_html( $posts_array, $options_array ) {
 
 		// use a template for the output so that it can easily be overridden by theme
 		// check for template in active theme
-		$template = locate_template( array( 'plugins/wp-network-content-display/anp-post-block-template.php' ) );
+		$template = locate_template( array( 'plugins/wp-network-content-display/block-post.php' ) );
 
 		// if none found use the default template
-		$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/anp-post-block-template.php' : '';
+		$template = ( $template == '' ) ? WP_NETWORK_CONTENT_DISPLAY_DIR . 'templates/block-post.php' : '';
 
 		include( $template );
 

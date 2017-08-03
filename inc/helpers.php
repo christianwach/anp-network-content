@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ANP Network Content Helpers
+ * Network Content Helpers
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.0.1
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 

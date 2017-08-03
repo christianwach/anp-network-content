@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ANP Network Content Shortcake UI
+ * Network Content Shortcake UI
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.6.2
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 
@@ -17,7 +17,7 @@
  *
  * @link https://github.com/wp-shortcake/shortcake/wiki/Registering-Shortcode-UI
  */
-function anp_network_posts_shortcode_ui() {
+function glocal_network_posts_shortcode_ui() {
 
 	// Bail if Shortcake plugin is not present
 	if ( ! function_exists( 'shortcode_ui_register_for_shortcode' ) ) {
@@ -66,4 +66,4 @@ function anp_network_posts_shortcode_ui() {
 
 }
 
-add_action( 'init', 'anp_network_posts_shortcode_ui' );
+add_action( 'init', 'glocal_network_posts_shortcode_ui' );

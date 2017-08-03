@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ANP Network Content Constructors
+ * Network Content Display Constructors
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.0.1
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 
@@ -22,12 +22,12 @@
  * Editable Templates
  * ---
  * Display of Network Content can be customized by adding a custom template to your theme in 'plugins/wp-network-content-display/'
- * anp-event-block-template.php
- * anp-event-list-template.php
- * anp-post-block-template.php
- * anp-post-highlights-template.php
- * anp-post-list-template.php
- * anp-sites-list-template.php
+ * block-event.php
+ * list-event.php
+ * block-post.php
+ * highlights-post.php
+ * list-post.php
+ * list-sites.php
  *
  * @param array $parameters An array of settings with the following options:
  *    post_type (string) - post type to display ( default: 'post' )

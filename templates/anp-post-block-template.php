@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Posts List as blocks
-* Override by placing a file called plugins/wp-network-content-display/anp-post-block-template.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/block-post.php in your active theme
 */
 
 $html .= '<article id="post-' . get_the_ID(). '" class="post entry hentry" role="article">';

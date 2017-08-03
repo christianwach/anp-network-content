@@ -1,7 +1,7 @@
 <?php
 /*
 * Template for the output of the Network Event List
-* Override by placing a file called plugins/wp-network-content-display/anp-event-list-template.php in your active theme
+* Override by placing a file called plugins/wp-network-content-display/list-event.php in your active theme
 */
 
 $venue_id = $post_detail['event_venue']['venue_id'];
@@ -92,9 +92,9 @@ if( !empty( $show_meta ) ) {
 	$html .= $post_detail['post_author'];
 	$html .= '</a></span>';
 
-	if( function_exists( 'anp_get_event_taxonomy' ) ) :
+	if( function_exists( 'glocal_get_event_taxonomy' ) ) :
 		$html .= '<div class="category tags">';
-		$html .= anp_get_event_taxonomy( $post_id );
+		$html .= glocal_get_event_taxonomy( $post_id );
 		$html .= '</div>';
 	endif;
 

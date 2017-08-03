@@ -1,12 +1,12 @@
 <?php
 /**
- * ANP Network Posts Widget
+ * Network Posts Display Widget.
  *
  * @author    Pea, Glocal
  * @license   GPL-2.0+
  * @link      http://glocal.coop
  * @since     1.0.0
- * @package   ANP_Network_Content
+ * @package   WP_Network_Content_Display
  */
 
 
@@ -16,7 +16,7 @@
  *
  * @since 1.0.0
  */
-class ANP_Network_Posts_Widget extends WP_Widget {
+class Glocal_Network_Posts_Widget extends WP_Widget {
 
 
 
@@ -31,7 +31,7 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 		parent::__construct(
 
 			// base ID
-			'anp-network-posts',
+			'glocal-network-posts',
 
 			// title
 			__( 'Network Posts', 'wp-network-content-display' ),
@@ -39,7 +39,7 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 			// args
 			array(
 				'description' => __( 'Display list of posts from your network.', 'wp-network-content-display' ),
-				'classname'	 => 'widget__anp-network-posts',
+				'classname'	 => 'widget__glocal-network-posts',
 			)
 
 		);
@@ -273,4 +273,6 @@ class ANP_Network_Posts_Widget extends WP_Widget {
 
 	}
 
-}
+
+
+} // end class Glocal_Network_Posts_Widget
