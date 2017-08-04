@@ -201,13 +201,13 @@ class WP_Network_Content_Display_Sites {
 		$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
 
 		if ( ! $show_image ) {
-			$class .= ' no-site-image';
+			$class = ' no-site-image';
 		} else {
-			$class .= ' show-site-image';
+			$class = ' show-site-image';
 		}
 
 		// open list
-		$html = '<ul id="' . $id . '" class="sites-list' . $class . '">';
+		$html = '<ul class="wpncd-network-sites sites-list' . $class . '">';
 
 		// find template
 		$template = WPNCD_Helpers::find_template( 'sites-list.php' );

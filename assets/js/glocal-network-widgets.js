@@ -2,9 +2,9 @@
 //Add parameter fields: number_sites, exclude_sites, sort_by, default_image, show_meta, show_image, id
 
 (function() {
-    tinymce.PluginManager.add('glocal_network_content_button', function( editor, url ) {
-		
-        editor.addButton( 'glocal_network_content_button', {
+    tinymce.PluginManager.add('wpncd_network_content_button', function( editor, url ) {
+
+        editor.addButton( 'wpncd_network_content_button', {
             //title: 'My test button II',
             type: "buttongroup",
             items: [
@@ -12,9 +12,9 @@
 					title: 'Network Posts',
 					icon: 'icon dashicons-admin-page',
 					tooltip: 'Network Posts Shortcode',
-					
+
 					onclick: function() {
-						
+
 						editor.windowManager.open( {
 							title: 'Network Posts Options',
 							body: [
@@ -118,13 +118,13 @@
 								}
 								if(e.data.show_meta) {
 									shortcode += ' show_meta="' + e.data.show_meta + '"';
-								} 
+								}
 								if(e.data.show_excerpt) {
 									shortcode += ' show_excerpt="' + e.data.show_excerpt + '"';
-								} 
+								}
 								if(e.data.show_site_name) {
 									shortcode += ' show_site_name="' + e.data.show_site_name + '"';
-								} 
+								}
 								if(e.data.id) {
 									shortcode += ' id="' + e.data.id + '"';
 								}
@@ -138,15 +138,15 @@
 						});
 					}
 
-					
+
 				},
 				{
 					title: 'Network Sites',
 					icon: 'icon dashicons-networking',
 					tooltip: 'Network Sites Shortcode',
-					
+
 					onclick: function() {
-						
+
 						editor.windowManager.open( {
 							title: 'Network Sites Options',
 							body: [
@@ -233,11 +233,11 @@
 							}
 						});
 					}
-					
+
 				}
 			]
         });
-		
+
     });
 })();
 

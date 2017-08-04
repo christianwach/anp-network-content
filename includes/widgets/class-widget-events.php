@@ -31,7 +31,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		parent::__construct(
 
 			// base ID
-			'glocal-network-events',
+			'wpncd-network-events',
 
 			// title
 			__( 'Network Events', 'wp-network-content-display' ),
@@ -39,7 +39,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			// args
 			array(
 				'description' => __( 'Display list of events from your network.', 'wp-network-content-display' ),
-				'classname'	 => 'widget__glocal-network-events',
+				//'classname'	 => 'widget_wpncd-network-events',
 			)
 
 		);

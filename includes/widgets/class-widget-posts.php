@@ -31,7 +31,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		parent::__construct(
 
 			// base ID
-			'glocal-network-posts',
+			'wpncd-network-posts',
 
 			// title
 			__( 'Network Posts', 'wp-network-content-display' ),
@@ -39,7 +39,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 			// args
 			array(
 				'description' => __( 'Display list of posts from your network.', 'wp-network-content-display' ),
-				'classname'	 => 'widget__glocal-network-posts',
+				//'classname'	 => 'widget_wpncd-network-posts',
 			)
 
 		);

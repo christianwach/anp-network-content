@@ -31,7 +31,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		parent::__construct(
 
 			// base ID
-			'glocal-network-sites',
+			'wpncd-network-sites',
 
 			// title
 			__( 'Network Sites', 'wp-network-content-display' ),
@@ -39,7 +39,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			// args
 			array(
 				'description' => __( 'Display list of sites in your network.', 'wp-network-content-display' ),
-				'classname'	 => 'widget__glocal-network-sites',
+				//'classname'	 => 'widget_wpncd-network-sites',
 			)
 
 		);
