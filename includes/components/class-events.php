@@ -130,8 +130,8 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'excerpt_length' => (int) 55, // (int)
 			'show_site_name' => (bool) true, // (bool)
 			'event_scope' => (string) 'future', // (string) - future, past, all
-			'include_event_categories' => array(), // (array) - event-category (term name) to include
-			'include_event_tags' => array(), // (array) - event-tag (term name) to include
+			'include_categories' => array(), // (array) - event-category (term name) to include
+			'include_tags' => array(), // (array) - event-tag (term name) to include
 		);
 
 		// sanitize params
@@ -141,11 +141,11 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		if ( isset( $parameters['exclude_sites'] ) && ! empty( $parameters['exclude_sites'] ) ) {
 			$parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
 		}
-		if ( isset( $parameters['include_event_categories'] ) && ! empty( $parameters['include_event_categories'] ) ) {
-			$parameters['include_event_categories'] = explode( ',', $parameters['include_event_categories'] );
+		if ( isset( $parameters['include_categories'] ) && ! empty( $parameters['include_categories'] ) ) {
+			$parameters['include_categories'] = explode( ',', $parameters['include_categories'] );
 		}
-		if ( isset( $parameters['include_event_tags'] ) && ! empty( $parameters['include_event_tags'] ) ) {
-			$parameters['include_event_tags'] = explode( ',', $parameters['include_event_tags'] );
+		if ( isset( $parameters['include_tags'] ) && ! empty( $parameters['include_tags'] ) ) {
+			$parameters['include_tags'] = explode( ',', $parameters['include_tags'] );
 		}
 
 		// merge params with defaults
@@ -200,26 +200,27 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 		$site_details = get_blog_details( $site_id );
 
+		// define arguments to fetch recent posts
+		$post_args = array();
 		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'event';
 		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20;
-		$post_args['category_name'] = ( isset( $include_categories ) ) ? $include_categories : '';
 
-		// Event-specific arguments
+		// add optional elements
 		if ( 'event' === $post_type ) {
 
-			if ( isset( $include_event_categories ) ) {
+			if ( isset( $include_categories ) ) {
 				$post_args['tax_query'][] = array(
 					'taxonomy' => 'event-category',
 					'field' => 'slug',
-					'terms' => $include_event_categories
+					'terms' => $include_categories,
 				);
 			}
 
-			if ( isset( $include_event_tags ) ) {
+			if ( isset( $include_tags ) ) {
 				$post_args['tax_query'][] = array(
 					'taxonomy' => 'event-tag',
 					'field' => 'slug',
-					'terms' => $include_event_tags
+					'terms' => $include_tags,
 				);
 			}
 

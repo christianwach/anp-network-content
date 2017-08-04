@@ -69,18 +69,16 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			unset( $instance['exclude_sites'] );
 		}
 
-		// Convert $include_event_categories array to comma-separated string
-		if ( isset( $instance['include_event_categories'] ) && is_array( $instance['include_event_categories'] ) ) {
-			$instance['include_event_categories'] = implode( ',', $instance['include_event_categories'] );
+		// Convert arrays to comma-separated strings
+		if ( is_array( $instance['include_categories'] ) && ( ! empty( $instance['include_categories'][0] ) ) ) {
+			$instance['include_categories'] = implode( ',', $instance['include_categories'] );
 		} else {
-			unset( $instance['include_event_categories'] );
+			unset( $instance['include_categories'] );
 		}
-
-		// Convert $include_event_tags array to comma-separated string
-		if ( isset( $instance['include_event_tags'] ) && is_array( $instance['include_event_tags'] ) ) {
-			$instance['include_event_tags'] = implode( ',', $instance['include_event_tags'] );
+		if ( isset( $instance['include_tags'] ) && is_array( $instance['include_tags'] ) ) {
+			$instance['include_tags'] = implode( ',', $instance['include_tags'] );
 		} else {
-			unset( $instance['include_event_tags'] );
+			unset( $instance['include_tags'] );
 		}
 
 		$instance['post_type'] = 'event';
@@ -122,8 +120,8 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'show_meta' => true,
 			'show_site_name' => true,
 			'event_scope' => '',
-			'include_event_categories' => '',
-			'include_event_tags' => '',
+			'include_categories' => '',
+			'include_tags' => '',
 		) );
 
 		// Retrieve an existing value from the database
@@ -139,8 +137,8 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
 		$event_scope = ! empty( $instance['event_scope'] ) ? $instance['event_scope'] : '';
 
-		$include_event_categories = ! empty( $instance['include_event_categories'] ) ? $instance['include_event_categories'] : '';
-		$include_event_tags = ! empty( $instance['include_event_tags'] ) ? $instance['include_event_tags'] : '';
+		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : '';
+		$include_tags = ! empty( $instance['include_tags'] ) ? $instance['include_tags'] : '';
 
 		// get sites
 		$sites = get_sites( array(
@@ -188,8 +186,8 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '';
 		$instance['exclude_sites'] = ! empty( $new_instance['exclude_sites'] ) ? $new_instance['exclude_sites'] : '';
-		$instance['include_event_categories'] = ! empty( $new_instance['include_event_categories'] ) ? $new_instance['include_event_categories'] : '';
-		$instance['include_event_tags'] = ! empty( $new_instance['include_event_tags'] ) ? $new_instance['include_event_tags'] : '';
+		$instance['include_categories'] = ! empty( $new_instance['include_categories'] ) ? $new_instance['include_categories'] : '';
+		$instance['include_tags'] = ! empty( $new_instance['include_tags'] ) ? $new_instance['include_tags'] : '';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
 		$instance['event_scope'] = ! empty( $new_instance['event_scope'] ) ? $new_instance['event_scope'] : '';

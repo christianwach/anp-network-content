@@ -20,21 +20,21 @@
 </p>
 
 <p>
-	<label for="include_event_categories" class="include_event_categories_label"><?php _e( 'Include Categories', 'wp-network-content-display' ); ?></label>
-	<select id="<?php echo $this->get_field_id( 'include_event_categories' ); ?>" name="<?php echo $this->get_field_name( 'include_event_categories' ); ?>[]" multiple="multiple" class="widefat">
-		<option value=""<?php echo ( empty( $include_event_categories ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
+	<label for="include_categories" class="include_categories_label"><?php _e( 'Include Categories', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'include_categories' ); ?>" name="<?php echo $this->get_field_name( 'include_categories' ); ?>[]" multiple="multiple" class="widefat">
+		<option value=""<?php echo ( empty( $include_categories ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'All', 'wp-network-content-display' ); ?></option>
 		<?php foreach( $categories as $key => $value ) { ?>
-			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_event_categories ) && in_array( $key, $include_event_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
+			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_categories ) && in_array( $key, $include_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
 		<?php } ?>
 	</select>
 </p>
 
 <p>
-	<label for="include_event_tags" class="include_event_tags_label"><?php _e( 'Include Tags', 'wp-network-content-display' ); ?></label>
-	<select id="<?php echo $this->get_field_id( 'include_event_tags' ); ?>" name="<?php echo $this->get_field_name( 'include_event_tags' ); ?>[]" multiple="multiple" class="widefat">
-		<option value=""<?php echo ( empty( $include_event_tags ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
+	<label for="include_tags" class="include_tags_label"><?php _e( 'Include Tags', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'include_tags' ); ?>" name="<?php echo $this->get_field_name( 'include_tags' ); ?>[]" multiple="multiple" class="widefat">
+		<option value=""<?php echo ( empty( $include_tags ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'All', 'wp-network-content-display' ); ?></option>
 		<?php foreach( $tags as $key => $value ) { ?>
-			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_event_tags ) && in_array( $key,	$include_event_tags ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
+			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_tags ) && in_array( $key,	$include_tags ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
 		<?php } ?>
 	</select>
 </p>
