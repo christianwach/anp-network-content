@@ -33,7 +33,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 		add_action( 'init', array( $this, 'shortcode_register' ) );
 
 		// Shortcake compat
-		//add_action( 'register_shortcode_ui', array( $this, 'shortcake' ) );
+		add_action( 'register_shortcode_ui', array( $this, 'shortcake' ) );
 
 	}
 
@@ -100,6 +100,13 @@ class WP_Network_Content_Display_Sites_Shortcode {
 
 				// window elements
 				'attrs' => array(
+
+					// number of sites
+					array(
+						'label' => __( 'Number of Sites', 'wp-network-content-display' ),
+						'attr' => 'number_sites',
+						'type' => 'number',
+					),
 
 				),
 
