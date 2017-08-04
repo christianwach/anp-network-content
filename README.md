@@ -21,19 +21,19 @@ Display using a shortcode.
 ### Network Posts
 
 ```php
-[embed_network_posts title="Module Title" title_image="/path/to/image.png" number_posts="20" exclude_sites="2,3" posts_per_site="5" style="block" show_meta=1 show_excerpt=1 show_site_name=1 id="unique-id" class="class-name"]
+[embed_network_posts exclude_sites="2,3" number_posts="20" posts_per_site="5" style="block" show_meta="1" show_thumbnail="1" show_excerpt="1" excerpt_length="10" show_site_name="1" /]
 ```
 
 ### Network Events
 
 ```php
-[embed_network_events title="Module Title" exclude_sites="2,3" posts_per_site="5" style="block" show_meta=1 show_excerpt=1 show_site_name=1 id="unique-id" class="class-name"]
+[embed_network_events exclude_sites="2,3" number_posts="20" posts_per_site="5" style="block" show_meta="1" show_thumbnail="1" show_excerpt="1" excerpt_length="10" show_site_name="1" /]
 ```
 
 ### Network Sites
 
 ```php
-[embed_network_sites number_sites="20" exclude_sites="1,2" sort_by="registered" default_image="/path/to/image.jpg" show_meta=1 show_image=1 id="unique-id" class="class-name"]
+[embed_network_sites number_sites="20" exclude_sites="1,2" sort_by="registered" default_image="/path/to/image.jpg" show_meta="1" show_image="1" /]
 ```
 
 ### Revisions
