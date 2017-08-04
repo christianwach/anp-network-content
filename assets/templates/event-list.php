@@ -50,9 +50,11 @@
 			</div>
 		<?php } ?>
 
-		<div class="entry-excerpt" itemprop="articleBody">
-			<?php echo $post_detail['post_excerpt']; ?>
-		</div>
+		<?php if ( ! empty( $show_excerpt ) ) { ?>
+			<div class="entry-excerpt">
+				<?php echo $post_detail['post_excerpt']; ?>
+			</div><!-- /.entry-content -->
+		<?php } ?>
 
 	</div><!-- /.entry-content -->
 

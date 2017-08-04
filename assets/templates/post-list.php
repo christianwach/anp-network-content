@@ -43,7 +43,7 @@
 	</header>
 
 	<?php if ( ! empty( $show_excerpt ) ) { ?>
-		<div class="entry-content" itemprop="articleBody">
+		<div class="entry-excerpt">
 			<?php echo $post_detail['post_excerpt']; ?>
 		</div><!-- /.entry-content -->
 	<?php } ?>
