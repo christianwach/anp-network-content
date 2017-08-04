@@ -60,7 +60,7 @@ class WPNCD_Helpers {
 		 *
 		 * @param array $site_args The arguments used to query the sites.
 		 */
-		$site_args = apply_filters( 'wncd_get_data_for_sites_args', $site_args );
+		$site_args = apply_filters( 'wpncd_get_data_for_sites_args', $site_args );
 
 		// get sites
 		$sites = get_sites( $site_args );
@@ -483,7 +483,7 @@ class WPNCD_Helpers {
 		 *
 		 * @param str $template The path to the found template file.
 		 */
-		return apply_filters( 'wncd_find_template', $template );
+		return apply_filters( 'wpncd_find_template', $template );
 
 	}
 

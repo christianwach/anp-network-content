@@ -355,7 +355,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		 *
 		 * @param array $site_args The arguments used to query the sites.
 		 */
-		$site_args = apply_filters( 'wncd_get_network_event_terms_site_args', $site_args );
+		$site_args = apply_filters( 'wpncd_get_network_event_terms_site_args', $site_args );
 
 		// get sites
 		$sites_list = get_sites( $site_args );
@@ -370,7 +370,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		 *
 		 * @param array $term_args The arguments used to query the terms.
 		 */
-		$term_args = apply_filters( 'wncd_get_network_event_terms_term_args', $term_args );
+		$term_args = apply_filters( 'wpncd_get_network_event_terms_term_args', $term_args );
 
 		// init term list
 		$term_list = array();
