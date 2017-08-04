@@ -64,9 +64,10 @@
 				<?php } ?>
 				<span class="event-author"><a href="<?php echo esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo $post_detail['post_author']; ?></a></span>
 				<?php if ( ! empty( $categories ) ) { ?>
-					<div class="category tags">
-						<?php echo $categories; ?>
-					</div>
+					<span class="meta-label"><?php _e( 'Categories:', 'wp-network-content-display' ); ?></span> <span class="category categories"><?php echo $categories; ?></span>
+				<?php } ?>
+				<?php if ( ! empty( $tags ) ) { ?>
+					<span class="meta-label"><?php _e( 'Tags:', 'wp-network-content-display' ); ?></span> <span class="category tags"><?php echo $tags; ?></span>
 				<?php } ?>
 			</div>
 		</footer>

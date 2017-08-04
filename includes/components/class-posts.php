@@ -148,17 +148,14 @@ class WP_Network_Content_Display_Posts {
 		// merge params with defaults
 		$settings = WPNCD_Helpers::get_merged_settings( $parameters, $defaults );
 
-		// Extract each parameter as its own variable
-		extract( $settings, EXTR_SKIP );
-
-		// CALL SITES FUNCTION
+		// get sites data
 		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
 
-		// CALL GET POSTS FUNCTION
+		// get posts for those sites
 		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
 
 		// return raw if requested
-		if ( $output == 'array' ) {
+		if ( $settings['output'] == 'array' ) {
 			return $posts_list;
 		}
 
@@ -269,10 +266,8 @@ class WP_Network_Content_Display_Posts {
 			$post_id = $post_detail['ID'];
 			$author_id = $post_detail['post_author'];
 
-			// Prefix the array key with event start date or post date
-			$prefix = ( 'event' === $post_type ) ?
-					  get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true ) . '-' . $post_detail['post_name'] :
-					  $post_detail['post_date'] . '-' . $post_detail['post_name'];
+			// prefix the array key with post date
+			$prefix = $post_detail['post_date'] . '-' . $post_detail['post_name'];
 
 			// Returns an array
 			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'medium' );
@@ -302,35 +297,6 @@ class WP_Network_Content_Display_Posts {
 				'site_name' => $site_details->blogname,
 				'site_link' => $site_details->siteurl,
 			);
-
-			if ( 'event' === $post_type || function_exists( 'eo_get_venue' ) ) {
-
-				$venue_id = eo_get_venue( $post_id );
-
-				$post_list[$prefix]['event_start_date'] = get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true );
-				$post_list[$prefix]['event_end_date'] = get_post_meta ( $post_id, '_eventorganiser_schedule_start_finish', true );
-
-				$post_list[$prefix]['event_venue']['venue_link'] = eo_get_venue_link( $venue_id );
-				$post_list[$prefix]['event_venue']['venue_id'] = $venue_id;
-				$post_list[$prefix]['event_venue']['venue_name'] = eo_get_venue_name( $venue_id );
-				$post_list[$prefix]['event_venue']['venue_location'] = eo_get_venue_address( $venue_id );
-				$post_list[$prefix]['event_venue']['venue_location']['venue_lat'] = eo_get_venue_meta( $venue_id, '_lat' );
-				$post_list[$prefix]['event_venue']['venue_location']['venue_long'] = eo_get_venue_meta( $venue_id, '_lng' );
-
-				//Get post categories
-				$event_categories = wp_get_post_terms( $post_id, 'event-category', array( "fields" => "all" ) );
-
-				foreach( $event_categories as $event_category ) {
-					$post_list[$prefix]['event_categories'][$event_category->slug] = $event_category->name;
-				}
-
-				$event_tags = wp_get_post_terms( $post_id, 'event-tag', array( "fields" => "all" ) );
-
-				foreach( $event_tags as $event_tag ) {
-					$post_list[$prefix]['event_tags'][$event_tag->slug] = $event_tag->name;
-				}
-
-			}
 
 			// Get post categories
 			$post_categories = wp_get_post_categories( $post_id );
@@ -417,10 +383,6 @@ class WP_Network_Content_Display_Posts {
 
 			$post_id = $post_detail['post_id'];
 
-			if ( isset( $post_detail['categories'] ) ) {
-				$post_categories = implode( ", ", $post_detail['categories'] );
-			}
-
 			// get post class
 			$post_class = '';
 			if ( isset( $post_detail['post_class'] ) AND  is_array( $post_detail['post_class'] ) ) {
@@ -429,8 +391,14 @@ class WP_Network_Content_Display_Posts {
 
 			// get post categories
 			$categories = '';
-			if ( isset( $post_detail['categories'] ) AND  is_array( $post_detail['categories'] ) ) {
+			if ( isset( $post_detail['categories'] ) AND  ! empty( $post_detail['categories'] ) ) {
 				$categories = implode( ', ', $post_detail['categories'] );
+			}
+
+			// get post tags
+			$tags = '';
+			if ( isset( $post_detail['tags'] ) AND  ! empty( $post_detail['tags'] ) ) {
+				$tags = implode( ', ', $post_detail['tags'] );
 			}
 
 			// prevent immediate output

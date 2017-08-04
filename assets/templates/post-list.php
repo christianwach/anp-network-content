@@ -52,8 +52,11 @@
 		<footer class="entry-footer">
 			<div class="entry-meta">
 				<?php if ( ! empty( $categories ) ) { ?>
-					<span class="meta-label"><?php _e( 'Categories:', 'wp-network-content-display' ); ?></span> <span class="category tags"><?php echo $categories; ?></span>
-			<?php } ?>
+					<span class="meta-label"><?php _e( 'Categories:', 'wp-network-content-display' ); ?></span> <span class="category categories"><?php echo $categories; ?></span>
+				<?php } ?>
+				<?php if ( ! empty( $tags ) ) { ?>
+					<span class="meta-label"><?php _e( 'Tags:', 'wp-network-content-display' ); ?></span> <span class="category tags"><?php echo $tags; ?></span>
+				<?php } ?>
 			</div>
 		</footer>
 	<?php } ?>

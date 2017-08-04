@@ -5,7 +5,7 @@
 </p>
 
 <p>
-	<label for="<?php echo $this->get_field_id( 'number_posts' ); ?>" class="number_posts_label"><?php _e( 'Number of Posts', 'wp-network-content-display' ); ?></label>
+	<label for="<?php echo $this->get_field_id( 'number_posts' ); ?>" class="number_posts_label"><?php _e( 'Number of Events', 'wp-network-content-display' ); ?></label>
 	<input type="number" id="<?php echo $this->get_field_id( 'number_posts' ); ?>" name="<?php echo $this->get_field_name( 'number_posts' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $number_posts ); ?>">
 </p>
 
