@@ -120,8 +120,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'posts_per_site' => (int) null, // (int)
 			'output' => (string) 'html', // (string) - html, array
 			'style' => (string) 'normal', // (string) - normal
-			'id' => (string) 'network-posts-' . rand(), // (string)
-			'class' => (string) 'post-list', // (string)
 			'title' => (string) 'Posts', // (string)
 			'title_image' => (string) null, // (string)
 			'show_meta' => (bool) true, // (bool)

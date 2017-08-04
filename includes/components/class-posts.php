@@ -126,8 +126,6 @@ class WP_Network_Content_Display_Posts {
 			'posts_per_site' => (int) null, // (int)
 			'output' => (string) 'html', // (string) - html, array
 			'style' => (string) 'normal', // (string) - normal
-			'id' => (string) 'network-posts-' . rand(), // (string)
-			'class' => (string) 'post-list', // (string)
 			'title' => (string) __( 'Posts', 'wp-network-content-display' ), // (string)
 			'title_image' => (string) null, // (string)
 			'show_meta' => (bool) true, // (bool)
@@ -378,7 +376,7 @@ class WP_Network_Content_Display_Posts {
 		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
 		$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
 
-		$html = '<ul class="wp-network-posts ' . $post_type . '-list">';
+		$html = '<ul class="wpncd-network-posts ' . $post_type . '-list">';
 
 		// find template
 		$template = WPNCD_Helpers::find_template( $post_type . '-list.php' );
@@ -439,7 +437,7 @@ class WP_Network_Content_Display_Posts {
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
-		$html = '<div class="wp-network-posts ' . $post_type . '-list">';
+		$html = '<div class="wpncd-network-posts ' . $post_type . '-list">';
 
 		// find template
 		$template = WPNCD_Helpers::find_template( $post_type . '-block.php' );

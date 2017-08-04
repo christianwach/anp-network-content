@@ -119,8 +119,6 @@ class WP_Network_Content_Display_Sites {
 			'default_image' => '',
 			'show_meta' => false,
 			'show_image' => false,
-			'id' => 'network-sites-' . rand(),
-			'class' => 'network-sites-list',
 		);
 
 		// CALL MERGE FUNCTION
@@ -258,7 +256,7 @@ class WP_Network_Content_Display_Sites {
 		extract( $options_array, EXTR_SKIP );
 
 		// open div
-		$html = '<div class="wp-network-sites">';
+		$html = '<div class="wpncd-network-sites">';
 
 		// find template
 		$template = WPNCD_Helpers::find_template( 'sites-block.php' );

@@ -43,16 +43,6 @@
 </p>
 
 <p>
-	<label for="<?php echo $this->get_field_id( 'id' ); ?>" class="id_label"><?php _e( 'ID', 'wp-network-content-display' ); ?></label>
-	<input type="text" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter ID', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $id ); ?>">
-</p>
-
-<p>
-	<label for="<?php echo $this->get_field_id( 'class' ); ?>" class="class_label"><?php _e( 'Class', 'wp-network-content-display' ); ?></label>
-	<input type="text" id="<?php echo $this->get_field_id( 'class' ); ?>" name="<?php echo $this->get_field_name( 'class' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter Class', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $class ); ?>">
-</p>
-
-<p>
 	<label for="<?php echo $this->get_field_id( 'show_meta' ); ?>" class="show_meta_label"><?php _e( 'Show Meta', 'wp-network-content-display' ); ?></label>
 	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_meta' ); ?>" name="<?php echo $this->get_field_name( 'show_meta' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_meta, true ); ?>>
 </p>

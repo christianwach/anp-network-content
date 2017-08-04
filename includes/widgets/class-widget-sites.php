@@ -104,8 +104,6 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			'exclude_sites' => array(),
 			'sort_by' => '',
 			'style' => '',
-			'id' => '',
-			'class' => '',
 			'show_meta' => true,
 			'show_image' => false,
 			'default_image' => '',
@@ -118,8 +116,6 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$sort_by = ! empty( $instance['sort_by'] ) ? $instance['sort_by'] : '';
 
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';
-		$id = ! empty( $instance['id'] ) ? $instance['id'] : '';
-		$class = ! empty( $instance['class'] ) ? $instance['class'] : '';
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
 		$show_image = isset( $instance['show_image'] ) ? (bool) $instance['show_image'] : false;
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
@@ -157,8 +153,6 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$instance['number_sites'] = ! empty( $new_instance['number_sites'] ) ? strip_tags( $new_instance['number_sites'] ) : '';
 		$instance['sort_by'] = ! empty( $new_instance['sort_by'] ) ? $new_instance['sort_by'] : '';
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
-		$instance['id'] = ! empty( $new_instance['id'] ) ? strip_tags( $new_instance['id'] ) : '';
-		$instance['class'] = ! empty( $new_instance['class'] ) ? strip_tags( $new_instance['class'] ) : '';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['show_image'] = ! empty( $new_instance['show_image'] ) ? true : false;
 		$instance['default_image'] = ! empty( $new_instance['default_image'] ) ? strip_tags( $new_instance['default_image'] ) : '';
