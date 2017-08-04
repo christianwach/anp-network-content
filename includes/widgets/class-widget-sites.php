@@ -55,13 +55,17 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 	 *
 	 * @since 1.0.0
 	 */
-	public function upload_scripts( ) {
+	public function upload_scripts() {
 
+		wp_enqueue_media();
+
+		/*
 		wp_enqueue_script( 'media-upload' );
 		wp_enqueue_script( 'thickbox' );
 		wp_enqueue_script( 'upload_media_widget', WP_NETWORK_CONTENT_DISPLAY_URL . 'js/upload-media.js', array( 'jquery' ) );
 
 		wp_enqueue_style( 'thickbox' );
+		*/
 
 	}
 
@@ -139,83 +143,8 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$show_image = isset( $instance['show_image'] ) ? (bool) $instance['show_image'] : false;
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
 
-		// Form fields
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'title' ) . '" class="title_label">' . __( 'Title', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter Widget Title', 'wp-network-content-display' ) . '" value="' . esc_attr( $title ) . '">';
-		echo '</p>';
-
-		// Number of Sites
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'number_sites' ) . '" class="number_sites_label">' . __( 'Number of Sites', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="number" id="' . $this->get_field_id( 'number_sites' ) . '" name="' . $this->get_field_name( 'number_sites' ) . '" class="widefat" placeholder="' . esc_attr__( '0-100', 'wp-network-content-display' ) . '" value="' . esc_attr( $number_sites ) . '">';
-		echo '</p>';
-
-		// Exclude Sites
-		echo '<p>';
-		echo '	<label for="exclude_sites" class="exclude_sites_label">' . __( 'Exclude Sites', 'wp-network-content-display' ) . '</label>';
-		echo '	<select id="' . $this->get_field_id( 'exclude_sites' ) . '" name="' . $this->get_field_name( 'exclude_sites' ) . '[]" multiple="multiple" class="widefat">';
-		echo '		<option value="" ' . selected( $exclude_sites, '', false ) . '> ' . __( 'None', 'wp-network-content-display' );
-
-		$siteargs = array(
-			'archived' => 0,
-			'spam' => 0,
-			'deleted' => 0,
-			'public' => 1,
-		);
-
-		$sites = get_sites( $siteargs );
-
-		foreach( $sites as $site ) {
-			$site_id = $site->blog_id;
-			$site_name = get_blog_details( $site_id )->blogname;
-			echo '		<option id="' . $site_id . '" value="' . $site_id . '"', ( ! empty( $exclude_sites ) && in_array( $site_id,	$exclude_sites ) ) ? ' selected="selected"' : '','>' . $site_name . '</option>';
-		}
-
-		echo '	</select>';
-		echo '</p>';
-
-		// Sort by
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'sort_by' ) . '" class="sort_by_label">' . __( 'Sort By', 'wp-network-content-display' ) . '</label>';
-		echo '	<select id="' . $this->get_field_id( 'sort_by' ) . '" name="' . $this->get_field_name( 'sort_by' ) . '" class="widefat">';
-		echo '		<option value="blogname" ' . selected( $sort_by, 'blogname', false ) . '> ' . __( 'Alphabetical', 'wp-network-content-display' );
-		echo '		<option value="last_updated" ' . selected( $sort_by, 'last_updated', false ) . '> ' . __( 'Recently Active', 'wp-network-content-display' );
-		echo '		<option value="post_count" ' . selected( $sort_by, 'post_count', false ) . '> ' . __( 'Most Active', 'wp-network-content-display' );
-		echo '		<option value="registered" ' . selected( $sort_by, 'registered', false ) . '> ' . __( 'Newest', 'wp-network-content-display' );
-		echo '	</select>';
-		echo '</p>';
-
-		// Widget ID
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'id' ) . '" class="id_label">' . __( 'ID', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'id' ) . '" name="' . $this->get_field_name( 'id' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter ID', 'wp-network-content-display' ) . '" value="' . esc_attr( $id ) . '">';
-		echo '</p>';
-
-		// Widget Class
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'class' ) . '" class="class_label">' . __( 'Class', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'class' ) . '" name="' . $this->get_field_name( 'class' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter Class', 'wp-network-content-display' ) . '" value="' . esc_attr( $class ) . '">';
-		echo '</p>';
-
-		// Default Meta
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'show_meta' ) . '" class="show_meta_label">' . __( 'Show Meta', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_meta' ) . '" name="' . $this->get_field_name( 'show_meta' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'wp-network-content-display' ) . '" value="1" ' . checked( $show_meta, true, false ) . '>';
-		echo '</p>';
-
-		// Show Image
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'show_image' ) . '" class="show_image_label">' . __( 'Show Site Image', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="checkbox" id="' . $this->get_field_id( 'show_image' ) . '" name="' . $this->get_field_name( 'show_image' ) . '" class="widefat" placeholder="' . esc_attr__( '', 'wp-network-content-display' ) . '" value="1" ' . checked( $show_image, true, false ) . '>';
-		echo '</p>';
-
-		// Default Image
-		echo '<p>';
-		echo '	<label for="' . $this->get_field_id( 'default_image' ) . '" class="default_image_label">' . __( 'Default Image', 'wp-network-content-display' ) . '</label>';
-		echo '	<input type="text" id="' . $this->get_field_id( 'default_image' ) . '" name="' . $this->get_field_name( 'default_image' ) . '" class="widefat" placeholder="' . esc_attr__( 'Enter path/url of default image', 'wp-network-content-display' ) . '" value="' . esc_url( $default_image ) . '">';
-		echo '	<input class="upload_image_button button button-primary" type="button" value="Upload Image" />';
-		echo '</p>';
+		// include form template
+		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-sites.php' );
 
 	}
 
