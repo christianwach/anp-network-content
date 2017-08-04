@@ -120,15 +120,15 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'show_meta' => true,
 			'show_site_name' => true,
 			'event_scope' => '',
-			'include_categories' => '',
-			'include_tags' => '',
+			'include_categories' => array(),
+			'include_tags' => array(),
 		) );
 
 		// Retrieve an existing value from the database
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		// $post_type = 'event';
 		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '';
-		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : '';
+		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';
 		$id = ! empty( $instance['id'] ) ? $instance['id'] : '';
 		$class = ! empty( $instance['class'] ) ? $instance['class'] : '';
@@ -137,8 +137,8 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
 		$event_scope = ! empty( $instance['event_scope'] ) ? $instance['event_scope'] : '';
 
-		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : '';
-		$include_tags = ! empty( $instance['include_tags'] ) ? $instance['include_tags'] : '';
+		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : array();
+		$include_tags = ! empty( $instance['include_tags'] ) ? $instance['include_tags'] : array();
 
 		// get sites
 		$sites = get_sites( array(
@@ -148,6 +148,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'public' => 1,
 		) );
 
+		// get categories and tags
 		$categories = wp_network_content_display()->components->events->get_network_event_terms( 'event-category' );
 		$tags = wp_network_content_display()->components->events->get_network_event_terms( 'event-tag' );
 
@@ -161,6 +162,18 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'' => __( 'List (Default)', 'wp-network-content-display' ),
 			'block' => __( 'Block', 'wp-network-content-display' )
 		);
+
+		///*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'include_categories' => $include_categories,
+			'include_tags' => $include_tags,
+			//'sites' => $sites,
+			//'backtrace' => $trace,
+		), true ) );
+		//*/
 
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-events.php' );

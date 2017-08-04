@@ -101,7 +101,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array(
 			'title' => '',
 			'number_sites' => '',
-			'exclude_sites' => '',
+			'exclude_sites' => array(),
 			'sort_by' => '',
 			'style' => '',
 			'id' => '',
@@ -114,7 +114,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		// Retrieve an existing value from the database
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$number_sites = ! empty( $instance['number_sites'] ) ? $instance['number_sites'] : '';
-		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : '';
+		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
 		$sort_by = ! empty( $instance['sort_by'] ) ? $instance['sort_by'] : '';
 
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';

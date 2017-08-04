@@ -106,8 +106,8 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array(
 			'title' => '',
 			'number_posts' => '',
-			'exclude_sites' => '',
-			'include_categories' => '',
+			'exclude_sites' => array(),
+			'include_categories' => array(),
 			'style' => '',
 			'posts_per_site' => '',
 			'id' => '',
@@ -123,7 +123,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '';
 		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
-		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : '';
+		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : array();
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';
 		$posts_per_site = ! empty( $instance['posts_per_site'] ) ? $instance['posts_per_site'] : '';
 		$id = ! empty( $instance['id'] ) ? $instance['id'] : '';
@@ -150,7 +150,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$trace = $e->getTraceAsString();
 		error_log( print_r( array(
 			'method' => __METHOD__,
-			'exclude_sites' => $exclude_sites,
+			'include_categories' => $include_categories,
 			'sites' => $sites,
 			//'backtrace' => $trace,
 		), true ) );
