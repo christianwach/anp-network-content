@@ -51,7 +51,7 @@
 		<?php } ?>
 
 		<?php if ( ! empty( $show_excerpt ) ) { ?>
-			<div class="entry-excerpt">
+			<div class="entry-summary">
 				<?php echo $post_detail['post_excerpt']; ?>
 			</div><!-- /.entry-content -->
 		<?php } ?>
