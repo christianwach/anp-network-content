@@ -181,17 +181,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 */
 	public function get_posts_for_site( $site_id, $options_array ) {
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'site_id' => $site_id,
-			'options_array' => $options_array,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// init return
 		$post_list = array();
 
@@ -203,7 +192,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		// define arguments to fetch recent posts
 		$post_args = array();
 		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'event';
-		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20;
+		$post_args['numberposts'] = ( isset( $posts_per_site ) ) ? $posts_per_site : 20;
 
 		// add optional elements
 		if ( 'event' === $post_type ) {
@@ -224,7 +213,9 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 				);
 			}
 
+			// choose a scope ("All" needs no meta query)
 			switch ( $event_scope ) {
+
 				case 'past' :
 					$post_args['meta_query'] = array(
 						array(
@@ -234,7 +225,8 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 						),
 					);
 					break;
-				default :
+
+				case 'future' :
 					$post_args['meta_query'] = array(
 						array(
 							'key' => '_eventorganiser_schedule_start_start',
@@ -242,10 +234,23 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 							'compare' => '>=',
 						),
 					);
+
 			}
 
 		}
 
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'site_id' => $site_id,
+			'options_array' => $options_array,
+			'post_args' => $post_args,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		$recent_posts = wp_get_recent_posts( $post_args );
 
