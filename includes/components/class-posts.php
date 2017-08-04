@@ -96,19 +96,8 @@ class WP_Network_Content_Display_Posts {
 	 *
 	 * 1/5/2016: Updated to allow for custom post types.
 	 *
-	 * Editable Templates
-	 * ---
-	 * Display of Network Content can be customized by adding a custom template to your theme in 'plugins/wp-network-content-display/'
-	 * event-block.php
-	 * event-list.php
-	 * post-block.php
-	 * post-highlights.php
-	 * post-list.php
-	 * sites-list.php
-	 *
 	 * @param array $parameters An array of settings with the following options:
 	 *    post_type (string) - post type to display ( default: 'post' )
-	 *    event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event'
 	 *    number_posts (int) - the total number of posts to display ( default: 10 )
 	 *    posts_per_site (int) - the number of posts for each site ( default: no limit )
 	 *    include_categories (array) - the categories of posts to include ( default: all categories )
@@ -130,7 +119,7 @@ class WP_Network_Content_Display_Posts {
 
 		// Default parameters
 		$defaults = array(
-			'post_type' => (string) 'post', // (string) - post, event
+			'post_type' => (string) 'post', // (string) - post, page
 			'number_posts' => (int) 10, // (int)
 			'exclude_sites' => array(),
 			'include_categories' => array(),
@@ -139,48 +128,42 @@ class WP_Network_Content_Display_Posts {
 			'style' => (string) 'normal', // (string) - normal
 			'id' => (string) 'network-posts-' . rand(), // (string)
 			'class' => (string) 'post-list', // (string)
-			'title' => (string) 'Posts', // (string)
+			'title' => (string) __( 'Posts', 'wp-network-content-display' ), // (string)
 			'title_image' => (string) null, // (string)
 			'show_meta' => (bool) true, // (bool)
 			'show_thumbnail' => (bool) false, // (bool)
 			'show_excerpt' => (bool) true, // (bool)
 			'excerpt_length' => (int) 55, // (int)
 			'show_site_name' => (bool) true, // (bool)
-			'event_scope' => (string) 'future', // (string) - future, past, all
-			'include_event_categories' => array(), // (array) - event-category (term name) to include
-			'include_event_tags' => array(), // (array) - event-tag (term name) to include
 		);
 
-		// SANITIZE INPUT
-		$parameters = WP_Network_Content_Display_Helpers::sanitize_input( $parameters );
+		// sanitize params
+		$parameters = WPNCD_Helpers::sanitize_input( $parameters );
 
-		if ( isset( $parameters['exclude_sites'] ) && !empty( $parameters['exclude_sites'] ) ) {
+		// convert comma-delimited list to array
+		if ( isset( $parameters['exclude_sites'] ) && ! empty( $parameters['exclude_sites'] ) ) {
 			$parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
 		}
 
-		// CALL MERGE FUNCTION
-		$settings = WP_Network_Content_Display_Helpers::get_merged_settings( $parameters, $defaults );
+		// merge params with defaults
+		$settings = WPNCD_Helpers::get_merged_settings( $parameters, $defaults );
 
 		// Extract each parameter as its own variable
 		extract( $settings, EXTR_SKIP );
 
 		// CALL SITES FUNCTION
-		$sites_list = WP_Network_Content_Display_Helpers::get_sites_data( $settings );
+		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
 
 		// CALL GET POSTS FUNCTION
-		$posts_list = $this->get_posts_list( $sites_list, $settings );
+		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
 
+		// return raw if requested
 		if ( $output == 'array' ) {
-
-			// Return an array
 			return $posts_list;
-
-		} else {
-
-			// CALL RENDER FUNCTION
-			return $this->render_html( $posts_list, $settings );
-
 		}
+
+		// return rendered
+		return $this->render_html( $posts_list, $settings );
 
 	}
 
@@ -197,7 +180,7 @@ class WP_Network_Content_Display_Posts {
 	 * @param array $options_array The options for post retrieval.
 	 * @return array $post_list The array of posts with site information, sorted by post_date.
 	 */
-	public function get_posts_list( $sites_array, $options_array ) {
+	public function get_posts_for_sites( $sites_array, $options_array ) {
 
 		// init return
 		$post_list = array();
@@ -212,7 +195,7 @@ class WP_Network_Content_Display_Posts {
 			switch_to_blog( $site['blog_id'] );
 
 			// And add to array of posts
-			$site_posts = $this->get_sites_posts( $site['blog_id'], $options_array );
+			$site_posts = $this->get_posts_for_site( $site['blog_id'], $options_array );
 
 			if ( is_array( $site_posts ) ) {
 				$post_list = $post_list + $site_posts;
@@ -225,14 +208,14 @@ class WP_Network_Content_Display_Posts {
 
 		// SORT ARRAY
 		if ( 'event' === $post_type ) {
-			$post_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $post_list, 'event_start_date' );
+			$post_list = WPNCD_Helpers::sort_array_by_key( $post_list, 'event_start_date' );
 		} else {
-			$post_list = WP_Network_Content_Display_Helpers::sort_by_date( $post_list );
+			$post_list = WPNCD_Helpers::sort_by_date( $post_list );
 		}
 
 		// CALL LIMIT FUNCTIONS
 		$post_list = ( isset( $number_posts ) ) ?
-					 WP_Network_Content_Display_Helpers::limit_number_posts( $post_list, $number_posts ) :
+					 WPNCD_Helpers::limit_number_posts( $post_list, $number_posts ) :
 					 $post_list;
 
 		return $post_list;
@@ -244,11 +227,25 @@ class WP_Network_Content_Display_Posts {
 	/**
 	 * Get an array of posts for a specified site.
 	 *
+	 * The site will already have been switched to, so all WordPress API calls
+	 * will return data for that context.
+	 *
 	 * @param int $site_id The numeric ID of the site.
 	 * @param array $options_array The options for post retrieval.
 	 * @return array $post_list The array of posts with site information, sorted by post_date.
 	 */
-	public function get_sites_posts( $site_id, $options_array ) {
+	public function get_posts_for_site( $site_id, $options_array ) {
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'site_id' => $site_id,
+			'options_array' => $options_array,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		// init return
 		$post_list = array();
@@ -262,48 +259,7 @@ class WP_Network_Content_Display_Posts {
 		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20;
 		$post_args['category_name'] = ( isset( $include_categories ) ) ? $include_categories : '';
 
-		// Event-specific arguments
-		if ( 'event' === $post_type ) {
-
-			if ( isset( $include_event_categories ) ) {
-				$post_args['tax_query'][] = array(
-					'taxonomy' => 'event-category',
-					'field' => 'slug',
-					'terms' => $include_event_categories
-				);
-			}
-
-			if ( isset( $include_event_tags ) ) {
-				$post_args['tax_query'][] = array(
-					'taxonomy' => 'event-tag',
-					'field' => 'slug',
-					'terms' => $include_event_tags
-				);
-			}
-
-			switch ( $event_scope ) {
-				case 'past' :
-					$post_args['meta_query'] = array(
-						array(
-							'key' => '_eventorganiser_schedule_start_start',
-							'value' => date_i18n( 'Y-m-d' ),
-							'compare' => '<',
-						),
-					);
-					break;
-				default :
-					$post_args['meta_query'] = array(
-						array(
-							'key' => '_eventorganiser_schedule_start_start',
-							'value' => date_i18n( 'Y-m-d' ),
-							'compare' => '>=',
-						),
-					);
-			}
-
-		}
-
-
+		// get recent posts for this site
 		$recent_posts = wp_get_recent_posts( $post_args );
 
 		// Put all the posts in a single array
@@ -452,7 +408,7 @@ class WP_Network_Content_Display_Posts {
 		$html = '<ul class="wp-network-posts ' . $post_type . '-list">';
 
 		// find template
-		$template = WP_Network_Content_Display_Helpers::find_template( $post_type . '-list.php' );
+		$template = WPNCD_Helpers::find_template( $post_type . '-list.php' );
 
 		foreach( $posts_array as $key => $post_detail ) {
 
@@ -513,7 +469,7 @@ class WP_Network_Content_Display_Posts {
 		$html = '<div class="wp-network-posts ' . $post_type . '-list">';
 
 		// find template
-		$template = WP_Network_Content_Display_Helpers::find_template( $post_type . '-block.php' );
+		$template = WPNCD_Helpers::find_template( $post_type . '-block.php' );
 
 		foreach( $posts_array as $key => $post_detail ) {
 
@@ -567,7 +523,7 @@ class WP_Network_Content_Display_Posts {
 		$html = '';
 
 		// look for template
-		$template = WP_Network_Content_Display_Helpers::find_template( 'post-highlights.php' );
+		$template = WPNCD_Helpers::find_template( 'post-highlights.php' );
 
 		// prevent immediate output
 		ob_start();

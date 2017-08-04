@@ -134,55 +134,201 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'include_event_tags' => array(), // (array) - event-tag (term name) to include
 		);
 
-		// SANITIZE INPUT
-		$parameters = WP_Network_Content_Display_Helpers::sanitize_input( $parameters );
+		// sanitize params
+		$parameters = WPNCD_Helpers::sanitize_input( $parameters );
 
-		if ( isset( $parameters['exclude_sites'] ) && !empty( $parameters['exclude_sites'] ) ) {
+		// convert comma-demilited lists to arrays
+		if ( isset( $parameters['exclude_sites'] ) && ! empty( $parameters['exclude_sites'] ) ) {
 			$parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
 		}
-
-		if ( isset( $parameters['include_event_categories'] ) && !empty( $parameters['include_event_categories'] ) ) {
+		if ( isset( $parameters['include_event_categories'] ) && ! empty( $parameters['include_event_categories'] ) ) {
 			$parameters['include_event_categories'] = explode( ',', $parameters['include_event_categories'] );
 		}
-
-		if ( isset( $parameters['include_event_tags'] ) && !empty( $parameters['include_event_tags'] ) ) {
+		if ( isset( $parameters['include_event_tags'] ) && ! empty( $parameters['include_event_tags'] ) ) {
 			$parameters['include_event_tags'] = explode( ',', $parameters['include_event_tags'] );
 		}
 
-		// CALL MERGE FUNCTION
-		$settings = WP_Network_Content_Display_Helpers::get_merged_settings( $parameters, $defaults );
+		// merge params with defaults
+		$settings = WPNCD_Helpers::get_merged_settings( $parameters, $defaults );
 
 		// Extract each parameter as its own variable
 		extract( $settings, EXTR_SKIP );
 
 		// CALL SITES FUNCTION
-		$sites_list = WP_Network_Content_Display_Helpers::get_sites_data( $settings );
+		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
 
 		// CALL GET POSTS FUNCTION
-		$posts_list = $this->get_posts_list( $sites_list, $settings );
+		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
+
+		// return raw if requested
+		if ( $output == 'array' ) {
+			return $posts_list;
+		}
+
+		// return rendered
+		return $this->render_html( $posts_list, $settings );
+
+	}
+
+
+
+	/**
+	 * Get an array of posts for a specified site.
+	 *
+	 * @param int $site_id The numeric ID of the site.
+	 * @param array $options_array The options for post retrieval.
+	 * @return array $post_list The array of posts with site information, sorted by post_date.
+	 */
+	public function get_posts_for_site( $site_id, $options_array ) {
 
 		/*
 		$e = new Exception;
 		$trace = $e->getTraceAsString();
 		error_log( print_r( array(
 			'method' => __METHOD__,
-			'sites_list' => $sites_list,
-			'posts_list' => $posts_list,
-			'backtrace' => $trace,
+			'site_id' => $site_id,
+			'options_array' => $options_array,
+			//'backtrace' => $trace,
 		), true ) );
 		*/
 
-		if ( $output == 'array' ) {
+		// init return
+		$post_list = array();
 
-			// Return an array
-			return $posts_list;
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
 
-		} else {
+		$site_details = get_blog_details( $site_id );
 
-			// CALL RENDER FUNCTION
-			return $this->render_html( $posts_list, $settings );
+		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'post';
+		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20;
+		$post_args['category_name'] = ( isset( $include_categories ) ) ? $include_categories : '';
+
+		// Event-specific arguments
+		if ( 'event' === $post_type ) {
+
+			if ( isset( $include_event_categories ) ) {
+				$post_args['tax_query'][] = array(
+					'taxonomy' => 'event-category',
+					'field' => 'slug',
+					'terms' => $include_event_categories
+				);
+			}
+
+			if ( isset( $include_event_tags ) ) {
+				$post_args['tax_query'][] = array(
+					'taxonomy' => 'event-tag',
+					'field' => 'slug',
+					'terms' => $include_event_tags
+				);
+			}
+
+			switch ( $event_scope ) {
+				case 'past' :
+					$post_args['meta_query'] = array(
+						array(
+							'key' => '_eventorganiser_schedule_start_start',
+							'value' => date_i18n( 'Y-m-d' ),
+							'compare' => '<',
+						),
+					);
+					break;
+				default :
+					$post_args['meta_query'] = array(
+						array(
+							'key' => '_eventorganiser_schedule_start_start',
+							'value' => date_i18n( 'Y-m-d' ),
+							'compare' => '>=',
+						),
+					);
+			}
 
 		}
+
+
+		$recent_posts = wp_get_recent_posts( $post_args );
+
+		// Put all the posts in a single array
+		foreach( $recent_posts as $post => $post_detail ) {
+
+			$post_id = $post_detail['ID'];
+			$author_id = $post_detail['post_author'];
+
+			// Prefix the array key with event start date or post date
+			$prefix = ( 'event' === $post_type ) ?
+					  get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true ) . '-' . $post_detail['post_name'] :
+					  $post_detail['post_date'] . '-' . $post_detail['post_name'];
+
+			// Returns an array
+			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'medium' );
+
+			if ( $post_detail['post_excerpt'] ) {
+				$excerpt = $post_detail['post_excerpt'];
+			} else {
+				$excerpt = wp_trim_words(
+					$post_detail['post_content'],
+					$excerpt_length,
+					sprintf( __( '... <a href="%s">Read More</a>', 'wp-network-content-display' ), get_permalink( $post_id ) )
+				);
+			}
+
+			$post_list[$prefix] = array(
+				'post_id' => $post_id,
+				'post_title' => $post_detail['post_title'],
+				'post_date' => $post_detail['post_date'],
+				'post_author' => get_the_author_meta( 'display_name', $post_detail['post_author'] ),
+				'post_content' => $post_detail['post_content'],
+				'post_excerpt' => strip_shortcodes( $excerpt ),
+				'permalink' => get_permalink( $post_id ),
+				'post_image' => $post_thumbnail[0],
+				'post_class' => get_post_class( 'siteid-' . $site_id, $post_id ),
+				'post_type' => $post_type,
+				'site_id' => $site_id,
+				'site_name' => $site_details->blogname,
+				'site_link' => $site_details->siteurl,
+			);
+
+			if ( 'event' === $post_type || function_exists( 'eo_get_venue' ) ) {
+
+				$venue_id = eo_get_venue( $post_id );
+
+				$post_list[$prefix]['event_start_date'] = get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true );
+				$post_list[$prefix]['event_end_date'] = get_post_meta ( $post_id, '_eventorganiser_schedule_start_finish', true );
+
+				$post_list[$prefix]['event_venue']['venue_link'] = eo_get_venue_link( $venue_id );
+				$post_list[$prefix]['event_venue']['venue_id'] = $venue_id;
+				$post_list[$prefix]['event_venue']['venue_name'] = eo_get_venue_name( $venue_id );
+				$post_list[$prefix]['event_venue']['venue_location'] = eo_get_venue_address( $venue_id );
+				$post_list[$prefix]['event_venue']['venue_location']['venue_lat'] = eo_get_venue_meta( $venue_id, '_lat' );
+				$post_list[$prefix]['event_venue']['venue_location']['venue_long'] = eo_get_venue_meta( $venue_id, '_lng' );
+
+				//Get post categories
+				$event_categories = wp_get_post_terms( $post_id, 'event-category', array( "fields" => "all" ) );
+
+				foreach( $event_categories as $event_category ) {
+					$post_list[$prefix]['event_categories'][$event_category->slug] = $event_category->name;
+				}
+
+				$event_tags = wp_get_post_terms( $post_id, 'event-tag', array( "fields" => "all" ) );
+
+				foreach( $event_tags as $event_tag ) {
+					$post_list[$prefix]['event_tags'][$event_tag->slug] = $event_tag->name;
+				}
+
+			}
+
+			// Get post categories
+			$post_categories = wp_get_post_categories( $post_id );
+
+			foreach( $post_categories as $post_category ) {
+				$cat = get_category( $post_category );
+				$post_list[$prefix]['categories'][] = $cat->name;
+			}
+
+		}
+
+		// --<
+		return $post_list;
 
 	}
 
@@ -219,7 +365,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		 *
 		 * @param array $site_args The arguments used to query the sites.
 		 */
-		$site_args = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $site_args );
+		$site_args = apply_filters( 'wncd_get_network_event_terms_site_args', $site_args );
 
 		// get sites
 		$sites_list = get_sites( $site_args );
@@ -234,7 +380,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		 *
 		 * @param array $term_args The arguments used to query the terms.
 		 */
-		$term_args = apply_filters( 'glocal_network_tax_termarg_arguments', $term_args );
+		$term_args = apply_filters( 'wncd_get_network_event_terms_term_args', $term_args );
 
 		// init term list
 		$term_list = array();
@@ -343,7 +489,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		$html = '<ul class="network-event-list ' . $post_type . '-list">';
 
 		// find template
-		$template = WP_Network_Content_Display_Helpers::find_template( 'event-list.php' );
+		$template = WPNCD_Helpers::find_template( 'event-list.php' );
 
 		foreach( $events_array as $key => $post_detail ) {
 
@@ -397,7 +543,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		$html = '<div class="network-posts-list style-' . $style . '">';
 
 		// find template
-		$template = WP_Network_Content_Display_Helpers::find_template( 'event-block.php' );
+		$template = WPNCD_Helpers::find_template( 'event-block.php' );
 
 		foreach( $posts_array as $post => $post_detail ) {
 

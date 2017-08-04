@@ -92,8 +92,6 @@ class WP_Network_Content_Display_Sites {
 
 
 	/**
-	 * NETWORK SITES MAIN FUNCTION.
-	 *
 	 * Gets (or renders) a list of sites.
 	 *
 	 * @param array $parameters An array of settings with the following options:
@@ -114,52 +112,49 @@ class WP_Network_Content_Display_Sites {
 
 		// Default parameters
 		$defaults = array(
-			'return' => (string) 'display',
-			'number_sites' => (int) null,
+			'return' => 'display',
+			'number' => -1,
 			'exclude_sites' => array(),
-			'sort_by' => (string) 'alpha',
-			'default_image' => (string) null,
-			'show_meta' => (bool) false,
-			'show_image' => (bool) false,
-			'id' => (string) 'network-sites-' . rand(),
-			'class' => (string) 'network-sites-list',
+			'sort_by' => 'blogname',
+			'default_image' => '',
+			'show_meta' => false,
+			'show_image' => false,
+			'id' => 'network-sites-' . rand(),
+			'class' => 'network-sites-list',
 		);
 
 		// CALL MERGE FUNCTION
 		$settings = wp_parse_args( $parameters, $defaults );
 
-		// Extract each parameter as its own variable
-		extract( $settings, EXTR_SKIP );
-
 		// CALL GET SITES FUNCTION
-		$sites_list = WP_Network_Content_Display_Helpers::get_sites_data( $settings );
+		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
 
-		// Sorting
-		switch ( $sort_by ) {
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'settings' => $settings,
+			'sites_list' => $sites_list,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
-			case 'newest':
-				$sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'registered', 'DESC' );
-				break;
-
-			case 'updated':
-				$sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'last_updated', 'DESC' );
-				break;
-
-			case 'active':
-				$sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'post_count', 'DESC' );
-				break;
-
-			default:
-				$sites_list = WP_Network_Content_Display_Helpers::sort_array_by_key( $sites_list, 'blogname' );
-
+		// sorting that can't be done in the query
+		if ( $settings['sort_by'] == 'active' ) {
+			$sites_list = WPNCD_Helpers::sort_array_by_key( $sites_list, 'post_count', 'DESC' );
+		}
+		if ( $settings['sort_by'] == 'blogname' ) {
+			$sites_list = WPNCD_Helpers::sort_array_by_key( $sites_list, 'blogname' );
 		}
 
-		if ( $return == 'array' ) {
+		// return raw data if requested
+		if ( isset( $settings['return'] ) AND $settings['return'] == 'array' ) {
 			return $sites_list;
-		} else {
-			// CALL RENDER FUNCTION
-			return $this->render_sites_list( $sites_list, $settings );
 		}
+
+		// return rendered markup
+		return $this->render_sites_list( $sites_list, $settings );
 
 	}
 
@@ -189,14 +184,14 @@ class WP_Network_Content_Display_Sites {
 		$html = '<ul id="' . $id . '" class="sites-list ' . $class . '">';
 
 		// find template
-		$template = WP_Network_Content_Display_Helpers::find_template( 'sites-list.php' );
+		$template = WPNCD_Helpers::find_template( 'sites-list.php' );
 
 		foreach ( $sites_array as $site ) {
 
 			$site_id = $site['blog_id'];
 
 			// CALL GET SLUG FUNCTION
-			$slug = WP_Network_Content_Display_Helpers::get_site_slug( $site['path'] );
+			$slug = WPNCD_Helpers::get_site_slug( $site['path'] );
 
 			// prevent immediate output
 			ob_start();

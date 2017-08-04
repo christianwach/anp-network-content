@@ -7,7 +7,7 @@
  *
  * @since 2.0.0
  */
-class WP_Network_Content_Display_Helpers {
+class WPNCD_Helpers {
 
 
 
@@ -218,19 +218,25 @@ class WP_Network_Content_Display_Helpers {
 	 */
 	public static function get_site_header_image( $site_id ) {
 
-		global $blog_id;
+		// get current site ID
+		$blog_id = get_current_blog_id();
 
-		// Store the current blog_id being viewed
-		$current_blog_id = $blog_id;
+		// do we need to switch?
+		$switched = false;
+		if ( $blog_id != $site_id ) {
+			switch_to_blog( $site_id );
+			$switched = true;
+		}
 
-		// Switch to the main blog designated in $site_id
-		switch_to_blog( $site_id );
-
+		// get site header
 		$site_image = get_custom_header();
 
-		// Switch back to the current blog being viewed
-		switch_to_blog( $current_blog_id );
+		// switch back if needed
+		if ( $switched === true ) {
+			restore_current_blog();
+		}
 
+		// --<
 		return $site_image->thumbnail_url;
 
 	}
@@ -311,27 +317,31 @@ class WP_Network_Content_Display_Helpers {
 	 */
 	public static function find_template( $template ) {
 
+		// define paths template directories
+		$theme_path = 'plugins/wp-network-content-display/';
+		$plugin_path = 'assets/templates/';
+
 		// first check active theme
-		if ( file_exists( get_stylesheet_directory() . 'plugins/wp-network-content-display/' . $template ) ) {
-			$template = get_stylesheet_directory() . 'plugins/wp-network-content-display/' . $template;
+		if ( file_exists( get_stylesheet_directory() . $theme_path . $template ) ) {
+			$template = get_stylesheet_directory() . $theme_path . $template;
 
 		// next look in parent theme
-		} elseif ( is_child_theme() && file_exists( get_template_directory() . 'plugins/wp-network-content-display/' . $template ) ) {
-			$template = get_template_directory() . 'plugins/wp-network-content-display/' . $template;
+		} elseif ( is_child_theme() && file_exists( get_template_directory() . $theme_path . $template ) ) {
+			$template = get_template_directory() . $theme_path . $template;
 
 		// lastly, use supplied template
 		} else {
-			$template = WP_NETWORK_CONTENT_DISPLAY_DIR . 'assets/templates/' . $template;
+			$template = WP_NETWORK_CONTENT_DISPLAY_DIR . $plugin_path . $template;
 		}
 
 		/**
-		 * Filter path and return.
+		 * Filter template path and return.
 		 *
 		 * @since 2.0.0
 		 *
 		 * @param str $template The path to the found template file.
 		 */
-		return apply_filters( 'wncd_load_template_filter', $template );
+		return apply_filters( 'wncd_find_template', $template );
 
 	}
 
@@ -343,26 +353,14 @@ class WP_Network_Content_Display_Helpers {
 	 * @param array $options_array The array of parameters.
 	 * @return array $site_list The array of sites with site information.
 	 */
-	public static function get_sites_data( $options_array ) {
-
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'options_array' => $options_array,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
+	public static function get_data_for_sites( $options_array ) {
 
 		// init return
 		$site_list = array();
 
-		// Make each parameter as its own variable
-		extract( $options_array, EXTR_SKIP );
-
+		// basic site query args
 		$site_args = array(
-			'limit' => null,
+			'number' => 100,
 			'public' => 1,
 			'archived' => 0,
 			'spam' => 0,
@@ -371,14 +369,30 @@ class WP_Network_Content_Display_Helpers {
 		);
 
 		// check for excludes
-		if ( ! empty( $exclude_sites ) ) {
-			$site_args['site__not_in'] = $exclude_sites;
+		if ( ! empty( $options_array['exclude_sites'] ) ) {
+			$site_args['site__not_in'] = $options_array['exclude_sites'];
 		}
 
-		 /**
-		  * Allow the $site_args to be filtered.
-		  */
-		$site_args = apply_filters( 'glocal_network_sites_site_arguments', $site_args );
+		// check for orderby 'registered' or 'last_updated' which can be done via query
+		if ( ! empty( $options_array['sort_by'] ) ) {
+			if ( $options_array['sort_by'] == 'registered' ) {
+				$site_args['orderby'] = 'registered';
+				$site_args['order'] = 'DESC';
+			}
+			if ( $options_array['sort_by'] == 'last_updated' ) {
+				$site_args['orderby'] = 'last_updated';
+				$site_args['order'] = 'DESC';
+			}
+		}
+
+		/**
+		 * Allow the $site_args to be filtered.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wncd_get_data_for_sites_args', $site_args );
 
 		// get sites
 		$sites = get_sites( $site_args );
@@ -398,7 +412,7 @@ class WP_Network_Content_Display_Helpers {
 			);
 
 			// CALL GET SITE IMAGE FUNCTION
-			$site_image = WP_Network_Content_Display_Helpers::get_site_header_image( $site->blog_id );
+			$site_image = self::get_site_header_image( $site->blog_id );
 
 			if ( $site_image ) {
 				$site_list[$site->blog_id]['site-image'] = $site_image;
@@ -412,6 +426,20 @@ class WP_Network_Content_Display_Helpers {
 
 		}
 
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'options_array' => $options_array,
+			'site_args' => $site_args,
+			'sites' => $sites,
+			'site_list' => $site_list,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
+
+		// --<
 		return $site_list;
 
 	}
@@ -426,8 +454,15 @@ class WP_Network_Content_Display_Helpers {
 	 */
 	public static function get_latest_post( $site_id ) {
 
-		// Switch to current blog
-		switch_to_blog( $site_id );
+		// get current site ID
+		$blog_id = get_current_blog_id();
+
+		// do we need to switch?
+		$switched = false;
+		if ( $blog_id != $site_id ) {
+			switch_to_blog( $site_id );
+			$switched = true;
+		}
 
 		// Get most recent post
 		$recent_posts = wp_get_recent_posts( 'numberposts=1' );
@@ -457,13 +492,16 @@ class WP_Network_Content_Display_Helpers {
 
 		}
 
-		// Exit
-		restore_current_blog();
+		// switch back if needed
+		if ( $switched === true ) {
+			restore_current_blog();
+		}
 
+		// --<
 		return $recent_post_data;
 
 	}
 
 
 
-} // end class WP_Network_Content_Display_Helpers
+} // end class WPNCD_Helpers
