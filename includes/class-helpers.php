@@ -411,7 +411,10 @@ class WPNCD_Helpers {
 				'post_count' => intval( $site_details->post_count ),
 			);
 
-			// CALL GET SITE IMAGE FUNCTION
+			// switch to blog now so we only switch once per site
+			switch_to_blog( $site_id );
+
+			// get site header image
 			$site_image = self::get_site_header_image( $site->blog_id );
 
 			if ( $site_image ) {
@@ -423,6 +426,9 @@ class WPNCD_Helpers {
 			}
 
 			$site_list[$site->blog_id]['recent_post'] = self::get_latest_post( $site->blog_id );
+
+			// switch back
+			restore_current_blog();
 
 		}
 
@@ -470,22 +476,20 @@ class WPNCD_Helpers {
 		// Get most recent post info
 		foreach( $recent_posts as $post ) {
 
-			$post_id = $post['ID'];
-
 			// Post into $site_list array
 			$recent_post_data = array (
-				'post_id' => $post_id,
+				'post_id' => $post['ID'],
 				'post_author' => $post['post_author'],
 				'post_slug' => $post['post_name'],
 				'post_date' => $post['post_date'],
 				'post_title' => $post['post_title'],
 				'post_content' => $post['post_content'],
-				'permalink' => get_permalink( $post_id ),
+				'permalink' => get_permalink( $post['ID'] ),
 			);
 
 			// If there is a featured image, add URL to array, else leave empty
-			if ( wp_get_attachment_url( get_post_thumbnail_id( $post_id ) ) ) {
-				$recent_post_data['thumbnail'] = wp_get_attachment_url( get_post_thumbnail_id( $post_id ) );
+			if ( wp_get_attachment_url( get_post_thumbnail_id( $post['ID'] ) ) ) {
+				$recent_post_data['thumbnail'] = wp_get_attachment_url( get_post_thumbnail_id( $post['ID'] ) );
 			} else {
 				$recent_post_data['thumbnail'] = '';
 			}
