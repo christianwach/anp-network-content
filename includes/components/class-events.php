@@ -444,7 +444,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML list.
 	 */
-	public function render_events_list( $events_array, $options_array ) {
+	public function _render_events_list( $events_array, $options_array ) {
 
 	}
 
@@ -468,7 +468,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *    'post_type' => 'event',
 	 * @return str $html The data rendered as an HTML list.
 	 */
-	public function render_event_list_html( $events_array, $options_array ) {
+	public function _render_event_list_html( $events_array, $options_array ) {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
@@ -525,7 +525,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML "block".
 	 */
-	public function render_event_block_html( $posts_array, $options_array ) {
+	public function _render_event_block_html( $posts_array, $options_array ) {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );

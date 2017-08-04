@@ -338,12 +338,12 @@ class WP_Network_Content_Display_Posts {
 		// choose how to render
 		if ( ! empty( $options_array['style'] ) ) {
 			if( 'list'	== $options_array['style'] ) {
-				$rendered_html = $this->render_list_html( $posts_array, $options_array );
+				$rendered_html = $this->render_html_list( $posts_array, $options_array );
 			} else {
-				 $rendered_html = $this->render_block_html( $posts_array, $options_array );
+				 $rendered_html = $this->render_html_block( $posts_array, $options_array );
 			}
 		} else {
-			$rendered_html = $this->render_list_html( $posts_array, $options_array );
+			$rendered_html = $this->render_html_list( $posts_array, $options_array );
 		}
 
 		// --<
@@ -360,7 +360,7 @@ class WP_Network_Content_Display_Posts {
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML list.
 	 */
-	public function render_list_html( $posts_array, $options_array ) {
+	public function render_html_list( $posts_array, $options_array ) {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
@@ -427,7 +427,7 @@ class WP_Network_Content_Display_Posts {
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML "block".
 	 */
-	public function render_block_html( $posts_array, $options_array ) {
+	public function render_html_block( $posts_array, $options_array ) {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
