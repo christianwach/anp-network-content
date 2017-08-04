@@ -226,11 +226,8 @@ function render_html( $posts_array, $options_array ) {
  */
 function render_list_html( $posts_array, $options_array ) {
 
-	$posts_array = $posts_array;
-	$settings = $options_array;
-
 	// Make each parameter as its own variable
-	extract( $settings, EXTR_SKIP );
+	extract( $options_array, EXTR_SKIP );
 
 	// Convert strings to booleans
 	$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : '';
@@ -253,9 +250,17 @@ function render_list_html( $posts_array, $options_array ) {
 			$post_categories = implode( ", ", $post_detail['categories'] );
 		}
 
-		// show template
-		// TODO: use output buffering
+		// prevent immediate output
+		ob_start();
+
+		// use template
 		include( $template );
+
+		// grab markup
+		$html .= ob_get_contents();
+
+		// clean up
+		ob_end_clean();
 
 	}
 
@@ -276,11 +281,8 @@ function render_list_html( $posts_array, $options_array ) {
  */
 function render_block_html( $posts_array, $options_array ) {
 
-	$posts_array = $posts_array;
-	$settings = $options_array;
-
 	// Make each parameter as its own variable
-	extract( $settings, EXTR_SKIP );
+	extract( $options_array, EXTR_SKIP );
 
 	$html = '<div class="wp-network-posts ' . $post_type . '-list">';
 
@@ -300,9 +302,17 @@ function render_block_html( $posts_array, $options_array ) {
 		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
 		$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
 
-		// show template
-		// TODO: use output buffering
+		// prevent immediate output
+		ob_start();
+
+		// use template
 		include( $template );
+
+		// grab markup
+		$html .= ob_get_contents();
+
+		// clean up
+		ob_end_clean();
 
 	}
 
@@ -323,11 +333,8 @@ function render_block_html( $posts_array, $options_array ) {
  */
 function render_highlights_html( $posts_array, $options_array ) {
 
-	$highlight_posts = $posts_array;
-	$settings = $options_array;
-
 	// Extract each parameter as its own variable
-	extract( $settings, EXTR_SKIP );
+	extract( $options_array, EXTR_SKIP );
 
 	$title_image = ( isset( $title_image ) ) ? 'style="background-image:url(' . $title_image . ')"' : '';
 
@@ -336,9 +343,17 @@ function render_highlights_html( $posts_array, $options_array ) {
 	// look for template
 	$template = WP_Network_Content_Display_Helpers::find_template( 'post-highlights.php' );
 
-	// show it
-	// TODO: use output buffering
+	// prevent immediate output
+	ob_start();
+
+	// use template
 	include( $template );
+
+	// grab markup
+	$html .= ob_get_contents();
+
+	// clean up
+	ob_end_clean();
 
 	return $html;
 
@@ -355,14 +370,11 @@ function render_highlights_html( $posts_array, $options_array ) {
  */
 function render_sites_list( $sites_array, $options_array ) {
 
-	$sites = $sites_array;
-	$settings = $options_array;
-
 	// Extract each parameter as its own variable
-	extract( $settings, EXTR_SKIP );
+	extract( $options_array, EXTR_SKIP );
 
-	$show_image = (filter_var($show_image, FILTER_VALIDATE_BOOLEAN));
-	$show_meta = (filter_var($show_meta, FILTER_VALIDATE_BOOLEAN));
+	$show_image = ( filter_var( $show_image, FILTER_VALIDATE_BOOLEAN ) );
+	$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
 
 	if ( ! $show_image ) {
 		$class .= ' no-site-image';
@@ -375,16 +387,24 @@ function render_sites_list( $sites_array, $options_array ) {
 	// find template
 	$template = WP_Network_Content_Display_Helpers::find_template( 'sites-list.php' );
 
-	foreach ( $sites as $site ) {
+	foreach ( $sites_array as $site ) {
 
 		$site_id = $site['blog_id'];
 
 		// CALL GET SLUG FUNCTION
 		$slug = WP_Network_Content_Display_Helpers::get_site_slug( $site['path'] );
 
-		// show template
-		// TODO: use output buffering
+		// prevent immediate output
+		ob_start();
+
+		// use template
 		include( $template );
+
+		// grab markup
+		$html .= ob_get_contents();
+
+		// clean up
+		ob_end_clean();
 
 	}
 
@@ -431,11 +451,8 @@ function render_events_list( $events_array, $options_array ) {
  */
 function render_event_list_html( $events_array, $options_array ) {
 
-	$events_array = $events_array;
-	$settings = $options_array;
-
 	// Make each parameter as its own variable
-	extract( $settings, EXTR_SKIP );
+	extract( $options_array, EXTR_SKIP );
 
 	// Convert strings to booleans
 	$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
@@ -445,15 +462,30 @@ function render_event_list_html( $events_array, $options_array ) {
 	// find template
 	$template = WP_Network_Content_Display_Helpers::find_template( 'event-list.php' );
 
-	foreach( $events_array as $key => $event_detail ) {
+	foreach( $events_array as $key => $post_detail ) {
 
 		global $post;
 
-		$post_id = $event_detail['post_id'];
+		$post_id = $post_detail['post_id'];
 
-		// show template
-		// TODO: use output buffering
+		$venue_id = $post_detail['event_venue']['venue_id'];
+		$venue_name = $post_detail['event_venue']['venue_name'];
+		$venue_link = $post_detail['event_venue']['venue_link'];
+		$venue_address = $post_detail['event_venue']['venue_location'];
+
+		$post_class = ( ! empty( $post_detail['post_class'] ) ) ? $post_detail['post_class'] : 'event list-item';
+
+		// prevent immediate output
+		ob_start();
+
+		// use template
 		include( $template );
+
+		// grab markup
+		$html .= ob_get_contents();
+
+		// clean up
+		ob_end_clean();
 
 	}
 
@@ -476,11 +508,8 @@ function render_event_list_html( $events_array, $options_array ) {
  */
 function render_event_block_html( $posts_array, $options_array ) {
 
-	$posts_array = $posts_array;
-	$settings = $options_array;
-
 	// Make each parameter as its own variable
-	extract( $settings, EXTR_SKIP );
+	extract( $options_array, EXTR_SKIP );
 
 	$html = '<div class="network-posts-list style-' . $style . '">';
 
@@ -499,9 +528,24 @@ function render_event_block_html( $posts_array, $options_array ) {
 		$show_thumbnail = ( filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) );
 		$show_site_name = ( filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) );
 
-		// show template
-		// TODO: use output buffering
+		$venue_id = $post_detail['event_venue']['venue_id'];
+		$venue_name = $post_detail['event_venue']['venue_name'];
+		$venue_link = $post_detail['event_venue']['venue_link'];
+		$venue_address = $post_detail['event_venue']['venue_location'];
+
+		$post_class = ( $post_detail['post_class'] ) ? $post_detail['post_class'] : 'post entry event event-item hentry';
+
+		// prevent immediate output
+		ob_start();
+
+		// use template
 		include( $template );
+
+		// grab markup
+		$html .= ob_get_contents();
+
+		// clean up
+		ob_end_clean();
 
 	}
 

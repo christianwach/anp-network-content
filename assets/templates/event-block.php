@@ -1,110 +1,75 @@
 <?php
-/*
-* Template for the output of the Network Event List as blocks
-* Override by placing a file called plugins/wp-network-content-display/event-block.php in your active theme
-*/
 
-$venue_id = $post_detail['event_venue']['venue_id'];
-$venue_name = $post_detail['event_venue']['venue_name'];
-$venue_link = $post_detail['event_venue']['venue_link'];
-$venue_address = $post_detail['event_venue']['venue_location'];
+/**
+ * Outputs the Network Events Shortcode and Widget as blocks.
+ *
+ * Override by placing a copy of this file in:
+ * 'plugins/wp-network-content-display/event-block.php'
+ * in your active theme's directory.
+ *
+ * @since 1.0.0
+ */
 
-$post_class = ( $post_detail['post_class'] ) ? $post_detail['post_class'] : 'post entry event event-item hentry';
+?>
 
-$html .= '<article id="post-' . $post_id . '" class="event ' . $post_class . '" role="article">';
+<article id="post-<?php echo $post_id; ?>" class="event <?php echo $post_class; ?>" role="article">
 
-$html .= '<header class="entry-header">';
+<header class="entry-header">
 
-if( !empty( $show_thumbnail ) && !empty( $post_detail['post_image'] ) ) {
-	$html .= '<div class="entry-image">';
-	$html .= '<a href="' . esc_url( $post_detail['permalink'] ) . '" class="entry-image-link">';
-	$html .= '<img class="attachment-post-thumbnail wp-post-image item-image" src="' . $post_detail['post_image'] . '">';
-	$html .= '</a>';
-	$html .= '</div>';
-}
+	<?php if ( ! empty( $show_thumbnail ) && ! empty( $post_detail['post_image'] ) ) { ?>
+		<div class="entry-image">
+			<a href="<?php echo esc_url( $post_detail['permalink'] ) ; ?>" class="entry-image-link"><img class="attachment-post-thumbnail wp-post-image item-image" src="<?php echo $post_detail['post_image'] ; ?>"></a>
+		</div>
+	<?php } ?>
 
-$html .= '<h3 class="entry-title event-title">';
-$html .= '<a href="' . esc_url( $post_detail['permalink'] ) . '" class="post-link">';
-$html .= $post_detail['post_title'];
-$html .= '</a>';
-$html .= '</h3>';
+	<h3 class="entry-title event-title"><a href="<?php echo esc_url( $post_detail['permalink'] ) ; ?>" class="post-link"><?php echo $post_detail['post_title']; ?></a></h3>
 
-$html .= '<h4 class="entry-meta event-meta">';
-$html .= '<span class="event-day">';
-$html .= date_i18n( 'l, ', strtotime( $post_detail['event_start_date'] ) );
-$html .= '</span> ';
-$html .= '<time class="event-date" itemprop="startDate" datetime="' . date_i18n( 'Y-m-d H:i:s', strtotime( $post_detail['event_start_date'] ) ) . '"> ';
-$html .= date_i18n( get_option( 'date_format' ), strtotime( $post_detail['event_start_date'] ) );
-$html .= '</time> ';
-$html .= '<div class="event-time">';
-$html .= '<span class="start">';
-$html .= date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_start_date'] ) );
-$html .= '</span> ';
-$html .= '<span class="end">';
-$html .= date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_end_date'] ) );
-$html .= '</span>';
-$html .= '</div>';
+	<h4 class="entry-meta event-meta">
+		<span class="event-day"><?php echo date_i18n( 'l, ', strtotime( $post_detail['event_start_date'] ) ); ?></span> <time class="event-date" itemprop="startDate" datetime="<?php echo date_i18n( 'Y-m-d H:i:s', strtotime( $post_detail['event_start_date'] ) ); ?>"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></time>
 
-$html .= '</h4>';
-$html .= '</header>';
-$html .= '<div class="entry-content event-content">';
+		<div class="event-time">
+			<span class="start"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></span>
+			<span class="end"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_end_date'] ) ); ?></span>
+		</div>
+	</h4>
 
-if( !empty( $venue_id ) ) {
-	$html .= '<div class="event-location event-venue">';
+</header>
 
-		$html .= '<span class="location-name venue-name">';
-		$html .= '<a href="' . $venue_link . '">' . $venue_name . '</a>';
-		$html .= '</span> ';
-		$html .= '<span class="street-address">';
-		$html .= $venue_address['address'];
-		$html .= '</span> ';
-		$html .= '<span class="city-state-postalcode">';
-		$html .= '<span class="city">';
-		$html .= $venue_address['city'];
-		$html .= '</span> ';
-		$html .= '<span class="state">';
-		$html .= $venue_address['state'];
-		$html .= '</span> ';
-		$html .= '<span class="postal-code">';
-		$html .= $venue_address['postcode'];
-		$html .= '</span> ';
-		$html .= '</span>';
-		$html .= '<span class="country">';
-		$html .= $venue_address['country'];
-		$html .= '</span>';
+<div class="entry-content event-content">
 
-	$html .= '</div>';
-}
-$html .= '<div class="entry-excerpt" itemprop="articleBody">' . $post_detail['post_excerpt'] . '</div>';
+	<?php if ( ! empty( $venue_id ) ) { ?>
+		<div class="event-location event-venue">
+			<span class="location-name venue-name"><a href="<?php echo $venue_link ; ?>"><?php echo $venue_name ; ?></a></span>
+			<span class="street-address"><?php echo $venue_address['address']; ?></span>
+			<span class="city-state-postalcode">
+				<span class="city"><?php echo $venue_address['city']; ?></span>
+				<span class="state"><?php echo $venue_address['state']; ?></span>
+				<span class="postal-code"><?php echo $venue_address['postcode']; ?></span>
+			</span>
+			<span class="country"><?php echo $venue_address['country']; ?></span>
+		</div>
+	<?php } ?>
 
-$html .= '</div>';
+	<div class="entry-excerpt" itemprop="articleBody">
+		<?php $post_detail['post_excerpt'] ; ?>
+	</div>
 
-if( !empty( $show_meta ) ) {
+</div>
 
-	$html .= '<footer class="entry-footer">';
-	$html .= '<div class="entry-meta event-meta">';
+<?php if ( ! empty( $show_meta ) ) { ?>
+	<footer class="entry-footer">
+		<div class="entry-meta event-meta">
+			<?php if ( ! empty( $show_site_name ) ) { ?>
+				<span class="site-name"><a href="<?php esc_url( $post_detail['site_link'] ) ; ?>"><?php echo $post_detail['site_name']; ?></a></span>
+			<?php } ?>
+			<span class="event-author"><a href="<?php esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo $post_detail['post_author']; ?></a></span>
+			<?php if ( function_exists( 'glocal_get_event_taxonomy' ) ) : ?>
+				<div class="category tags">
+					<?php echo glocal_get_event_taxonomy( $post_id ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</footer>
+<?php } ?>
 
-	if( !empty( $show_site_name ) ) {
-		$html .= '<span class="site-name"><a href="' . esc_url( $post_detail['site_link'] ) . '">';
-		$html .= $post_detail['site_name'];
-		$html .= '</a></span>';
-	}
-
-	$html .= '<span class="event-author"><a href="' . esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ) . '">';
-	$html .= $post_detail['post_author'];
-	$html .= '</a></span>';
-
-	if( function_exists( 'glocal_get_event_taxonomy' ) ) :
-		$html .= '<div class="category tags">';
-		$html .= glocal_get_event_taxonomy( $post_id );
-		$html .= '</div>';
-	endif;
-
-	$html .= '</div>';
-	$html .= '</footer>';
-
-}
-
-$html .= '</div>';
-
-$html .= '</article>';
+</article>
