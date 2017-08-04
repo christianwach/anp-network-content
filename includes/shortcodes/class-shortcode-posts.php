@@ -67,10 +67,8 @@ class WP_Network_Content_Display_Posts_Shortcode {
 		extract( shortcode_atts( array(
 		), $attr ) );
 
-		// set style
-		$attr['style'] = 'normal';
-
-		return wp_network_content_display()->components->posts->get_network_posts( $attr );
+		// display posts
+		return wp_network_content_display()->components->posts->get_posts_from_network( $attr );
 
 	}
 

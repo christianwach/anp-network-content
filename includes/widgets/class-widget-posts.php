@@ -86,8 +86,8 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 
-		//  display posts
-		echo wp_network_content_display()->components->posts->get_network_posts( $instance );
+		// display posts
+		echo wp_network_content_display()->components->posts->get_posts_from_network( $instance );
 
 		echo $after_widget;
 

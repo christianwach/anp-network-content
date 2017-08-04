@@ -139,9 +139,6 @@ class WP_Network_Content_Display {
 	 */
 	public function include_files() {
 
-		// global scope functions
-		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/functions.php' );
-
 		// include helper class
 		require( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/class-helpers.php' );
 

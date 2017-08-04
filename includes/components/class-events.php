@@ -87,13 +87,115 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 
 	/**
+	 * Get (or render) posts from sites across the network.
+	 *
+	 * @param array $parameters An array of settings with the following options:
+	 *    post_type (string) - post type to display ( default: 'post' )
+	 *    event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event'
+	 *    number_posts (int) - the total number of posts to display ( default: 10 )
+	 *    posts_per_site (int) - the number of posts for each site ( default: no limit )
+	 *    include_categories (array) - the categories of posts to include ( default: all categories )
+	 *    exclude_sites (array) - the sites from which posts should be excluded ( default: all sites ( public sites, except archived, deleted and spam ) )
+	 *    output (string) - HTML or array ( default: HTML )
+	 *    style - (string) normal ( list ), block or highlights ( default: normal ) - ignored if @output is 'array'
+	 *    id (int) - ID used in list markup ( default: network-posts-RAND ) - ignored if @output is 'array'
+	 *    class (string) - class used in list markup ( default: post-list ) - ignored if @output is 'array'
+	 *    title (string) - title displayed for list ( default: Posts ) - ignored unless @style is 'highlights'
+	 *    title_image (string) - image displayed behind title ( default: home-highlight.png ) - ignored unless @style is 'highlights'
+	 *    show_thumbnail (bool) - display post thumbnail ( default: false ) - ignored if @output is 'array'
+	 *    show_meta (bool) - if meta info should be displayed ( default: true ) - ignored if @output is 'array'
+	 *    show_excerpt (bool) - if excerpt should be displayed ( default: true ) - ignored if @output is 'array' or if @show_meta is false
+	 *    excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is false
+	 *    show_site_name (bool) - if site name should be displayed ( default: true ) - ignored if @output is 'array'
+	 * @return array $posts_list The array of posts.
+	 */
+	public function get_posts_from_network( $parameters = array() ) {
+
+		// Default parameters
+		$defaults = array(
+			'post_type' => (string) 'post', // (string) - post, event
+			'number_posts' => (int) 10, // (int)
+			'exclude_sites' => array(),
+			'include_categories' => array(),
+			'posts_per_site' => (int) null, // (int)
+			'output' => (string) 'html', // (string) - html, array
+			'style' => (string) 'normal', // (string) - normal
+			'id' => (string) 'network-posts-' . rand(), // (string)
+			'class' => (string) 'post-list', // (string)
+			'title' => (string) 'Posts', // (string)
+			'title_image' => (string) null, // (string)
+			'show_meta' => (bool) true, // (bool)
+			'show_thumbnail' => (bool) false, // (bool)
+			'show_excerpt' => (bool) true, // (bool)
+			'excerpt_length' => (int) 55, // (int)
+			'show_site_name' => (bool) true, // (bool)
+			'event_scope' => (string) 'future', // (string) - future, past, all
+			'include_event_categories' => array(), // (array) - event-category (term name) to include
+			'include_event_tags' => array(), // (array) - event-tag (term name) to include
+		);
+
+		// SANITIZE INPUT
+		$parameters = WP_Network_Content_Display_Helpers::sanitize_input( $parameters );
+
+		if ( isset( $parameters['exclude_sites'] ) && !empty( $parameters['exclude_sites'] ) ) {
+			$parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
+		}
+
+		if ( isset( $parameters['include_event_categories'] ) && !empty( $parameters['include_event_categories'] ) ) {
+			$parameters['include_event_categories'] = explode( ',', $parameters['include_event_categories'] );
+		}
+
+		if ( isset( $parameters['include_event_tags'] ) && !empty( $parameters['include_event_tags'] ) ) {
+			$parameters['include_event_tags'] = explode( ',', $parameters['include_event_tags'] );
+		}
+
+		// CALL MERGE FUNCTION
+		$settings = WP_Network_Content_Display_Helpers::get_merged_settings( $parameters, $defaults );
+
+		// Extract each parameter as its own variable
+		extract( $settings, EXTR_SKIP );
+
+		// CALL SITES FUNCTION
+		$sites_list = WP_Network_Content_Display_Helpers::get_sites_data( $settings );
+
+		// CALL GET POSTS FUNCTION
+		$posts_list = $this->get_posts_list( $sites_list, $settings );
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'sites_list' => $sites_list,
+			'posts_list' => $posts_list,
+			'backtrace' => $trace,
+		), true ) );
+		*/
+
+		if ( $output == 'array' ) {
+
+			// Return an array
+			return $posts_list;
+
+		} else {
+
+			// CALL RENDER FUNCTION
+			return $this->render_html( $posts_list, $settings );
+
+		}
+
+	}
+
+
+
+	/**
 	 * Get sitewide taxonomy terms.
 	 *
 	 * @param str $taxonomy The name of of the taxonomy.
 	 * @param array $exclude_sites The sites to exclude.
 	 * @return array $term_list The array of terms with unique taxonomy term slugs and names.
 	 */
-	public function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
+	public function get_network_event_terms( $taxonomy, $exclude_sites = null ) {
 
 		// Site statuses to include
 		$site_args = array(
@@ -105,20 +207,36 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'mature' => null,
 		);
 
-		// Allow the $site_args to be changed
-		if ( has_filter( 'glocal_network_tax_term_siteargs_arguments' ) ) {
-			$site_args = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $site_args );
+		// check for excludes
+		if ( ! empty( $exclude_sites ) ) {
+			$site_args['site__not_in'] = $exclude_sites;
 		}
 
-		$sites_list = ( $exclude_sites ) ? glocal_exclude_sites( $exclude_sites ) : get_sites( $site_args );
+		/**
+		 * Allow the arguments to be filtered.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $site_args );
 
+		// get sites
+		$sites_list = get_sites( $site_args );
+
+		// init term args
 		$term_args = array();
 
-		// Allow the $site_args to be changed
-		if ( has_filter( 'glocal_network_tax_termarg_arguments' ) ) {
-			$term_args = apply_filters( 'glocal_network_tax_termarg_arguments', $term_args );
-		}
+		/**
+		 * Allow the term arguments to be filtered.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $term_args The arguments used to query the terms.
+		 */
+		$term_args = apply_filters( 'glocal_network_tax_termarg_arguments', $term_args );
 
+		// init term list
 		$term_list = array();
 
 		foreach( $sites_list as $site ) {
@@ -129,7 +247,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			$site_terms = get_terms( $taxonomy, $term_args );
 
 			foreach( $site_terms as $term ) {
-				if ( !in_array( $term->slug, $term_list ) ) {
+				if ( ! in_array( $term->slug, $term_list ) ) {
 					$term_list[$term->slug] = $term->name;
 				}
 			}
@@ -148,12 +266,12 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 
 	/**
-	 * Custom event meta.
+	 * Get Event meta data.
 	 *
 	 * @param int $event_id The numeric ID of the event.
 	 * @return str $html The formatted event meta.
 	 */
-	public function glocal_get_event_taxonomy( $event_id = 0 ) {
+	public function get_taxonomies( $event_id = 0 ) {
 
 		$event_id = (int) ( empty( $event_id ) ? get_the_ID() : $event_id );
 
@@ -172,7 +290,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			$html .= get_the_term_list( $event_id, 'event-tag', '<ul class="event-tags tags"><li class="tag-item">','</li><li>', '</li></ul>' );
 		}
 
-		$html .='</div>';
+		$html .= '</div>';
 
 		return $html;
 
@@ -210,7 +328,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *    'id' => 'network-events-' . rand(),
 	 *    'class' => 'event-list',
 	 *    'title' => 'Events',
-	 *    'show_meta' => True, // boolean
+	 *    'show_meta' => true, // boolean
 	 *    'post_type' => 'event',
 	 * @return str $html The data rendered as an HTML list.
 	 */

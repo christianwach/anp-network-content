@@ -92,8 +92,6 @@ class WP_Network_Content_Display_Posts {
 
 
 	/**
-	 * NETWORK POSTS MAIN FUNCTION.
-	 *
 	 * Get (or render) posts from sites across the network.
 	 *
 	 * 1/5/2016: Updated to allow for custom post types.
@@ -121,14 +119,14 @@ class WP_Network_Content_Display_Posts {
 	 *    class (string) - class used in list markup ( default: post-list ) - ignored if @output is 'array'
 	 *    title (string) - title displayed for list ( default: Posts ) - ignored unless @style is 'highlights'
 	 *    title_image (string) - image displayed behind title ( default: home-highlight.png ) - ignored unless @style is 'highlights'
-	 *    show_thumbnail (bool) - display post thumbnail ( default: False ) - ignored if @output is 'array'
-	 *    show_meta (bool) - if meta info should be displayed ( default: True ) - ignored if @output is 'array'
-	 *    show_excerpt (bool) - if excerpt should be displayed ( default: True ) - ignored if @output is 'array' or if @show_meta is False
-	 *    excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is False
-	 *    show_site_name (bool) - if site name should be displayed ( default: True ) - ignored if @output is 'array'
+	 *    show_thumbnail (bool) - display post thumbnail ( default: false ) - ignored if @output is 'array'
+	 *    show_meta (bool) - if meta info should be displayed ( default: true ) - ignored if @output is 'array'
+	 *    show_excerpt (bool) - if excerpt should be displayed ( default: true ) - ignored if @output is 'array' or if @show_meta is false
+	 *    excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is false
+	 *    show_site_name (bool) - if site name should be displayed ( default: true ) - ignored if @output is 'array'
 	 * @return array $posts_list The array of posts.
 	 */
-	public function get_network_posts( $parameters = array() ) {
+	public function get_posts_from_network( $parameters = array() ) {
 
 		// Default parameters
 		$defaults = array(
@@ -143,11 +141,11 @@ class WP_Network_Content_Display_Posts {
 			'class' => (string) 'post-list', // (string)
 			'title' => (string) 'Posts', // (string)
 			'title_image' => (string) null, // (string)
-			'show_meta' => (bool) True, // (bool)
-			'show_thumbnail' => (bool) False, // (bool)
-			'show_excerpt' => (bool) True, // (bool)
+			'show_meta' => (bool) true, // (bool)
+			'show_thumbnail' => (bool) false, // (bool)
+			'show_excerpt' => (bool) true, // (bool)
 			'excerpt_length' => (int) 55, // (int)
-			'show_site_name' => (bool) True, // (bool)
+			'show_site_name' => (bool) true, // (bool)
 			'event_scope' => (string) 'future', // (string) - future, past, all
 			'include_event_categories' => array(), // (array) - event-category (term name) to include
 			'include_event_tags' => array(), // (array) - event-tag (term name) to include
@@ -160,14 +158,6 @@ class WP_Network_Content_Display_Posts {
 			$parameters['exclude_sites'] = explode( ',', $parameters['exclude_sites'] );
 		}
 
-		if ( isset( $parameters['include_event_categories'] ) && !empty( $parameters['include_event_categories'] ) ) {
-			$parameters['include_event_categories'] = explode( ',', $parameters['include_event_categories'] );
-		}
-
-		if ( isset( $parameters['include_event_tags'] ) && !empty( $parameters['include_event_tags'] ) ) {
-			$parameters['include_event_tags'] = explode( ',', $parameters['include_event_tags'] );
-		}
-
 		// CALL MERGE FUNCTION
 		$settings = WP_Network_Content_Display_Helpers::get_merged_settings( $parameters, $defaults );
 
@@ -175,7 +165,7 @@ class WP_Network_Content_Display_Posts {
 		extract( $settings, EXTR_SKIP );
 
 		// CALL SITES FUNCTION
-		$sites_list = glocal_get_sites_list( $settings );
+		$sites_list = WP_Network_Content_Display_Helpers::get_sites_data( $settings );
 
 		// CALL GET POSTS FUNCTION
 		$posts_list = $this->get_posts_list( $sites_list, $settings );
@@ -268,8 +258,8 @@ class WP_Network_Content_Display_Posts {
 
 		$site_details = get_blog_details( $site_id );
 
-		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'post' ;
-		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20 ;
+		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'post';
+		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20;
 		$post_args['category_name'] = ( isset( $include_categories ) ) ? $include_categories : '';
 
 		// Event-specific arguments
@@ -317,30 +307,24 @@ class WP_Network_Content_Display_Posts {
 		$recent_posts = wp_get_recent_posts( $post_args );
 
 		// Put all the posts in a single array
-		foreach( $recent_posts as $post => $postdetail ) {
+		foreach( $recent_posts as $post => $post_detail ) {
 
-			//global $post;
-
-			$post_id = $postdetail['ID'];
-			$author_id = $postdetail['post_author'];
+			$post_id = $post_detail['ID'];
+			$author_id = $post_detail['post_author'];
 
 			// Prefix the array key with event start date or post date
 			$prefix = ( 'event' === $post_type ) ?
-					  get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true ) . '-' . $postdetail['post_name'] :
-					  $postdetail['post_date'] . '-' . $postdetail['post_name'];
+					  get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true ) . '-' . $post_detail['post_name'] :
+					  $post_detail['post_date'] . '-' . $post_detail['post_name'];
 
-			//CALL POST MARKUP FUNCTION
-			$post_markup_class = WP_Network_Content_Display_Helpers::get_post_markup_class( $post_id );
-			$post_markup_class .= ' siteid-' . $site_id;
-
-			//Returns an array
+			// Returns an array
 			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'medium' );
 
-			if ( $postdetail['post_excerpt'] ) {
-				$excerpt = $postdetail['post_excerpt'];
+			if ( $post_detail['post_excerpt'] ) {
+				$excerpt = $post_detail['post_excerpt'];
 			} else {
 				$excerpt = wp_trim_words(
-					$postdetail['post_content'],
+					$post_detail['post_content'],
 					$excerpt_length,
 					sprintf( __( '... <a href="%s">Read More</a>', 'wp-network-content-display' ), get_permalink( $post_id ) )
 				);
@@ -348,14 +332,14 @@ class WP_Network_Content_Display_Posts {
 
 			$post_list[$prefix] = array(
 				'post_id' => $post_id,
-				'post_title' => $postdetail['post_title'],
-				'post_date' => $postdetail['post_date'],
-				'post_author' => get_the_author_meta( 'display_name', $postdetail['post_author'] ),
-				'post_content' => $postdetail['post_content'],
+				'post_title' => $post_detail['post_title'],
+				'post_date' => $post_detail['post_date'],
+				'post_author' => get_the_author_meta( 'display_name', $post_detail['post_author'] ),
+				'post_content' => $post_detail['post_content'],
 				'post_excerpt' => strip_shortcodes( $excerpt ),
 				'permalink' => get_permalink( $post_id ),
 				'post_image' => $post_thumbnail[0],
-				'post_class' => $post_markup_class,
+				'post_class' => get_post_class( 'siteid-' . $site_id, $post_id ),
 				'post_type' => $post_type,
 				'site_id' => $site_id,
 				'site_name' => $site_details->blogname,
@@ -472,12 +456,24 @@ class WP_Network_Content_Display_Posts {
 
 		foreach( $posts_array as $key => $post_detail ) {
 
-			global $post;
+			//global $post;
 
 			$post_id = $post_detail['post_id'];
 
 			if ( isset( $post_detail['categories'] ) ) {
 				$post_categories = implode( ", ", $post_detail['categories'] );
+			}
+
+			// get post class
+			$post_class = '';
+			if ( isset( $post_detail['post_class'] ) AND  is_array( $post_detail['post_class'] ) ) {
+				$post_class = ' class="' . implode( ' ', $post_detail['post_class'] ) . '"';
+			}
+
+			// get post categories
+			$categories = '';
+			if ( isset( $post_detail['categories'] ) AND  is_array( $post_detail['categories'] ) ) {
+				$categories = implode( ', ', $post_detail['categories'] );
 			}
 
 			// prevent immediate output

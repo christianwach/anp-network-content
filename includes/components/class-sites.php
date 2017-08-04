@@ -119,8 +119,8 @@ class WP_Network_Content_Display_Sites {
 			'exclude_sites' => array(),
 			'sort_by' => (string) 'alpha',
 			'default_image' => (string) null,
-			'show_meta' => (bool) False,
-			'show_image' => (bool) False,
+			'show_meta' => (bool) false,
+			'show_image' => (bool) false,
 			'id' => (string) 'network-sites-' . rand(),
 			'class' => (string) 'network-sites-list',
 		);
@@ -132,7 +132,7 @@ class WP_Network_Content_Display_Sites {
 		extract( $settings, EXTR_SKIP );
 
 		// CALL GET SITES FUNCTION
-		$sites_list = glocal_get_sites_list( $settings );
+		$sites_list = WP_Network_Content_Display_Helpers::get_sites_data( $settings );
 
 		// Sorting
 		switch ( $sort_by ) {

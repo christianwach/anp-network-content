@@ -7,12 +7,12 @@
  * 'plugins/wp-network-content-display/event-list.php'
  * in your active theme's directory.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 ?>
 
-<li id="post-<?php echo $post_id; ?>" class="event <?php echo $post_class; ?>" role="article">
+<li id="post-<?php echo $post_id; ?>"<?php echo $post_class; ?> role="article">
 
 	<header class="entry-header">
 
@@ -24,14 +24,14 @@
 
 		<h3 class="entry-title event-title"><a href="<?php echo esc_url( $post_detail['permalink'] ); ?>" class="post-link"><?php echo $post_detail['post_title']; ?></a></h3>
 
-		<h4 class="entry-meta event-meta">
+		<div class="entry-meta event-meta">
 			<span class="event-day"><?php echo date_i18n( 'l, ', strtotime( $post_detail['event_start_date'] ) ); ?></span>
 			<time class="event-date" itemprop="startDate" datetime="<?php echo date_i18n( 'Y-m-d H:i:s', strtotime( $post_detail['event_start_date'] ) ); ?>"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></time>
 			<div class="event-time">
 				<span class="start"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></span>
 				<span class="end"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_end_date'] ) ); ?></span>
 			</div>
-		</h4>
+		</div>
 
 	</header>
 
@@ -54,22 +54,22 @@
 			<?php echo $post_detail['post_excerpt']; ?>
 		</div>
 
-		<?php if ( ! empty( $show_meta ) ) { ?>
-			<footer class="entry-footer">
-				<div class="entry-meta event-meta">
-					<?php if ( ! empty( $show_site_name ) ) { ?>
-						<span class="site-name"><a href="<?php echo esc_url( $post_detail['site_link'] ); ?>"><?php echo $post_detail['site_name']; ?></a></span>
-					<?php } ?>
-					<span class="event-author"><a href="<?php echo esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo $post_detail['post_author']; ?></a></span>
-					<?php if ( function_exists( 'glocal_get_event_taxonomy' ) ) : ?>
-						<div class="category tags">
-							<?php echo glocal_get_event_taxonomy( $post_id ); ?>
-						</div>
-					<?php endif; ?>
-				</div>
-			</footer>
-		<?php } ?>
-
 	</div><!-- /.entry-content -->
+
+	<?php if ( ! empty( $show_meta ) ) { ?>
+		<footer class="entry-footer">
+			<div class="entry-meta event-meta">
+				<?php if ( ! empty( $show_site_name ) ) { ?>
+					<span class="site-name"><a href="<?php echo esc_url( $post_detail['site_link'] ); ?>"><?php echo $post_detail['site_name']; ?></a></span>
+				<?php } ?>
+				<span class="event-author"><a href="<?php echo esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo $post_detail['post_author']; ?></a></span>
+				<?php if ( ! empty( $categories ) ) { ?>
+					<div class="category tags">
+						<?php echo $categories; ?>
+					</div>
+				<?php } ?>
+			</div>
+		</footer>
+	<?php } ?>
 
 </li>

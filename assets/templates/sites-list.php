@@ -7,7 +7,7 @@
  * 'plugins/wp-network-content-display/sites-list.php'
  * in your active theme's directory.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 ?>

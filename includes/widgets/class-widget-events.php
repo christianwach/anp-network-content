@@ -93,7 +93,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		}
 
 		// display events
-		echo wp_network_content_display()->components->events->get_network_posts( $instance );
+		echo wp_network_content_display()->components->events->get_posts_from_network( $instance );
 
 		echo $after_widget;
 
@@ -150,8 +150,8 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'public' => 1,
 		) );
 
-		$categories = get_sitewide_taxonomy_terms( 'event-category' );
-		$tags = get_sitewide_taxonomy_terms( 'event-tag' );
+		$categories = wp_network_content_display()->components->events->get_network_event_terms( 'event-category' );
+		$tags = wp_network_content_display()->components->events->get_network_event_terms( 'event-tag' );
 
 		$scopes = array(
 			'future' => __( 'Future', 'wp-network-content-display' ),

@@ -83,11 +83,11 @@ class WP_Network_Content_Display_Helpers {
 	 */
 	public static function sort_sites_by_most_active( $sites_array ) {
 
-		$sites = $sites_array;
-
-		usort( $sites, function( $b, $a ) {
+		usort( $sites_array, function( $b, $a ) {
 			return strcmp( $a['post_count'], $b['post_count'] );
 		});
+
+		return $sites_array;
 
 	}
 
@@ -205,26 +205,6 @@ class WP_Network_Content_Display_Helpers {
 		}
 
 		return $slug;
-
-	}
-
-
-
-	/**
-	 * Get the class for a post.
-	 *
-	 * @param int $post_id The numeric ID of the post.
-	 * @return array $post_markup_class The string of post classes for the post.
-	 */
-	public static function get_post_markup_class( $post_id ) {
-
-		$post_id = $post_id;
-
-		$markup_class_array = get_post_class( array( 'list-item' ), (int) $post_id );
-
-		$post_markup_class = implode( ' ', $markup_class_array );
-
-		return $post_markup_class;
 
 	}
 
@@ -352,6 +332,135 @@ class WP_Network_Content_Display_Helpers {
 		 * @param str $template The path to the found template file.
 		 */
 		return apply_filters( 'wncd_load_template_filter', $template );
+
+	}
+
+
+
+	/**
+	 * Retrieve an array of site data.
+	 *
+	 * @param array $options_array The array of parameters.
+	 * @return array $site_list The array of sites with site information.
+	 */
+	public static function get_sites_data( $options_array ) {
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'options_array' => $options_array,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
+
+		// init return
+		$site_list = array();
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		$site_args = array(
+			'limit' => null,
+			'public' => 1,
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'mature' => null,
+		);
+
+		// check for excludes
+		if ( ! empty( $exclude_sites ) ) {
+			$site_args['site__not_in'] = $exclude_sites;
+		}
+
+		 /**
+		  * Allow the $site_args to be filtered.
+		  */
+		$site_args = apply_filters( 'glocal_network_sites_site_arguments', $site_args );
+
+		// get sites
+		$sites = get_sites( $site_args );
+
+		foreach( $sites as $site ) {
+
+			$site_details = get_blog_details( $site->blog_id );
+
+			$site_list[$site->blog_id] = array(
+				'blog_id' => $site->blog_id,
+				'blogname' => $site_details->blogname,
+				'siteurl' => $site_details->siteurl,
+				'path' => $site_details->path,
+				'registered' => $site_details->registered,
+				'last_updated' => $site_details->last_updated,
+				'post_count' => intval( $site_details->post_count ),
+			);
+
+			// CALL GET SITE IMAGE FUNCTION
+			$site_image = WP_Network_Content_Display_Helpers::get_site_header_image( $site->blog_id );
+
+			if ( $site_image ) {
+				$site_list[$site->blog_id]['site-image'] = $site_image;
+			} elseif ( isset( $default_image ) ) {
+				$site_list[$site->blog_id]['site-image'] = $default_image;
+			} else {
+				$site_list[$site->blog_id]['site-image'] = '';
+			}
+
+			$site_list[$site->blog_id]['recent_post'] = self::get_latest_post( $site->blog_id );
+
+		}
+
+		return $site_list;
+
+	}
+
+
+
+	/**
+	 * Get the most recent post from the specified site.
+	 *
+	 * @param int $site_id The numeric ID of the site.
+	 * @return array $recent_post_data The array of data for the post.
+	 */
+	public static function get_latest_post( $site_id ) {
+
+		// Switch to current blog
+		switch_to_blog( $site_id );
+
+		// Get most recent post
+		$recent_posts = wp_get_recent_posts( 'numberposts=1' );
+
+		// Get most recent post info
+		foreach( $recent_posts as $post ) {
+
+			$post_id = $post['ID'];
+
+			// Post into $site_list array
+			$recent_post_data = array (
+				'post_id' => $post_id,
+				'post_author' => $post['post_author'],
+				'post_slug' => $post['post_name'],
+				'post_date' => $post['post_date'],
+				'post_title' => $post['post_title'],
+				'post_content' => $post['post_content'],
+				'permalink' => get_permalink( $post_id ),
+			);
+
+			// If there is a featured image, add URL to array, else leave empty
+			if ( wp_get_attachment_url( get_post_thumbnail_id( $post_id ) ) ) {
+				$recent_post_data['thumbnail'] = wp_get_attachment_url( get_post_thumbnail_id( $post_id ) );
+			} else {
+				$recent_post_data['thumbnail'] = '';
+			}
+
+		}
+
+		// Exit
+		restore_current_blog();
+
+		return $recent_post_data;
 
 	}
 
