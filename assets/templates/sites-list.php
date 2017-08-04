@@ -12,7 +12,7 @@
 
 ?>
 
-<li id="site-<?php echo $site_id; ?>" data-posts="<?php echo $site['post_count']; ?>" data-slug="<?php echo $slug; ?>" data-id="<?php echo $site_id; ?>" data-updated="<?php echo $site['last_updated']; ?>" class="site-item">
+<li id="site-<?php echo $site_id; ?>" data-posts="<?php echo $site['post_count']; ?>" data-slug="<?php echo $slug; ?>" data-id="<?php echo $site_id; ?>" data-updated="<?php echo $site['last_updated']; ?>" class="site-item hentry">
 
 	<header class="entry-header">
 

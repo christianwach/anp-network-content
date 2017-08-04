@@ -335,11 +335,9 @@ class WP_Network_Content_Display_Posts {
 		), true ) );
 		*/
 
-		// Make each parameter as its own variable
-		extract( $options_array, EXTR_SKIP );
-
-		if ( ! empty( $style ) ) {
-			if( 'list'	== $style ) {
+		// choose how to render
+		if ( ! empty( $options_array['style'] ) ) {
+			if( 'list'	== $options_array['style'] ) {
 				$rendered_html = $this->render_list_html( $posts_array, $options_array );
 			} else {
 				 $rendered_html = $this->render_block_html( $posts_array, $options_array );
@@ -348,6 +346,7 @@ class WP_Network_Content_Display_Posts {
 			$rendered_html = $this->render_list_html( $posts_array, $options_array );
 		}
 
+		// --<
 		return $rendered_html;
 
 	}
@@ -378,8 +377,6 @@ class WP_Network_Content_Display_Posts {
 		$template = WPNCD_Helpers::find_template( $post_type . '-list.php' );
 
 		foreach( $posts_array as $key => $post_detail ) {
-
-			//global $post;
 
 			$post_id = $post_detail['post_id'];
 
@@ -442,16 +439,31 @@ class WP_Network_Content_Display_Posts {
 
 		foreach( $posts_array as $key => $post_detail ) {
 
-			global $post;
-
 			$post_id = $post_detail['post_id'];
-			$post_categories = ( isset( $post_detail['categories'] ) ) ? implode( ", ", $post_detail['categories'] ) : '';
 
 			// Convert strings to booleans
 			$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : '';
 			$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : '';
 			$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
 			$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
+
+			// get post class
+			$post_class = '';
+			if ( isset( $post_detail['post_class'] ) AND  is_array( $post_detail['post_class'] ) ) {
+				$post_class = ' class="' . implode( ' ', $post_detail['post_class'] ) . '"';
+			}
+
+			// get post categories
+			$categories = '';
+			if ( isset( $post_detail['categories'] ) AND  ! empty( $post_detail['categories'] ) ) {
+				$categories = implode( ', ', $post_detail['categories'] );
+			}
+
+			// get post tags
+			$tags = '';
+			if ( isset( $post_detail['tags'] ) AND  ! empty( $post_detail['tags'] ) ) {
+				$tags = implode( ', ', $post_detail['tags'] );
+			}
 
 			// prevent immediate output
 			ob_start();

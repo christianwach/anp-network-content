@@ -12,7 +12,7 @@
 
 ?>
 
-<article id="post-<?php echo $post_id; ?>" class="event <?php echo $post_class; ?>" role="article">
+<article id="post-<?php echo $post_id; ?>"<?php echo $post_class; ?> role="article">
 
 	<header class="entry-header">
 

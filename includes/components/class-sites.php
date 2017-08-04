@@ -154,7 +154,34 @@ class WP_Network_Content_Display_Sites {
 		}
 
 		// return rendered markup
-		return $this->render_sites_list( $sites_list, $settings );
+		return $this->render_html( $sites_list, $settings );
+
+	}
+
+
+
+	/**
+	 * Render a list of sites.
+	 *
+	 * @param array $sites_array An array of sites data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $rendered_html The data rendered as 'normal' or 'highlight' HTML.
+	 */
+	public function render_html( $sites_array, $options_array ) {
+
+		// choose how to render
+		if ( ! empty( $options_array['style'] ) ) {
+			if( 'list'	== $options_array['style'] ) {
+				$rendered_html = $this->render_html_list( $sites_array, $options_array );
+			} else {
+				 $rendered_html = $this->render_html_block( $sites_array, $options_array );
+			}
+		} else {
+			$rendered_html = $this->render_html_list( $sites_array, $options_array );
+		}
+
+		// --<
+		return $rendered_html;
 
 	}
 
@@ -167,7 +194,7 @@ class WP_Network_Content_Display_Sites {
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML list.
 	 */
-	public function render_sites_list( $sites_array, $options_array ) {
+	public function render_html_list( $sites_array, $options_array ) {
 
 		// Extract each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
@@ -181,7 +208,8 @@ class WP_Network_Content_Display_Sites {
 			$class .= ' show-site-image';
 		}
 
-		$html = '<ul id="' . $id . '" class="sites-list ' . $class . '">';
+		// open list
+		$html = '<ul id="' . $id . '" class="sites-list' . $class . '">';
 
 		// find template
 		$template = WPNCD_Helpers::find_template( 'sites-list.php' );
@@ -207,8 +235,59 @@ class WP_Network_Content_Display_Sites {
 
 		}
 
+		// close list
 		$html .= '</ul>';
 
+		// --<
+		return $html;
+
+	}
+
+
+
+	/**
+	 * Render an array of sites as HTML "blocks".
+	 *
+	 * @param array $sites_array An array of sites data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as an HTML "block".
+	 */
+	public function render_html_block( $sites_array, $options_array ) {
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		// open div
+		$html = '<div class="wp-network-sites">';
+
+		// find template
+		$template = WPNCD_Helpers::find_template( 'sites-block.php' );
+
+		foreach ( $sites_array as $site ) {
+
+			$site_id = $site['blog_id'];
+
+			// CALL GET SLUG FUNCTION
+			$slug = WPNCD_Helpers::get_site_slug( $site['path'] );
+
+			// prevent immediate output
+			ob_start();
+
+			// use template
+			include( $template );
+
+			// grab markup
+			$html .= ob_get_contents();
+
+			// clean up
+			ob_end_clean();
+
+		}
+
+		// close div
+		$html .= '</div>';
+
+		// --<
 		return $html;
 
 	}

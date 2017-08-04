@@ -30,6 +30,14 @@
 </p>
 
 <p>
+	<label for="<?php echo $this->get_field_id( 'style' ); ?>" class="style_label"><?php _e( 'Display Style', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'style' ); ?>" name="<?php echo $this->get_field_name( 'style' ); ?>" class="widefat">
+		<option value="" <?php selected( $style, '' ); ?>><?php _e( 'List (Default)', 'wp-network-content-display' ); ?></option>
+		<option value="block" <?php selected( $style, 'block' ); ?>><?php _e( 'Block', 'wp-network-content-display' ); ?></option>
+	</select>
+</p>
+
+<p>
 	<label for="<?php echo $this->get_field_id( 'id' ); ?>" class="id_label"><?php _e( 'ID', 'wp-network-content-display' ); ?></label>
 	<input type="text" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter ID', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $id ); ?>">
 </p>
