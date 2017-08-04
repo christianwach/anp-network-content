@@ -137,6 +137,17 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '';
 		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
 
+		// get sites
+		$sites = get_sites( array(
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'public' => 1,
+		) );
+
+		// get categories
+		$categories = get_categories();
+
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-posts.php' );
 

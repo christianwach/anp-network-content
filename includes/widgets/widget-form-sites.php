@@ -13,22 +13,9 @@
 	<label for="exclude_sites" class="exclude_sites_label"><?php _e( 'Exclude Sites', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'exclude_sites' ); ?>" name="<?php echo $this->get_field_name( 'exclude_sites' ); ?>[]" multiple="multiple" class="widefat">
 		<option value="" <?php selected( empty( $exclude_sites ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
-		<?php
-		$siteargs = array(
-			'archived' => 0,
-			'spam' => 0,
-			'deleted' => 0,
-			'public' => 1,
-		);
-		$sites = get_sites( $siteargs );
-		foreach( $sites as $site ) {
-			$site_id = $site->blog_id;
-			$site_name = get_blog_details( $site_id )->blogname;
-			?>
-			<option id="<?php echo $site_id; ?>" value="<?php echo $site_id; ?>"<?php ( ! empty( $exclude_sites ) && in_array( $site_id, $exclude_sites ) ) ? ' selected="selected"' : ''; ?>><?php echo $site_name; ?></option>
-			<?php
-		}
-		?>
+		<?php foreach( $sites as $site ) { ?>
+			<option id="<?php echo $site->blog_id; ?>" value="<?php echo $site->blog_id; ?>"<?php ( ! empty( $exclude_sites ) && in_array( $site->blog_id, $exclude_sites ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( get_blog_details( $site->blog_id )->blogname ); ?></option>
+		<?php } ?>
 	</select>
 </p>
 

@@ -51,20 +51,6 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 
 	/**
-	 * Enqueue the Javascripts for the media uploader.
-	 *
-	 * @since 1.0.0
-	 */
-	public function upload_scripts() {
-
-		// enable media uploads
-		wp_enqueue_media();
-
-	}
-
-
-
-	/**
 	 * Outputs the HTML for this widget.
 	 *
 	 * @since 1.0.0
@@ -136,6 +122,14 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$show_image = isset( $instance['show_image'] ) ? (bool) $instance['show_image'] : false;
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
 
+		// get sites
+		$sites = get_sites( array(
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'public' => 1,
+		) );
+
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-sites.php' );
 
@@ -168,6 +162,20 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$instance['default_image'] = ! empty( $new_instance['default_image'] ) ? strip_tags( $new_instance['default_image'] ) : '';
 
 		return $instance;
+
+	}
+
+
+
+	/**
+	 * Enqueue what we need for the WordPress Media Uploader.
+	 *
+	 * @since 1.0.0
+	 */
+	public function upload_scripts() {
+
+		// enable media uploads
+		wp_enqueue_media();
 
 	}
 

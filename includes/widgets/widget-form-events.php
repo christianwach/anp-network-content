@@ -13,21 +13,9 @@
 	<label for="exclude_sites" class="exclude_sites_label"><?php _e( 'Exclude Sites', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'exclude_sites' ); ?>" name="<?php echo $this->get_field_name( 'exclude_sites' ); ?>[]" multiple="multiple" class="widefat">
 		<option value="" <?php selected( empty( $exclude_sites ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
-		<?php
-		$sites = get_sites( array(
-			'archived' => 0,
-			'spam' => 0,
-			'deleted' => 0,
-			'public' => 1,
-		) );
-		foreach( $sites as $site ) {
-			$site_id = $site->blog_id;
-			$site_name = get_blog_details( $site_id )->blogname;
-			?>
-			<option id="<?php echo $site_id; ?>" value="<?php echo $site_id; ?>"<?php ( ! empty( $exclude_sites ) && in_array( $site_id, $exclude_sites) ) ? ' selected="selected"' : ''; ?>><?php echo $site_name; ?></option>
-			<?php
-		}
-		?>
+		<?php foreach( $sites as $site ) { ?>
+			<option id="<?php echo $site->blog_id; ?>" value="<?php echo $site->blog_id; ?>"<?php ( ! empty( $exclude_sites ) && in_array( $site->blog_id, $exclude_sites ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( get_blog_details( $site->blog_id )->blogname ); ?></option>
+		<?php } ?>
 	</select>
 </p>
 
@@ -35,14 +23,9 @@
 	<label for="include_event_categories" class="include_event_categories_label"><?php _e( 'Include Categories', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'include_event_categories' ); ?>" name="<?php echo $this->get_field_name( 'include_event_categories' ); ?>[]" multiple="multiple" class="widefat">
 		<option value="" <?php selected( empty( $include_event_categories ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
-		<?php
-		$categories = get_sitewide_taxonomy_terms( 'event-category' );
-		foreach( $categories as $key => $value ) {
-			?>
+		<?php foreach( $categories as $key => $value ) { ?>
 			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php ( ! empty( $include_event_categories ) && in_array( $key, $include_event_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
-			<?php
-		}
-		?>
+		<?php } ?>
 	</select>
 </p>
 
@@ -50,48 +33,27 @@
 	<label for="include_event_tags" class="include_event_tags_label"><?php _e( 'Include Tags', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'include_event_tags' ); ?>" name="<?php echo $this->get_field_name( 'include_event_tags' ); ?>[]" multiple="multiple" class="widefat">
 		<option value="" <?php selected( empty( $include_event_tags ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
-		<?php
-		$tags = get_sitewide_taxonomy_terms( 'event-tag' );
-		foreach( $tags as $key => $value ) {
-			?>
+		<?php foreach( $tags as $key => $value ) { ?>
 			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php ( ! empty( $include_event_tags ) && in_array( $key,	$include_event_tags ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
-			<?php
-		}
-		?>
+		<?php } ?>
 	</select>
 </p>
 
 <p>
 	<label for="<?php echo $this->get_field_id( 'event_scope' ); ?>" class="event_scope_label"><?php _e( 'Event Scope', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'event_scope' ); ?>" name="<?php echo $this->get_field_name( 'event_scope' ); ?>" class="widefat">
-		<?php
-		$scopes = array(
-			'future' => __( 'Future', 'wp-network-content-display' ),
-			'past'	 => __( 'Past', 'wp-network-content-display' ),
-			'all'	=> __( 'All', 'wp-network-content-display' ),
-		);
-		foreach( $scopes as $key => $value ) {
-			?>
+		<?php foreach( $scopes as $key => $value ) { ?>
 			<option value="<?php echo $key; ?>" <?php selected( $event_scope, $key ); ?>><?php echo $value; ?></option>
-			<?php
-		}
-		?>
+		<?php } ?>
 	</select>
 </p>
 
 <p>
 	<label for="<?php echo $this->get_field_id( 'style' ); ?>" class="style_label"><?php _e( 'Display Style', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'style' ); ?>" name="<?php echo $this->get_field_name( 'style' ); ?>" class="widefat">
-		<?php
-		$styles = array(
-			''		=> __( 'List (Default)', 'wp-network-content-display' ),
-			'block' => __( 'Block', 'wp-network-content-display' )
-		);
-		foreach( $styles as $key => $value ) {
-			?>
+		<?php foreach( $styles as $key => $value ) { ?>
 			<option value="<?php echo $key; ?>" <?php selected( $style, $key ); ?>><?php echo $value; ?></option>
-		}
-		?>
+		<?php } ?>
 	</select>
 </p>
 

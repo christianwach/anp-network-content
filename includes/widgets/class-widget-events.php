@@ -142,6 +142,28 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$include_event_categories = ! empty( $instance['include_event_categories'] ) ? $instance['include_event_categories'] : '';
 		$include_event_tags = ! empty( $instance['include_event_tags'] ) ? $instance['include_event_tags'] : '';
 
+		// get sites
+		$sites = get_sites( array(
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'public' => 1,
+		) );
+
+		$categories = get_sitewide_taxonomy_terms( 'event-category' );
+		$tags = get_sitewide_taxonomy_terms( 'event-tag' );
+
+		$scopes = array(
+			'future' => __( 'Future', 'wp-network-content-display' ),
+			'past' => __( 'Past', 'wp-network-content-display' ),
+			'all' => __( 'All', 'wp-network-content-display' ),
+		);
+
+		$styles = array(
+			'' => __( 'List (Default)', 'wp-network-content-display' ),
+			'block' => __( 'Block', 'wp-network-content-display' )
+		);
+
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-events.php' );
 
