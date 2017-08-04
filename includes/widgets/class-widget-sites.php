@@ -155,7 +155,6 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['number_sites'] = ! empty( $new_instance['number_sites'] ) ? strip_tags( $new_instance['number_sites'] ) : '';
-		$instance['exclude_sites'] = ! empty( $new_instance['exclude_sites'] ) ? $new_instance['exclude_sites'] : '';
 		$instance['sort_by'] = ! empty( $new_instance['sort_by'] ) ? $new_instance['sort_by'] : '';
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
 		$instance['id'] = ! empty( $new_instance['id'] ) ? strip_tags( $new_instance['id'] ) : '';
@@ -163,6 +162,9 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['show_image'] = ! empty( $new_instance['show_image'] ) ? true : false;
 		$instance['default_image'] = ! empty( $new_instance['default_image'] ) ? strip_tags( $new_instance['default_image'] ) : '';
+
+		// now handle multi-selects - these may be pseudo-empty arrays
+		$instance['exclude_sites'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['exclude_sites'] );
 
 		return $instance;
 

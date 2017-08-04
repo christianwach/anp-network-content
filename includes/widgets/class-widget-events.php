@@ -163,7 +163,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'block' => __( 'Block', 'wp-network-content-display' )
 		);
 
-		///*
+		/*
 		$e = new Exception;
 		$trace = $e->getTraceAsString();
 		error_log( print_r( array(
@@ -173,7 +173,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			//'sites' => $sites,
 			//'backtrace' => $trace,
 		), true ) );
-		//*/
+		*/
 
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-events.php' );
@@ -198,9 +198,6 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '';
-		$instance['exclude_sites'] = ! empty( $new_instance['exclude_sites'] ) ? $new_instance['exclude_sites'] : '';
-		$instance['include_categories'] = ! empty( $new_instance['include_categories'] ) ? $new_instance['include_categories'] : '';
-		$instance['include_tags'] = ! empty( $new_instance['include_tags'] ) ? $new_instance['include_tags'] : '';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
 		$instance['event_scope'] = ! empty( $new_instance['event_scope'] ) ? $new_instance['event_scope'] : '';
@@ -208,6 +205,22 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$instance['class'] = ! empty( $new_instance['class'] ) ? strip_tags( $new_instance['class'] ) : '';
 		$instance['excerpt_length'] = ! empty( $new_instance['excerpt_length'] ) ? strip_tags( $new_instance['excerpt_length'] ) : 20;
 		$instance['show_site_name'] = ! empty( $new_instance['show_site_name'] ) ? true : false;
+
+		// now handle multi-selects - these may be pseudo-empty arrays
+		$instance['exclude_sites'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['exclude_sites'] );
+		$instance['include_categories'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['include_categories'] );
+		$instance['include_tags'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['include_tags'] );
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'instance' => $instance,
+			'old_instance' => $old_instance,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		return $instance;
 

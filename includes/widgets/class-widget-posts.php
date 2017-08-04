@@ -179,8 +179,6 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '';
-		$instance['exclude_sites'] = ! empty( $new_instance['exclude_sites'] ) ? $new_instance['exclude_sites'] : '';
-		$instance['include_categories'] = ! empty( $new_instance['include_categories'] ) ? $new_instance['include_categories'] : '';
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
 		$instance['posts_per_site'] = ! empty( $new_instance['posts_per_site'] ) ? strip_tags( $new_instance['posts_per_site'] ) : '';
 		$instance['id'] = ! empty( $new_instance['id'] ) ? strip_tags( $new_instance['id'] ) : '';
@@ -190,6 +188,10 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$instance['show_excerpt'] = ! empty( $new_instance['show_excerpt'] ) ? true : false;
 		$instance['excerpt_length'] = ! empty( $new_instance['excerpt_length'] ) ? strip_tags( $new_instance['excerpt_length'] ) : 20;
 		$instance['show_site_name'] = ! empty( $new_instance['show_site_name'] ) ? true : false;
+
+		// now handle multi-selects - these may be pseudo-empty arrays
+		$instance['exclude_sites'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['exclude_sites'] );
+		$instance['include_categories'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['include_categories'] );
 
 		return $instance;
 
