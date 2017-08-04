@@ -62,20 +62,17 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		// Convert $exclude_sites array to comma-separated string
+		// Convert arrays to comma-separated string
 		if ( is_array( $instance['exclude_sites'] ) && ( ! empty( $instance['exclude_sites'][0] ) ) ) {
 			$instance['exclude_sites'] = implode( ',', $instance['exclude_sites'] );
 		} else {
 			unset( $instance['exclude_sites'] );
 		}
-
-		// Convert $include_categories array to comma-separated string
 		if ( is_array( $instance['include_categories'] ) && ( ! empty( $instance['include_categories'][0] ) ) ) {
 			$instance['include_categories'] = implode( ',', $instance['include_categories'] );
 		} else {
 			unset( $instance['include_categories'] );
 		}
-
 
 		// TODO: Make sure ID & Class fields contain valid characters
 
@@ -125,7 +122,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		// Retrieve an existing value from the database
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '';
-		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : '';
+		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
 		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : '';
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';
 		$posts_per_site = ! empty( $instance['posts_per_site'] ) ? $instance['posts_per_site'] : '';
@@ -147,6 +144,17 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 
 		// get categories
 		$categories = get_categories();
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'exclude_sites' => $exclude_sites,
+			'sites' => $sites,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-posts.php' );

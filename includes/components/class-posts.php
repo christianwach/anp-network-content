@@ -234,17 +234,6 @@ class WP_Network_Content_Display_Posts {
 	 */
 	public function get_posts_for_site( $site_id, $options_array ) {
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'site_id' => $site_id,
-			'options_array' => $options_array,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// init return
 		$post_list = array();
 
@@ -253,9 +242,27 @@ class WP_Network_Content_Display_Posts {
 
 		$site_details = get_blog_details( $site_id );
 
+		// define arguments to fetch recent posts
+		$post_args = array();
 		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'post';
-		$post_args['posts_per_page'] = ( isset( $posts_per_page ) ) ? $posts_per_page : 20;
-		$post_args['category_name'] = ( isset( $include_categories ) ) ? $include_categories : '';
+		$post_args['numberposts'] = ( isset( $posts_per_site ) ) ? $posts_per_site : 20;
+
+		// add optional elements
+		if ( isset( $include_categories ) ) {
+			$post_args['category'] = $include_categories;
+		}
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'site_id' => $site_id,
+			'options_array' => $options_array,
+			'post_args' => $post_args,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		// get recent posts for this site
 		$recent_posts = wp_get_recent_posts( $post_args );

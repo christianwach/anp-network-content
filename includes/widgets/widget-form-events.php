@@ -14,7 +14,7 @@
 	<select id="<?php echo $this->get_field_id( 'exclude_sites' ); ?>" name="<?php echo $this->get_field_name( 'exclude_sites' ); ?>[]" multiple="multiple" class="widefat">
 		<option value="" <?php selected( empty( $exclude_sites ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
 		<?php foreach( $sites as $site ) { ?>
-			<option id="<?php echo $site->blog_id; ?>" value="<?php echo $site->blog_id; ?>"<?php ( ! empty( $exclude_sites ) && in_array( $site->blog_id, $exclude_sites ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( get_blog_details( $site->blog_id )->blogname ); ?></option>
+			<option id="<?php echo $site->blog_id; ?>" value="<?php echo $site->blog_id; ?>"<?php echo ( ! empty( $exclude_sites ) && in_array( $site->blog_id, $exclude_sites ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( get_blog_details( $site->blog_id )->blogname ); ?></option>
 		<?php } ?>
 	</select>
 </p>
@@ -22,9 +22,9 @@
 <p>
 	<label for="include_event_categories" class="include_event_categories_label"><?php _e( 'Include Categories', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'include_event_categories' ); ?>" name="<?php echo $this->get_field_name( 'include_event_categories' ); ?>[]" multiple="multiple" class="widefat">
-		<option value="" <?php selected( empty( $include_event_categories ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
+		<option value=""<?php echo ( empty( $include_event_categories ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
 		<?php foreach( $categories as $key => $value ) { ?>
-			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php ( ! empty( $include_event_categories ) && in_array( $key, $include_event_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
+			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_event_categories ) && in_array( $key, $include_event_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
 		<?php } ?>
 	</select>
 </p>
@@ -32,9 +32,9 @@
 <p>
 	<label for="include_event_tags" class="include_event_tags_label"><?php _e( 'Include Tags', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'include_event_tags' ); ?>" name="<?php echo $this->get_field_name( 'include_event_tags' ); ?>[]" multiple="multiple" class="widefat">
-		<option value="" <?php selected( empty( $include_event_tags ), '' ); ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
+		<option value=""<?php echo ( empty( $include_event_tags ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'None', 'wp-network-content-display' ); ?></option>
 		<?php foreach( $tags as $key => $value ) { ?>
-			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php ( ! empty( $include_event_tags ) && in_array( $key,	$include_event_tags ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
+			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_event_tags ) && in_array( $key,	$include_event_tags ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
 		<?php } ?>
 	</select>
 </p>
