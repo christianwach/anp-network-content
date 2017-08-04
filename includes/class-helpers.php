@@ -11,7 +11,230 @@ class WPNCD_Helpers {
 
 
 
-	/************* SORTING FUNCTIONS *****************/
+	/************* SITE DATA METHODS *****************/
+
+
+
+	/**
+	 * Retrieve an array of site data.
+	 *
+	 * @param array $options_array The array of parameters.
+	 * @return array $site_list The array of sites with site information.
+	 */
+	public static function get_data_for_sites( $options_array ) {
+
+		// init return
+		$site_list = array();
+
+		// basic site query args
+		$site_args = array(
+			'number' => 100,
+			'public' => 1,
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'mature' => null,
+		);
+
+		// check for excludes
+		if ( ! empty( $options_array['exclude_sites'] ) ) {
+			$site_args['site__not_in'] = $options_array['exclude_sites'];
+		}
+
+		// check for orderby 'registered' or 'last_updated' which can be done via query
+		if ( ! empty( $options_array['sort_by'] ) ) {
+			if ( $options_array['sort_by'] == 'registered' ) {
+				$site_args['orderby'] = 'registered';
+				$site_args['order'] = 'DESC';
+			}
+			if ( $options_array['sort_by'] == 'last_updated' ) {
+				$site_args['orderby'] = 'last_updated';
+				$site_args['order'] = 'DESC';
+			}
+		}
+
+		/**
+		 * Allow the $site_args to be filtered.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wncd_get_data_for_sites_args', $site_args );
+
+		// get sites
+		$sites = get_sites( $site_args );
+
+		foreach( $sites as $site ) {
+
+			$site_details = get_blog_details( $site->blog_id );
+
+			$site_list[$site->blog_id] = array(
+				'blog_id' => $site->blog_id,
+				'blogname' => $site_details->blogname,
+				'siteurl' => $site_details->siteurl,
+				'path' => $site_details->path,
+				'registered' => $site_details->registered,
+				'last_updated' => $site_details->last_updated,
+				'post_count' => intval( $site_details->post_count ),
+			);
+
+			// switch to blog now so we only switch once per site
+			switch_to_blog( $site->blog_id );
+
+			// get site header image
+			$site_image = self::get_site_header_image( $site->blog_id );
+
+			if ( $site_image ) {
+				$site_list[$site->blog_id]['site-image'] = $site_image;
+			} elseif ( isset( $default_image ) ) {
+				$site_list[$site->blog_id]['site-image'] = $default_image;
+			} else {
+				$site_list[$site->blog_id]['site-image'] = '';
+			}
+
+			$site_list[$site->blog_id]['recent_post'] = self::get_latest_post( $site->blog_id );
+
+			// switch back
+			restore_current_blog();
+
+		}
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'options_array' => $options_array,
+			'site_args' => $site_args,
+			'sites' => $sites,
+			'site_list' => $site_list,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
+
+		// --<
+		return $site_list;
+
+	}
+
+
+
+	/**
+	 * Get the most recent post from the specified site.
+	 *
+	 * @param int $site_id The numeric ID of the site.
+	 * @return array $recent_post_data The array of data for the post.
+	 */
+	public static function get_latest_post( $site_id ) {
+
+		// get current site ID
+		$blog_id = get_current_blog_id();
+
+		// do we need to switch?
+		$switched = false;
+		if ( $blog_id != $site_id ) {
+			switch_to_blog( $site_id );
+			$switched = true;
+		}
+
+		// Get most recent post
+		$recent_posts = wp_get_recent_posts( 'numberposts=1' );
+
+		// Get most recent post info
+		foreach( $recent_posts as $post ) {
+
+			// Post into $site_list array
+			$recent_post_data = array (
+				'post_id' => $post['ID'],
+				'post_author' => $post['post_author'],
+				'post_slug' => $post['post_name'],
+				'post_date' => $post['post_date'],
+				'post_title' => $post['post_title'],
+				'post_content' => $post['post_content'],
+				'permalink' => get_permalink( $post['ID'] ),
+			);
+
+			// If there is a featured image, add URL to array, else leave empty
+			if ( wp_get_attachment_url( get_post_thumbnail_id( $post['ID'] ) ) ) {
+				$recent_post_data['thumbnail'] = wp_get_attachment_url( get_post_thumbnail_id( $post['ID'] ) );
+			} else {
+				$recent_post_data['thumbnail'] = '';
+			}
+
+		}
+
+		// switch back if needed
+		if ( $switched === true ) {
+			restore_current_blog();
+		}
+
+		// --<
+		return $recent_post_data;
+
+	}
+
+
+
+	/**
+	 * Get the slug for a site.
+	 *
+	 * @param str $site_path The path of the site.
+	 * @return str $slug The slug of the site.
+	 */
+	public static function get_site_slug( $site_path ) {
+
+		$path = $site_path;
+		$stripped_path = str_replace( '/', '', $path ); // Strip slashes from path to get slug
+
+		if ( ! $path ) {
+			// If there is no slug (it's the main site), make slug 'main'
+			$slug = 'main';
+		} else {
+			// Otherwise use the stripped path as slug
+			$slug = $stripped_path;
+		}
+
+		return $slug;
+
+	}
+
+
+
+	/**
+	 * Get the image for a site.
+	 *
+	 * @param int $site_id The numeric ID of the site.
+	 * @return str $thumbnail_url The URL of the site image.
+	 */
+	public static function get_site_header_image( $site_id ) {
+
+		// get current site ID
+		$blog_id = get_current_blog_id();
+
+		// do we need to switch?
+		$switched = false;
+		if ( $blog_id != $site_id ) {
+			switch_to_blog( $site_id );
+			$switched = true;
+		}
+
+		// get site header
+		$site_image = get_custom_header();
+
+		// switch back if needed
+		if ( $switched === true ) {
+			restore_current_blog();
+		}
+
+		// --<
+		return $site_image->thumbnail_url;
+
+	}
+
+
+
+	/************* SORTING METHODS *****************/
 
 
 
@@ -131,39 +354,6 @@ class WPNCD_Helpers {
 
 
 	/**
-	 * Customise a post excerpt.
-	 *
-	 * NOT USED
-	 *
-	 * @param int $post_id The numeric ID of the post.
-	 * @param str $length The numeric length of the excerpt.
-	 * @param str $trailer The excerpt suffix.
-	 * @return str $the_excerpt The modified excerpt.
-	 */
-	public static function custom_post_excerpt( $post_id, $length = '55', $trailer = ' ...' ) {
-
-		// Get post from ID
-		$the_post = get_post( $post_id );
-
-		$the_excerpt = $the_post->post_content; // Gets post_content to be used as a basis for the excerpt
-		$excerpt_length = $length; // Sets excerpt length by word count
-		$the_excerpt = strip_tags( strip_shortcodes( $the_excerpt ) ); // Strips tags and images
-		$words = explode( ' ', $the_excerpt, $excerpt_length + 1 );
-
-		if ( count( $words ) > $excerpt_length ) {
-			array_pop( $words );
-			$trailer = '<a href="' . get_permalink( $post_id ) . '">' . $trailer . '</a>';
-			array_push( $words, $trailer );
-			$the_excerpt = implode( ' ', $words );
-		}
-
-		return $the_excerpt;
-
-	}
-
-
-
-	/**
 	 * Limit the number of posts in an array.
 	 *
 	 * @param array $posts_array The array of posts.
@@ -180,64 +370,6 @@ class WPNCD_Helpers {
 		}
 
 		return $posts;
-
-	}
-
-
-
-	/**
-	 * Get the slug for a site.
-	 *
-	 * @param str $site_path The path of the site.
-	 * @return str $slug The slug of the site.
-	 */
-	public static function get_site_slug( $site_path ) {
-
-		$path = $site_path;
-		$stripped_path = str_replace( '/', '', $path ); // Strip slashes from path to get slug
-
-		if ( ! $path ) {
-			// If there is no slug (it's the main site), make slug 'main'
-			$slug = 'main';
-		} else {
-			// Otherwise use the stripped path as slug
-			$slug = $stripped_path;
-		}
-
-		return $slug;
-
-	}
-
-
-
-	/**
-	 * Get the image for a site.
-	 *
-	 * @param int $site_id The numeric ID of the site.
-	 * @return str $thumbnail_url The URL of the site image.
-	 */
-	public static function get_site_header_image( $site_id ) {
-
-		// get current site ID
-		$blog_id = get_current_blog_id();
-
-		// do we need to switch?
-		$switched = false;
-		if ( $blog_id != $site_id ) {
-			switch_to_blog( $site_id );
-			$switched = true;
-		}
-
-		// get site header
-		$site_image = get_custom_header();
-
-		// switch back if needed
-		if ( $switched === true ) {
-			restore_current_blog();
-		}
-
-		// --<
-		return $site_image->thumbnail_url;
 
 	}
 
@@ -342,167 +474,6 @@ class WPNCD_Helpers {
 		 * @param str $template The path to the found template file.
 		 */
 		return apply_filters( 'wncd_find_template', $template );
-
-	}
-
-
-
-	/**
-	 * Retrieve an array of site data.
-	 *
-	 * @param array $options_array The array of parameters.
-	 * @return array $site_list The array of sites with site information.
-	 */
-	public static function get_data_for_sites( $options_array ) {
-
-		// init return
-		$site_list = array();
-
-		// basic site query args
-		$site_args = array(
-			'number' => 100,
-			'public' => 1,
-			'archived' => 0,
-			'spam' => 0,
-			'deleted' => 0,
-			'mature' => null,
-		);
-
-		// check for excludes
-		if ( ! empty( $options_array['exclude_sites'] ) ) {
-			$site_args['site__not_in'] = $options_array['exclude_sites'];
-		}
-
-		// check for orderby 'registered' or 'last_updated' which can be done via query
-		if ( ! empty( $options_array['sort_by'] ) ) {
-			if ( $options_array['sort_by'] == 'registered' ) {
-				$site_args['orderby'] = 'registered';
-				$site_args['order'] = 'DESC';
-			}
-			if ( $options_array['sort_by'] == 'last_updated' ) {
-				$site_args['orderby'] = 'last_updated';
-				$site_args['order'] = 'DESC';
-			}
-		}
-
-		/**
-		 * Allow the $site_args to be filtered.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param array $site_args The arguments used to query the sites.
-		 */
-		$site_args = apply_filters( 'wncd_get_data_for_sites_args', $site_args );
-
-		// get sites
-		$sites = get_sites( $site_args );
-
-		foreach( $sites as $site ) {
-
-			$site_details = get_blog_details( $site->blog_id );
-
-			$site_list[$site->blog_id] = array(
-				'blog_id' => $site->blog_id,
-				'blogname' => $site_details->blogname,
-				'siteurl' => $site_details->siteurl,
-				'path' => $site_details->path,
-				'registered' => $site_details->registered,
-				'last_updated' => $site_details->last_updated,
-				'post_count' => intval( $site_details->post_count ),
-			);
-
-			// switch to blog now so we only switch once per site
-			switch_to_blog( $site_id );
-
-			// get site header image
-			$site_image = self::get_site_header_image( $site->blog_id );
-
-			if ( $site_image ) {
-				$site_list[$site->blog_id]['site-image'] = $site_image;
-			} elseif ( isset( $default_image ) ) {
-				$site_list[$site->blog_id]['site-image'] = $default_image;
-			} else {
-				$site_list[$site->blog_id]['site-image'] = '';
-			}
-
-			$site_list[$site->blog_id]['recent_post'] = self::get_latest_post( $site->blog_id );
-
-			// switch back
-			restore_current_blog();
-
-		}
-
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'options_array' => $options_array,
-			'site_args' => $site_args,
-			'sites' => $sites,
-			'site_list' => $site_list,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
-		// --<
-		return $site_list;
-
-	}
-
-
-
-	/**
-	 * Get the most recent post from the specified site.
-	 *
-	 * @param int $site_id The numeric ID of the site.
-	 * @return array $recent_post_data The array of data for the post.
-	 */
-	public static function get_latest_post( $site_id ) {
-
-		// get current site ID
-		$blog_id = get_current_blog_id();
-
-		// do we need to switch?
-		$switched = false;
-		if ( $blog_id != $site_id ) {
-			switch_to_blog( $site_id );
-			$switched = true;
-		}
-
-		// Get most recent post
-		$recent_posts = wp_get_recent_posts( 'numberposts=1' );
-
-		// Get most recent post info
-		foreach( $recent_posts as $post ) {
-
-			// Post into $site_list array
-			$recent_post_data = array (
-				'post_id' => $post['ID'],
-				'post_author' => $post['post_author'],
-				'post_slug' => $post['post_name'],
-				'post_date' => $post['post_date'],
-				'post_title' => $post['post_title'],
-				'post_content' => $post['post_content'],
-				'permalink' => get_permalink( $post['ID'] ),
-			);
-
-			// If there is a featured image, add URL to array, else leave empty
-			if ( wp_get_attachment_url( get_post_thumbnail_id( $post['ID'] ) ) ) {
-				$recent_post_data['thumbnail'] = wp_get_attachment_url( get_post_thumbnail_id( $post['ID'] ) );
-			} else {
-				$recent_post_data['thumbnail'] = '';
-			}
-
-		}
-
-		// switch back if needed
-		if ( $switched === true ) {
-			restore_current_blog();
-		}
-
-		// --<
-		return $recent_post_data;
 
 	}
 

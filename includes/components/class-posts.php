@@ -218,6 +218,7 @@ class WP_Network_Content_Display_Posts {
 					 WPNCD_Helpers::limit_number_posts( $post_list, $number_posts ) :
 					 $post_list;
 
+		// --<
 		return $post_list;
 
 	}
