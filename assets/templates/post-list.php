@@ -43,7 +43,9 @@
 	<?php } ?>
 
 	<?php if ( ! empty( $show_excerpt ) ) { ?>
-		<div class="entry-content" itemprop="articleBody"><?php echo $post_detail['post_excerpt']; ?></div>
+		<div class="entry-content" itemprop="articleBody">
+			<?php echo $post_detail['post_excerpt']; ?>
+		</div><!-- /.entry-content -->
 	<?php } ?>
 
 	<?php if ( ! empty( $show_meta ) ) { ?>
