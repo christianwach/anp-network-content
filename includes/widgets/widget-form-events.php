@@ -63,6 +63,11 @@
 </p>
 
 <p>
+	<label for="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>" class="show_thumbnail_label"><?php _e( 'Show Thumbnail', 'wp-network-content-display' ); ?></label>
+	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>" name="<?php echo $this->get_field_name( 'show_thumbnail' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_thumbnail, true ); ?>>
+</p>
+
+<p>
 	<label for="<?php echo $this->get_field_id( 'excerpt_length' ); ?>" class="excerpt_length_label"><?php _e( 'Excerpt Length', 'wp-network-content-display' ); ?></label>
 	<input type="number" id="<?php echo $this->get_field_id( 'excerpt_length' ); ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $excerpt_length ); ?>">
 </p>
