@@ -96,7 +96,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	public function get_sitewide_taxonomy_terms( $taxonomy, $exclude_sites = null ) {
 
 		// Site statuses to include
-		$siteargs = array(
+		$site_args = array(
 			'limit' => null,
 			'public' => 1,
 			'archived' => 0,
@@ -105,30 +105,28 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'mature' => null,
 		);
 
-		// Allow the $siteargs to be changed
+		// Allow the $site_args to be changed
 		if ( has_filter( 'glocal_network_tax_term_siteargs_arguments' ) ) {
-			$siteargs = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $siteargs );
+			$site_args = apply_filters( 'glocal_network_tax_term_siteargs_arguments', $site_args );
 		}
 
-		$sites_list = ( $exclude_sites ) ? glocal_exclude_sites( $exclude_sites ) : get_sites( $siteargs );
+		$sites_list = ( $exclude_sites ) ? glocal_exclude_sites( $exclude_sites ) : get_sites( $site_args );
 
-		$termargs = array();
+		$term_args = array();
 
-		// Allow the $siteargs to be changed
+		// Allow the $site_args to be changed
 		if ( has_filter( 'glocal_network_tax_termarg_arguments' ) ) {
-			$termargs = apply_filters( 'glocal_network_tax_termarg_arguments', $termargs );
+			$term_args = apply_filters( 'glocal_network_tax_termarg_arguments', $term_args );
 		}
 
 		$term_list = array();
 
 		foreach( $sites_list as $site ) {
 
-			$site_id = $site->blog_id;
-
 			// Switch to the site to get details and posts
-			switch_to_blog( $site_id );
+			switch_to_blog( $site->blog_id );
 
-			$site_terms = get_terms( $taxonomy, $termargs );
+			$site_terms = get_terms( $taxonomy, $term_args );
 
 			foreach( $site_terms as $term ) {
 				if ( !in_array( $term->slug, $term_list ) ) {
@@ -180,6 +178,147 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 	}
 
+
+
+
+	/**
+	 * Render an array of events as an HTML list.
+	 *
+	 * NOT USED
+	 *
+	 * @param array $events_array An array of events data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as an HTML list.
+	 */
+	public function render_events_list( $events_array, $options_array ) {
+
+	}
+
+
+
+	/**
+	 * Render an array of events as an HTML list.
+	 *
+	 * NOT USED
+	 *
+	 * @param array $events_array An array of events data and params.
+	 * @param array $options_array An array of rendering options.
+	 *    'number_posts' => 10, // int
+	 *    'exclude_sites' => null, // array
+	 *    'output' => 'html', // string - html, array
+	 *    'style' => 'list', // string - list, block
+	 *    'id' => 'network-events-' . rand(),
+	 *    'class' => 'event-list',
+	 *    'title' => 'Events',
+	 *    'show_meta' => True, // boolean
+	 *    'post_type' => 'event',
+	 * @return str $html The data rendered as an HTML list.
+	 */
+	public function render_event_list_html( $events_array, $options_array ) {
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		// Convert strings to booleans
+		$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
+
+		$html = '<ul class="network-event-list ' . $post_type . '-list">';
+
+		// find template
+		$template = WP_Network_Content_Display_Helpers::find_template( 'event-list.php' );
+
+		foreach( $events_array as $key => $post_detail ) {
+
+			global $post;
+
+			$post_id = $post_detail['post_id'];
+
+			$venue_id = $post_detail['event_venue']['venue_id'];
+			$venue_name = $post_detail['event_venue']['venue_name'];
+			$venue_link = $post_detail['event_venue']['venue_link'];
+			$venue_address = $post_detail['event_venue']['venue_location'];
+
+			$post_class = ( ! empty( $post_detail['post_class'] ) ) ? $post_detail['post_class'] : 'event list-item';
+
+			// prevent immediate output
+			ob_start();
+
+			// use template
+			include( $template );
+
+			// grab markup
+			$html .= ob_get_contents();
+
+			// clean up
+			ob_end_clean();
+
+		}
+
+		$html .= '</ul>';
+
+		return $html;
+
+	}
+
+
+
+	/**
+	 * Render an array of events as an HTML "block".
+	 *
+	 * NOT USED
+	 *
+	 * @param array $events_array An array of events data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as an HTML "block".
+	 */
+	public function render_event_block_html( $posts_array, $options_array ) {
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		$html = '<div class="network-posts-list style-' . $style . '">';
+
+		// find template
+		$template = WP_Network_Content_Display_Helpers::find_template( 'event-block.php' );
+
+		foreach( $posts_array as $post => $post_detail ) {
+
+			global $post;
+
+			$post_id = $post_detail['post_id'];
+			$post_categories = ( isset( $post_detail['categories'] ) ) ? implode( ", ", $post_detail['categories'] ) : '';
+
+			// Convert strings to booleans
+			$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
+			$show_thumbnail = ( filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) );
+			$show_site_name = ( filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) );
+
+			$venue_id = $post_detail['event_venue']['venue_id'];
+			$venue_name = $post_detail['event_venue']['venue_name'];
+			$venue_link = $post_detail['event_venue']['venue_link'];
+			$venue_address = $post_detail['event_venue']['venue_location'];
+
+			$post_class = ( $post_detail['post_class'] ) ? $post_detail['post_class'] : 'post entry event event-item hentry';
+
+			// prevent immediate output
+			ob_start();
+
+			// use template
+			include( $template );
+
+			// grab markup
+			$html .= ob_get_contents();
+
+			// clean up
+			ob_end_clean();
+
+		}
+
+		$html .= '</div>';
+
+		return $html;
+
+	}
 
 
 

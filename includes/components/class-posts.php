@@ -188,7 +188,7 @@ class WP_Network_Content_Display_Posts {
 		} else {
 
 			// CALL RENDER FUNCTION
-			return render_html( $posts_list, $settings );
+			return $this->render_html( $posts_list, $settings );
 
 		}
 
@@ -209,32 +209,23 @@ class WP_Network_Content_Display_Posts {
 	 */
 	public function get_posts_list( $sites_array, $options_array ) {
 
-		$sites = $sites_array;
-		$settings = $options_array;
-
-		// Make each parameter as its own variable
-		extract( $settings, EXTR_SKIP );
-
+		// init return
 		$post_list = array();
 
-		// For each site, get the posts
-		foreach( $sites as $site ) {
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
 
-			$site_id = $site['blog_id'];
+		// For each site, get the posts
+		foreach( $sites_array as $site ) {
 
 			// Switch to the site to get details and posts
-			switch_to_blog( $site_id );
+			switch_to_blog( $site['blog_id'] );
 
-			// CALL GET SITE'S POST FUNCTION
 			// And add to array of posts
+			$site_posts = $this->get_sites_posts( $site['blog_id'], $options_array );
 
-			// If $this->get_sites_posts( $site_id, $settings ) isn't null, add it to the array, else skip it
-			// Trying to add a null value to the array using this syntax produces a fatal error.
-
-			$site_posts = $this->get_sites_posts( $site_id, $settings );
-
-			if ( $this->get_sites_posts( $site_id, $settings ) ) {
-				$post_list = $post_list + $this->get_sites_posts( $site_id, $settings );
+			if ( is_array( $site_posts ) ) {
+				$post_list = $post_list + $site_posts;
 			}
 
 			// Unswitch the site
@@ -269,11 +260,11 @@ class WP_Network_Content_Display_Posts {
 	 */
 	public function get_sites_posts( $site_id, $options_array ) {
 
-		$site_id = $site_id;
-		$settings = $options_array;
+		// init return
+		$post_list = array();
 
 		// Make each parameter as its own variable
-		extract( $settings, EXTR_SKIP );
+		extract( $options_array, EXTR_SKIP );
 
 		$site_details = get_blog_details( $site_id );
 
@@ -408,9 +399,193 @@ class WP_Network_Content_Display_Posts {
 				$post_list[$prefix]['categories'][] = $cat->name;
 			}
 
-			return $post_list;
+		}
+
+		// --<
+		return $post_list;
+
+	}
+
+
+
+	/**
+	 * Render a list of posts.
+	 *
+	 * @param array $posts_array An array of posts data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $rendered_html The data rendered as 'normal' or 'highlight' HTML.
+	 */
+	public function render_html( $posts_array, $options_array ) {
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'posts_array' => $posts_array,
+			'options_array' => $options_array,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		if ( ! empty( $style ) ) {
+			if( 'list'	== $style ) {
+				$rendered_html = $this->render_list_html( $posts_array, $options_array );
+			} else {
+				 $rendered_html = $this->render_block_html( $posts_array, $options_array );
+			}
+		} else {
+			$rendered_html = $this->render_list_html( $posts_array, $options_array );
+		}
+
+		return $rendered_html;
+
+	}
+
+
+
+	/**
+	 * Render an array of posts as an HTML list.
+	 *
+	 * @param array $posts_array An array of posts data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as an HTML list.
+	 */
+	public function render_list_html( $posts_array, $options_array ) {
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		// Convert strings to booleans
+		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : '';
+		$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : '';
+		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
+		$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
+
+		$html = '<ul class="wp-network-posts ' . $post_type . '-list">';
+
+		// find template
+		$template = WP_Network_Content_Display_Helpers::find_template( $post_type . '-list.php' );
+
+		foreach( $posts_array as $key => $post_detail ) {
+
+			global $post;
+
+			$post_id = $post_detail['post_id'];
+
+			if ( isset( $post_detail['categories'] ) ) {
+				$post_categories = implode( ", ", $post_detail['categories'] );
+			}
+
+			// prevent immediate output
+			ob_start();
+
+			// use template
+			include( $template );
+
+			// grab markup
+			$html .= ob_get_contents();
+
+			// clean up
+			ob_end_clean();
 
 		}
+
+		$html .= '</ul>';
+
+		return $html;
+
+	}
+
+
+
+	/**
+	 * Render an array of posts as an HTML "block".
+	 *
+	 * @param array $posts_array An array of posts data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as an HTML "block".
+	 */
+	public function render_block_html( $posts_array, $options_array ) {
+
+		// Make each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		$html = '<div class="wp-network-posts ' . $post_type . '-list">';
+
+		// find template
+		$template = WP_Network_Content_Display_Helpers::find_template( $post_type . '-block.php' );
+
+		foreach( $posts_array as $key => $post_detail ) {
+
+			global $post;
+
+			$post_id = $post_detail['post_id'];
+			$post_categories = ( isset( $post_detail['categories'] ) ) ? implode( ", ", $post_detail['categories'] ) : '';
+
+			// Convert strings to booleans
+			$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : '';
+			$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : '';
+			$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : '';
+			$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : '';
+
+			// prevent immediate output
+			ob_start();
+
+			// use template
+			include( $template );
+
+			// grab markup
+			$html .= ob_get_contents();
+
+			// clean up
+			ob_end_clean();
+
+		}
+
+		$html .= '</div>';
+
+		return $html;
+
+	}
+
+
+
+	/**
+	 * Render an array of posts as "highlights".
+	 *
+	 * @param array $posts_array An array of posts data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as "highlights".
+	 */
+	public function render_highlights_html( $posts_array, $options_array ) {
+
+		// Extract each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		$title_image = ( isset( $title_image ) ) ? 'style="background-image:url(' . $title_image . ')"' : '';
+
+		$html = '';
+
+		// look for template
+		$template = WP_Network_Content_Display_Helpers::find_template( 'post-highlights.php' );
+
+		// prevent immediate output
+		ob_start();
+
+		// use template
+		include( $template );
+
+		// grab markup
+		$html .= ob_get_contents();
+
+		// clean up
+		ob_end_clean();
+
+		return $html;
 
 	}
 

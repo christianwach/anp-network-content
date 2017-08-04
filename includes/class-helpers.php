@@ -23,8 +23,6 @@ class WP_Network_Content_Display_Helpers {
 	 */
 	public static function sort_by_date( $posts_array ) {
 
-		$posts_array = $posts_array;
-
 		usort( $posts_array, function( $b, $a ) {
 			return strcmp( $a['post_date'], $b['post_date'] );
 		});
@@ -44,8 +42,6 @@ class WP_Network_Content_Display_Helpers {
 	 * @return array $settings An array of posts data sorted by site.
 	 */
 	public static function sort_by_site( $posts_array ) {
-
-		$posts_array = $posts_array;
 
 		usort( $posts_array, function( $b, $a ) {
 			return strcmp( $a['site_id'], $b['site_id'] );
@@ -67,11 +63,11 @@ class WP_Network_Content_Display_Helpers {
 	 */
 	public static function sort_sites_by_last_updated( $sites_array ) {
 
-		$sites = $sites_array;
-
-		usort( $sites, function( $b, $a ) {
+		usort( $sites_array, function( $b, $a ) {
 			return strcmp( $a['last_updated'], $b['last_updated'] );
 		});
+
+		return $sites_array;
 
 	}
 
@@ -302,16 +298,14 @@ class WP_Network_Content_Display_Helpers {
 	/**
 	 * Merge settings and remove unused items.
 	 *
-	 * @param array $user_selections_array The provided array of settings.
-	 * @param array $default_values_array The default array of settings.
+	 * @param array $parameters The provided array of settings.
+	 * @param array $defaults The default array of settings.
 	 * @return array $settings The merged array of settings.
 	 */
-	public static function get_merged_settings( $user_selections_array, $default_values_array ) {
+	public static function get_merged_settings( $parameters, $defaults ) {
 
-		$parameters = $user_selections_array;
-		$defaults = $default_values_array;
-
-		// Parse & merge parameters with the defaults - http://codex.wordpress.org/Function_Reference/wp_parse_args
+		// Parse & merge parameters with the defaults
+		// @see http://codex.wordpress.org/Function_Reference/wp_parse_args
 		// This function converts all arguments to strings
 		$settings = wp_parse_args( $parameters, $defaults );
 

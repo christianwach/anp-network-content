@@ -112,7 +112,7 @@ class WP_Network_Content_Display_Sites {
 	 */
 	public function get_network_sites( $parameters = array() ) {
 
-		/** Default parameters **/
+		// Default parameters
 		$defaults = array(
 			'return' => (string) 'display',
 			'number_sites' => (int) null,
@@ -158,8 +158,63 @@ class WP_Network_Content_Display_Sites {
 			return $sites_list;
 		} else {
 			// CALL RENDER FUNCTION
-			return render_sites_list( $sites_list, $settings );
+			return $this->render_sites_list( $sites_list, $settings );
 		}
+
+	}
+
+
+
+	/**
+	 * Render an array of sites as an HTML list.
+	 *
+	 * @param array $sites_array An array of sites data and params.
+	 * @param array $options_array An array of rendering options.
+	 * @return str $html The data rendered as an HTML list.
+	 */
+	public function render_sites_list( $sites_array, $options_array ) {
+
+		// Extract each parameter as its own variable
+		extract( $options_array, EXTR_SKIP );
+
+		$show_image = ( filter_var( $show_image, FILTER_VALIDATE_BOOLEAN ) );
+		$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
+
+		if ( ! $show_image ) {
+			$class .= ' no-site-image';
+		} else {
+			$class .= ' show-site-image';
+		}
+
+		$html = '<ul id="' . $id . '" class="sites-list ' . $class . '">';
+
+		// find template
+		$template = WP_Network_Content_Display_Helpers::find_template( 'sites-list.php' );
+
+		foreach ( $sites_array as $site ) {
+
+			$site_id = $site['blog_id'];
+
+			// CALL GET SLUG FUNCTION
+			$slug = WP_Network_Content_Display_Helpers::get_site_slug( $site['path'] );
+
+			// prevent immediate output
+			ob_start();
+
+			// use template
+			include( $template );
+
+			// grab markup
+			$html .= ob_get_contents();
+
+			// clean up
+			ob_end_clean();
+
+		}
+
+		$html .= '</ul>';
+
+		return $html;
 
 	}
 
