@@ -394,14 +394,24 @@ class WPNCD_Helpers {
 
 			if ( isset( $input[$key] ) ) {
 
-				// Sanitize value
-				$sanitized_val = sanitize_text_field( $val );
+				// sanitise arrays
+				if (  is_array( $val ) ) {
 
-				// Set type back to original variable type
-				settype( $sanitized_val, $type );
+					// Assign value directly for now
+					$new_input[ $key ] = $val;
 
-				// Assign sanitized value
-				$new_input[ $key ] = $sanitized_val;
+				} else {
+
+					// sanitize value
+					$sanitized_val = sanitize_text_field( $val );
+
+					// Set type back to original variable type
+					settype( $sanitized_val, $type );
+
+					// Assign sanitized value
+					$new_input[$key] = $sanitized_val;
+
+				}
 
 			}
 
