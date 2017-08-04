@@ -57,15 +57,8 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 	 */
 	public function upload_scripts() {
 
+		// enable media uploads
 		wp_enqueue_media();
-
-		/*
-		wp_enqueue_script( 'media-upload' );
-		wp_enqueue_script( 'thickbox' );
-		wp_enqueue_script( 'upload_media_widget', WP_NETWORK_CONTENT_DISPLAY_URL . 'js/upload-media.js', array( 'jquery' ) );
-
-		wp_enqueue_style( 'thickbox' );
-		*/
 
 	}
 

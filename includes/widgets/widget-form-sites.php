@@ -71,8 +71,11 @@
 		$("#<?php echo $this->get_field_id( 'default_image' ); ?>-button").click( function(e) {
 			e.preventDefault();
 			var image = wp.media({
-				title: "<?php _e( 'Upload Image', 'wp-network-content-display' ); ?>",
-				multiple: false
+				title: "<?php _e( 'Choose an image', 'wp-network-content-display' ); ?>",
+				multiple: false,
+				button: {
+					text: "<?php _e( 'Use this image', 'wp-network-content-display' ); ?>"
+				}
 			}).open()
 			.on( 'select', function(e) {
 				var image_object, image_url;
