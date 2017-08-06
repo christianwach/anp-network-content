@@ -34,6 +34,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 
 		// Shortcake compat
 		add_action( 'register_shortcode_ui', array( $this, 'shortcake' ) );
+		add_action( 'enqueue_shortcode_ui', array( $this, 'shortcake_scripts' ) );
 
 	}
 
@@ -76,12 +77,25 @@ class WP_Network_Content_Display_Sites_Shortcode {
 	/**
 	 * Add compatibility with Shortcake UI.
 	 *
+	 * Be aware that in Shortcode UI < 0.7.2, values chosen via selects do not
+	 * "stick". At present, you will need the master branch of Shortcode UI from
+	 * GitHub, which has solved this problem.
+	 *
+	 * @see https://github.com/wp-shortcake/shortcake/issues/747
+	 *
+	 * Furthermore, multi-selects do not function at all.
+	 *
+	 * @see https://github.com/wp-shortcake/shortcake/issues/757
+	 *
 	 * @since 2.0.0
 	 */
 	public function shortcake() {
 
 		// let's be extra-safe and bail if not present
 		if ( ! function_exists( 'shortcode_ui_register_for_shortcode' ) ) return;
+
+		// add styles for TinyMCE editor
+		add_filter( 'mce_css', array( $this, 'shortcake_styles' ) );
 
 		// register this shortcode
 		shortcode_ui_register_for_shortcode(
@@ -104,8 +118,91 @@ class WP_Network_Content_Display_Sites_Shortcode {
 					// number of sites
 					array(
 						'label' => __( 'Number of Sites', 'wp-network-content-display' ),
+						'description' => __( 'Please enter the maximum number of sites to show.', 'wp-network-content-display' ),
 						'attr' => 'number_sites',
 						'type' => 'number',
+					),
+
+					// exclude sites
+					array(
+						'label' => __( 'Exclude Sites', 'wp-network-content-display' ),
+						'description' => __( 'Please choose which sites to exclude.', 'wp-network-content-display' ),
+						'attr' => 'exclude_sites',
+						'type' => 'select',
+						'options' => $this->shortcake_select_sites(),
+						'meta' => array(
+							'multiple' => true,
+						),
+					),
+
+					// sort by
+					array(
+						'label' => __( 'Sort By', 'wp-network-content-display' ),
+						'description' => __( 'Please select how you want the sites sorted.', 'wp-network-content-display' ),
+						'attr'  => 'sort_by',
+						'type'  => 'select',
+						'options' => array(
+							array( 'value' => 'blogname', 'label' => __( 'Alphabetical', 'wp-network-content-display' ) ),
+							array( 'value' => 'last_updated', 'label' => __( 'Recently Active', 'wp-network-content-display' ) ),
+							array( 'value' => 'post_count', 'label' => __( 'Most Active', 'wp-network-content-display' ) ),
+							array( 'value' => 'registered', 'label' => __( 'Newest', 'wp-network-content-display' ) ),
+						),
+					),
+
+					// display style
+					array(
+						'label' => __( 'Display Style', 'wp-network-content-display' ),
+						'description' => __( 'Please select a Display Style.', 'wp-network-content-display' ),
+						'attr'  => 'style',
+						'type'  => 'select',
+						'options' => array(
+							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
+							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
+						),
+					),
+
+					// show meta
+					array(
+						'label' => __( 'Show Site Metadata', 'wp-network-content-display' ),
+						'description' => __( 'Please select if you want to display additional information for each site.', 'wp-network-content-display' ),
+						'attr' => 'show_meta',
+						'type' => 'radio',
+						'options' => array(
+							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
+							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+						),
+					),
+
+					// show site header image
+					array(
+						'label' => __( 'Show Site Image', 'wp-network-content-display' ),
+						'description' => __( 'Choose whether to show Site Images and (if so) from which source.', 'wp-network-content-display' ),
+						'attr' => 'show_image',
+						'type' => 'radio',
+						'options' => array(
+							array( 'value' => '0', 'label' => __( 'No Site Image', 'wp-network-content-display' ) ),
+							array( 'value' => '1', 'label' => __( 'From Media Library', 'wp-network-content-display' ) ),
+							array( 'value' => '2', 'label' => __( 'From URL', 'wp-network-content-display' ) ),
+						),
+					),
+
+					// default header image URL
+					array(
+						'label' => __( 'Default Site Image URL', 'wp-network-content-display' ),
+						'description' => __( 'Please enter the URL of the image.', 'wp-network-content-display' ),
+						'attr' => 'default_image',
+						'type' => 'text',
+					),
+
+					// default header image ID
+					array(
+						'label' => __( 'Default Site Image', 'wp-network-content-display' ),
+						'description' => __( 'Please choose an image from the Media Library.', 'wp-network-content-display' ),
+						'attr' => 'attachment_id',
+						'type' => 'attachment',
+						'libraryType' => array( 'image' ),
+						'addButton' => __( 'Choose an image', 'wp-network-content-display' ),
+						'frameTitle' => __( 'Use this image', 'wp-network-content-display' ),
 					),
 
 				),
@@ -113,6 +210,81 @@ class WP_Network_Content_Display_Sites_Shortcode {
 			)
 
 		);
+
+	}
+
+
+
+	/**
+	 * Get options array for Exclude Sites multi-select.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return array $options The properly formatted array for the select
+	 */
+	public function shortcake_select_sites() {
+
+		// init return
+		$options = array(
+			array( 'value' => '', 'label' => __( 'None', 'wp-network-content-display' ) ),
+		);
+
+		// get sites
+		$sites = get_sites( array(
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'public' => 1,
+		) );
+
+		// add data for each site
+		foreach( $sites AS $site ) {
+			$options[] = array(
+				'value' => $site->blog_id,
+				'label' => esc_html( get_blog_details( $site->blog_id )->blogname ),
+			);
+		}
+
+		// --<
+		return $options;
+
+	}
+
+
+
+	/**
+	 * Enqueue Javascript for custom functionality in Shortcake.
+	 *
+	 * @since 2.0.0
+	 */
+	public function shortcake_scripts() {
+
+		wp_enqueue_script(
+			'wpncd-shortcode-ui',
+			WP_NETWORK_CONTENT_DISPLAY_URL . '/assets/js/shortcake-ui.js',
+			array( 'shortcode-ui' ),
+			WP_NETWORK_CONTENT_DISPLAY_VERSION
+		);
+
+	}
+
+
+
+	/**
+	 * Add stylesheet to TinyMCE when Shortcake is active.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param str $mce_css The existing list of stylesheets that TinyMCE will load
+	 * @return str $mce_css The modified list of stylesheets that TinyMCE will load
+	 */
+	public function shortcake_styles( $mce_css ) {
+
+		// add our styles to TinyMCE
+		$mce_css .= ', ' . WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/css/shortcake-sites.css';
+
+		// --<
+		return $mce_css;
 
 	}
 

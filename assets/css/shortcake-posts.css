@@ -1,0 +1,55 @@
+/**
+ * Network Content Widgets and Shortcodes Styles for Shortcake UI.
+ *
+ * Implements basic styling.
+ *
+ * @package WP_Network_Content_Display
+ */
+
+.wpncd-network-posts.post-list
+{
+	background: aliceblue;
+	margin: 0 0 1.625em;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+.wpncd-network-posts.post-list article
+{
+	padding: 1.625em;
+	border-bottom: 1px solid #ddd;
+}
+
+.wpncd-network-posts.post-list h3.entry-title
+{
+	margin-top: 0;
+}
+
+.wpncd-network-posts.post-list a.entry-image-link
+{
+	margin-bottom: 1em;
+	display: block;
+	border: none;
+	text-decoration: none;
+}
+
+.wpncd-network-posts.post-list .entry-summary
+{
+	margin: 1em 0;
+}
+
+.wpncd-network-posts.post-list .entry-meta
+{
+	font-size: 90%;
+}
+
+.wpncd-network-posts.post-list header .entry-meta > span
+{
+	display: block;
+}
+
+.wpncd-network-posts.post-list .entry-footer .entry-meta > span
+{
+	display: inline;
+}
