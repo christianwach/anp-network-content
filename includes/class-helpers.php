@@ -145,7 +145,7 @@ class WPNCD_Helpers {
 		foreach( $recent_posts as $post ) {
 
 			// Post into $site_list array
-			$recent_post_data = array (
+			$recent_post_data = array(
 				'post_id' => $post['ID'],
 				'post_author' => $post['post_author'],
 				'post_slug' => $post['post_name'],
@@ -184,11 +184,12 @@ class WPNCD_Helpers {
 	 */
 	public static function get_site_slug( $site_path ) {
 
-		$path = $site_path;
-		$stripped_path = str_replace( '/', '', $path ); // Strip slashes from path to get slug
+		// Strip slashes from path to get slug
+		$stripped_path = str_replace( '/', '', $site_path );
 
-		if ( ! $path ) {
-			// If there is no slug (it's the main site), make slug 'main'
+		// If there is no slug
+		if ( ! $site_path ) {
+			// It's the main site - make slug 'main'
 			$slug = 'main';
 		} else {
 			// Otherwise use the stripped path as slug
