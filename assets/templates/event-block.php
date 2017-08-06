@@ -28,8 +28,7 @@
 			<span class="event-day"><?php echo date_i18n( 'l, ', strtotime( $post_detail['event_start_date'] ) ); ?></span> <time class="event-date" itemprop="startDate" datetime="<?php echo date_i18n( 'Y-m-d H:i:s', strtotime( $post_detail['event_start_date'] ) ); ?>"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></time>
 
 			<div class="event-time">
-				<span class="start"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></span>
-				<span class="end"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_end_date'] ) ); ?></span>
+				<span class="start"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_start_date'] ) ); ?></span> &mdash; <span class="end"><?php echo date_i18n( get_option( 'time_format' ), strtotime( $post_detail['event_end_date'] ) ); ?></span>
 			</div>
 		</div>
 
