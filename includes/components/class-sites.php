@@ -91,6 +91,10 @@ class WP_Network_Content_Display_Sites {
 
 
 
+	/************* CONTENT METHODS *****************/
+
+
+
 	/**
 	 * Gets (or renders) a list of sites.
 	 *
@@ -155,6 +159,10 @@ class WP_Network_Content_Display_Sites {
 		return $this->render_html( $sites_list, $settings );
 
 	}
+
+
+
+	/************* RENDERING METHODS *****************/
 
 
 

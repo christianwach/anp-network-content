@@ -137,7 +137,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		) );
 
 		// get categories
-		$categories = get_categories();
+		$categories = wp_network_content_display()->components->events->get_network_terms( 'category' );
 
 		/*
 		$e = new Exception;
@@ -145,6 +145,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		error_log( print_r( array(
 			'method' => __METHOD__,
 			'include_categories' => $include_categories,
+			'categories' => $categories,
 			'sites' => $sites,
 			//'backtrace' => $trace,
 		), true ) );

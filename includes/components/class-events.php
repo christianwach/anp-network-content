@@ -86,6 +86,10 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 
 
+	/************* CONTENT METHODS *****************/
+
+
+
 	/**
 	 * Get (or render) posts from sites across the network.
 	 *
@@ -188,55 +192,67 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		$site_details = get_blog_details( $site_id );
 
 		// define arguments to fetch recent posts
-		$post_args = array();
-		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'event';
-		$post_args['numberposts'] = ( isset( $posts_per_site ) ) ? $posts_per_site : 20;
+		$post_args = array(
+			'post_type' => 'event',
+			'numberposts' => ( isset( $posts_per_site ) ) ? $posts_per_site : 20,
+		);
 
-		// add optional elements
-		if ( 'event' === $post_type ) {
+		// Taxonomy queries default to: relation => 'AND'
+		// We may want a switch to choose: relation => 'OR'
 
-			if ( isset( $include_categories ) ) {
-				$post_args['tax_query'][] = array(
-					'taxonomy' => 'event-category',
-					'field' => 'slug',
-					'terms' => $include_categories,
-				);
+		// add categories
+		if ( isset( $include_categories ) AND ! empty( $include_categories ) ) {
+
+			if ( ! is_array( $include_categories ) ) {
+				$include_categories = explode( ',', $include_categories );
 			}
 
-			if ( isset( $include_tags ) ) {
-				$post_args['tax_query'][] = array(
-					'taxonomy' => 'event-tag',
-					'field' => 'slug',
-					'terms' => $include_tags,
-				);
-			}
-
-			// choose a scope ("All" needs no meta query)
-			switch ( $event_scope ) {
-
-				case 'past' :
-					$post_args['meta_query'] = array(
-						array(
-							'key' => '_eventorganiser_schedule_start_start',
-							'value' => date_i18n( 'Y-m-d' ),
-							'compare' => '<',
-						),
-					);
-					break;
-
-				case 'future' :
-					$post_args['meta_query'] = array(
-						array(
-							'key' => '_eventorganiser_schedule_start_start',
-							'value' => date_i18n( 'Y-m-d' ),
-							'compare' => '>=',
-						),
-					);
-
-			}
+			$post_args['tax_query'][] = array(
+				'taxonomy' => 'event-category',
+				'field' => 'slug',
+				'terms' => $include_categories,
+			);
 
 		}
 
+		// add tags
+		if ( isset( $include_tags ) AND ! empty( $include_tags ) ) {
+
+			if ( ! is_array( $include_tags ) ) {
+				$include_tags = explode( ',', $include_tags );
+			}
+
+			$post_args['tax_query'][] = array(
+				'taxonomy' => 'event-tag',
+				'field' => 'slug',
+				'terms' => $include_tags,
+			);
+
+		}
+
+		// choose a scope ("All" needs no meta query)
+		switch ( $event_scope ) {
+
+			case 'past' :
+				$post_args['meta_query'] = array(
+					array(
+						'key' => '_eventorganiser_schedule_start_start',
+						'value' => date_i18n( 'Y-m-d' ),
+						'compare' => '<',
+					),
+				);
+				break;
+
+			case 'future' :
+				$post_args['meta_query'] = array(
+					array(
+						'key' => '_eventorganiser_schedule_start_start',
+						'value' => date_i18n( 'Y-m-d' ),
+						'compare' => '>=',
+					),
+				);
+
+		}
 
 		/*
 		$e = new Exception;
@@ -250,6 +266,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		), true ) );
 		*/
 
+		// get recent posts for this site
 		$recent_posts = wp_get_recent_posts( $post_args );
 
 		// Put all the posts in a single array
@@ -290,33 +307,29 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 				'site_link' => $site_details->siteurl,
 			);
 
-			if ( 'event' === $post_type ) {
+			// start and end
+			$post_list[$prefix]['event_start_date'] = get_post_meta( $post_id, '_eventorganiser_schedule_start_start', true );
+			$post_list[$prefix]['event_end_date'] = get_post_meta( $post_id, '_eventorganiser_schedule_start_finish', true );
 
-				$venue_id = eo_get_venue( $post_id );
+			// venue
+			$venue_id = eo_get_venue( $post_id );
+			$post_list[$prefix]['event_venue']['venue_link'] = eo_get_venue_link( $venue_id );
+			$post_list[$prefix]['event_venue']['venue_id'] = $venue_id;
+			$post_list[$prefix]['event_venue']['venue_name'] = eo_get_venue_name( $venue_id );
+			$post_list[$prefix]['event_venue']['venue_location'] = eo_get_venue_address( $venue_id );
+			$post_list[$prefix]['event_venue']['venue_location']['venue_lat'] = eo_get_venue_meta( $venue_id, '_lat' );
+			$post_list[$prefix]['event_venue']['venue_location']['venue_long'] = eo_get_venue_meta( $venue_id, '_lng' );
 
-				$post_list[$prefix]['event_start_date'] = get_post_meta ( $post_id, '_eventorganiser_schedule_start_start', true );
-				$post_list[$prefix]['event_end_date'] = get_post_meta ( $post_id, '_eventorganiser_schedule_start_finish', true );
+			// Get post categories
+			$event_categories = wp_get_post_terms( $post_id, 'event-category', array( "fields" => "all" ) );
+			foreach( $event_categories as $event_category ) {
+				$post_list[$prefix]['categories'][$event_category->slug] = $event_category->name;
+			}
 
-				$post_list[$prefix]['event_venue']['venue_link'] = eo_get_venue_link( $venue_id );
-				$post_list[$prefix]['event_venue']['venue_id'] = $venue_id;
-				$post_list[$prefix]['event_venue']['venue_name'] = eo_get_venue_name( $venue_id );
-				$post_list[$prefix]['event_venue']['venue_location'] = eo_get_venue_address( $venue_id );
-				$post_list[$prefix]['event_venue']['venue_location']['venue_lat'] = eo_get_venue_meta( $venue_id, '_lat' );
-				$post_list[$prefix]['event_venue']['venue_location']['venue_long'] = eo_get_venue_meta( $venue_id, '_lng' );
-
-				// Get post categories
-				$event_categories = wp_get_post_terms( $post_id, 'event-category', array( "fields" => "all" ) );
-
-				foreach( $event_categories as $event_category ) {
-					$post_list[$prefix]['categories'][$event_category->slug] = $event_category->name;
-				}
-
-				$event_tags = wp_get_post_terms( $post_id, 'event-tag', array( "fields" => "all" ) );
-
-				foreach( $event_tags as $event_tag ) {
-					$post_list[$prefix]['tags'][$event_tag->slug] = $event_tag->name;
-				}
-
+			// Get post tags
+			$event_tags = wp_get_post_terms( $post_id, 'event-tag', array( "fields" => "all" ) );
+			foreach( $event_tags as $event_tag ) {
+				$post_list[$prefix]['tags'][$event_tag->slug] = $event_tag->name;
 			}
 
 		}
@@ -329,84 +342,9 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 
 	/**
-	 * Get sitewide taxonomy terms.
-	 *
-	 * @param str $taxonomy The name of of the taxonomy.
-	 * @param array $exclude_sites The sites to exclude.
-	 * @return array $term_list The array of terms with unique taxonomy term slugs and names.
-	 */
-	public function get_network_event_terms( $taxonomy, $exclude_sites = null ) {
-
-		// Site statuses to include
-		$site_args = array(
-			'limit' => null,
-			'public' => 1,
-			'archived' => 0,
-			'spam' => 0,
-			'deleted' => 0,
-			'mature' => null,
-		);
-
-		// check for excludes
-		if ( ! empty( $exclude_sites ) ) {
-			$site_args['site__not_in'] = $exclude_sites;
-		}
-
-		/**
-		 * Allow the arguments to be filtered.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param array $site_args The arguments used to query the sites.
-		 */
-		$site_args = apply_filters( 'wpncd_get_network_event_terms_site_args', $site_args );
-
-		// get sites
-		$sites_list = get_sites( $site_args );
-
-		// init term args
-		$term_args = array();
-
-		/**
-		 * Allow the term arguments to be filtered.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param array $term_args The arguments used to query the terms.
-		 */
-		$term_args = apply_filters( 'wpncd_get_network_event_terms_term_args', $term_args );
-
-		// init term list
-		$term_list = array();
-
-		foreach( $sites_list as $site ) {
-
-			// Switch to the site to get details and posts
-			switch_to_blog( $site->blog_id );
-
-			$site_terms = get_terms( $taxonomy, $term_args );
-
-			foreach( $site_terms as $term ) {
-				if ( ! in_array( $term->slug, $term_list ) ) {
-					$term_list[$term->slug] = $term->name;
-				}
-			}
-
-			// Unswitch the site
-			restore_current_blog();
-
-		}
-
-		$term_list = array_unique( $term_list );
-
-		return $term_list;
-
-	}
-
-
-
-	/**
 	 * Get Event meta data.
+	 *
+	 * NOT USED
 	 *
 	 * @param int $event_id The numeric ID of the event.
 	 * @return str $html The formatted event meta.
@@ -436,6 +374,9 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 	}
 
+
+
+	/************* RENDERING METHODS *****************/
 
 
 

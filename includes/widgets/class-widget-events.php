@@ -150,8 +150,8 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		) );
 
 		// get categories and tags
-		$categories = wp_network_content_display()->components->events->get_network_event_terms( 'event-category' );
-		$tags = wp_network_content_display()->components->events->get_network_event_terms( 'event-tag' );
+		$categories = wp_network_content_display()->components->events->get_network_terms( 'event-category' );
+		$tags = wp_network_content_display()->components->events->get_network_terms( 'event-tag' );
 
 		$scopes = array(
 			'future' => __( 'Future', 'wp-network-content-display' ),

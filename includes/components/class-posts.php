@@ -91,6 +91,10 @@ class WP_Network_Content_Display_Posts {
 
 
 
+	/************* CONTENT METHODS *****************/
+
+
+
 	/**
 	 * Get (or render) posts from sites across the network.
 	 *
@@ -161,10 +165,6 @@ class WP_Network_Content_Display_Posts {
 		return $this->render_html( $posts_list, $settings );
 
 	}
-
-
-
-	/************* GET CONTENT FUNCTIONS *****************/
 
 
 
@@ -241,13 +241,24 @@ class WP_Network_Content_Display_Posts {
 		$site_details = get_blog_details( $site_id );
 
 		// define arguments to fetch recent posts
-		$post_args = array();
-		$post_args['post_type'] = ( isset( $post_type ) ) ? $post_type : 'post';
-		$post_args['numberposts'] = ( isset( $posts_per_site ) ) ? $posts_per_site : 20;
+		$post_args = array(
+			'post_type' => ( isset( $post_type ) ) ? $post_type : 'post',
+			'numberposts' => ( isset( $posts_per_site ) ) ? $posts_per_site : 20,
+		);
 
-		// add optional elements
-		if ( isset( $include_categories ) ) {
-			$post_args['category'] = $include_categories;
+		// add categories
+		if ( isset( $include_categories ) AND ! empty( $include_categories ) ) {
+
+			if ( ! is_array( $include_categories ) ) {
+				$include_categories = explode( ',', $include_categories );
+			}
+
+			$post_args['tax_query'][] = array(
+				'taxonomy' => 'category',
+				'field' => 'slug',
+				'terms' => $include_categories,
+			);
+
 		}
 
 		/*
@@ -305,11 +316,18 @@ class WP_Network_Content_Display_Posts {
 
 			// Get post categories
 			$post_categories = wp_get_post_categories( $post_id );
-
 			foreach( $post_categories as $post_category ) {
 				$cat = get_category( $post_category );
 				$post_list[$prefix]['categories'][] = $cat->name;
 			}
+
+			/*
+			// Get post tags
+			$tags = wp_get_post_tags( $post_id );
+			foreach( $tags as $tag ) {
+				$post_list[$prefix]['tags'][$tag->slug] = $tag->name;
+			}
+			*/
 
 		}
 
@@ -317,6 +335,89 @@ class WP_Network_Content_Display_Posts {
 		return $post_list;
 
 	}
+
+
+
+	/**
+	 * Get sitewide taxonomy terms.
+	 *
+	 * @param str $taxonomy The name of of the taxonomy.
+	 * @param array $exclude_sites The sites to exclude.
+	 * @return array $term_list The array of terms with unique taxonomy term slugs and names.
+	 */
+	public function get_network_terms( $taxonomy, $exclude_sites = null ) {
+
+		// Site statuses to include
+		$site_args = array(
+			'limit' => null,
+			'public' => 1,
+			'archived' => 0,
+			'spam' => 0,
+			'deleted' => 0,
+			'mature' => null,
+		);
+
+		// check for excludes
+		if ( ! empty( $exclude_sites ) ) {
+			$site_args['site__not_in'] = $exclude_sites;
+		}
+
+		/**
+		 * Allow the arguments to be filtered.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wpncd_get_network_terms_site_args', $site_args );
+
+		// get sites
+		$sites_list = get_sites( $site_args );
+
+		// init term args
+		$term_args = array();
+
+		/**
+		 * Allow the term arguments to be filtered.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $term_args The arguments used to query the terms.
+		 */
+		$term_args = apply_filters( 'wpncd_get_network_terms_term_args', $term_args );
+
+		// init term list
+		$term_list = array();
+
+		foreach( $sites_list as $site ) {
+
+			// Switch to the site to get details and posts
+			switch_to_blog( $site->blog_id );
+
+			$site_terms = get_terms( $taxonomy, $term_args );
+
+			foreach( $site_terms as $term ) {
+				if ( ! in_array( $term->slug, $term_list ) ) {
+					$term_list[$term->slug] = $term->name;
+				}
+			}
+
+			// Unswitch the site
+			restore_current_blog();
+
+		}
+
+		// eliminate duplicates
+		$term_list = array_unique( $term_list );
+
+		// --<
+		return $term_list;
+
+	}
+
+
+
+	/************* RENDERING METHODS *****************/
 
 
 

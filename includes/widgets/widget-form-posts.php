@@ -23,8 +23,8 @@
 	<label for="include_categories" class="include_categories_label"><?php _e( 'Include Categories', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'include_categories' ); ?>" name="<?php echo $this->get_field_name( 'include_categories' ); ?>[]" multiple="multiple" class="widefat">
 		<option value=""<?php echo ( empty( $include_categories ) ) ? ' selected="selected"' : ''; ?>><?php _e( 'All', 'wp-network-content-display' ); ?></option>
-		<?php foreach( $categories as $cat ) { ?>
-			<option id="<?php echo $cat->slug; ?>" value="<?php echo $cat->slug; ?>"<?php echo ( ! empty( $include_categories ) && in_array( $cat->slug, $include_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>
+		<?php foreach( $categories as $key => $value ) { ?>
+			<option id="<?php echo $key; ?>" value="<?php echo $key; ?>"<?php echo ( ! empty( $include_categories ) && in_array( $key, $include_categories ) ) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
 		<?php } ?>
 	</select>
 </p>
