@@ -110,7 +110,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 				'label' => __( 'Network Sites', 'wp-network-content-display' ),
 
 				// icon
-				'listItemImage' => 'dashicons-admin-post',
+				'listItemImage' => 'dashicons-admin-multisite',
 
 				// window elements
 				'attrs' => array(
