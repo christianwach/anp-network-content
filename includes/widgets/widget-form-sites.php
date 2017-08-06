@@ -51,29 +51,5 @@
 	<label for="<?php echo $this->get_field_id( 'default_image' ); ?>" class="default_image_label"><?php _e( 'Default Image', 'wp-network-content-display' ); ?></label>
 	<input type="text" id="<?php echo $this->get_field_id( 'default_image' ); ?>" name="<?php echo $this->get_field_name( 'default_image' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter path/url of default image', 'wp-network-content-display' ); ?>" value="<?php echo esc_url( $default_image ); ?>">
 	<input id="<?php echo $this->get_field_id( 'default_image' ); ?>-button" class="upload_image_button button button-primary" type="button" value="<?php esc_attr_e( 'Upload Image', 'wp-network-content-display' ); ?>" />
-	<script type="text/javascript">
-	jQuery(document).ready( function($) {
-		$("#<?php echo $this->get_field_id( 'default_image' ); ?>-button").click( function(e) {
-			e.preventDefault();
-			var image = wp.media({
-				title: "<?php _e( 'Choose an image', 'wp-network-content-display' ); ?>",
-				multiple: false,
-				button: {
-					text: "<?php _e( 'Use this image', 'wp-network-content-display' ); ?>"
-				}
-			}).open()
-			.on( 'select', function(e) {
-				var image_object, image_url;
-				// get selected image object from the Media Uploader
-				image_object = image.state().get( 'selection' ).first();
-				// convert to JSON object and grab URL
-				var image_url = image_object.toJSON().url;
-				// assign URL to the input field
-				$("#<?php echo $this->get_field_id( 'default_image' ); ?>").val( image_url );
-			});
-
-		});
-
-	});
-	</script>
+	<input id="<?php echo $this->get_field_id( 'attachment_id' ); ?>" name="<?php echo $this->get_field_name( 'attachment_id' ); ?>" class="wpncd_attachment_id" type="hidden" value="<?php echo esc_url( $attachment_id ); ?>" />
 </p>

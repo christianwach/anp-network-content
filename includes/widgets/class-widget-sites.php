@@ -107,6 +107,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			'show_meta' => true,
 			'show_image' => false,
 			'default_image' => '',
+			'attachment_id' => '',
 		) );
 
 		// Retrieve an existing value from the database
@@ -119,6 +120,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
 		$show_image = isset( $instance['show_image'] ) ? (bool) $instance['show_image'] : false;
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
+		$attachment_id = ! empty( $instance['attachment_id'] ) ? $instance['attachment_id'] : '';
 
 		// get sites
 		$sites = get_sites( array(
@@ -156,6 +158,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['show_image'] = ! empty( $new_instance['show_image'] ) ? true : false;
 		$instance['default_image'] = ! empty( $new_instance['default_image'] ) ? strip_tags( $new_instance['default_image'] ) : '';
+		$instance['attachment_id'] = ! empty( $new_instance['attachment_id'] ) ? strip_tags( $new_instance['attachment_id'] ) : '';
 
 		// now handle multi-selects - these may be pseudo-empty arrays
 		$instance['exclude_sites'] = WPNCD_Helpers::sanitize_pseudo_array( $new_instance['exclude_sites'] );
@@ -175,6 +178,27 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 		// enable media uploads
 		wp_enqueue_media();
+
+		// enqueue our script
+		wp_enqueue_script(
+			'wpncd-widget-upload',
+			WP_NETWORK_CONTENT_DISPLAY_URL . '/assets/js/upload-media.js',
+			array( 'jquery' ),
+			WP_NETWORK_CONTENT_DISPLAY_VERSION
+		);
+
+		// translations
+		$localisation = array(
+			'modal_title' => __( 'Choose an image', 'wp-network-content-display' ),
+			'modal_submit' => __( 'Use this image', 'wp-network-content-display' ),
+		);
+
+		// localise the WordPress way
+		wp_localize_script(
+			'wpncd-widget-upload',
+			'WP_Network_Content_Display_Settings',
+			$localisation
+		);
 
 	}
 
