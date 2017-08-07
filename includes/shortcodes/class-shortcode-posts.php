@@ -111,6 +111,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 						'description' => __( 'Please enter the maximum number of Posts to show.', 'wp-network-content-display' ),
 						'attr' => 'number_posts',
 						'type' => 'number',
+						'value' => '10',
 					),
 
 					// exclude sites
@@ -155,6 +156,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
 							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
 						),
+						'value' => 'list',
 					),
 
 					// show meta
@@ -167,6 +169,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
 							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '1',
 					),
 
 					// show thumbnail
@@ -179,6 +182,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
 							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '',
 					),
 
 					// show excerpt
@@ -191,6 +195,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
 							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '1',
 					),
 
 					// excerpt length
@@ -199,6 +204,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 						'description' => __( 'Please enter the maximum number of words in the Post excerpt.', 'wp-network-content-display' ),
 						'attr' => 'excerpt_length',
 						'type' => 'number',
+						'value' => '20',
 					),
 
 					// show site name

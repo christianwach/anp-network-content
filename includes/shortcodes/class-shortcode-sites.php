@@ -121,6 +121,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 						'description' => __( 'Please enter the maximum number of sites to show.', 'wp-network-content-display' ),
 						'attr' => 'number_sites',
 						'type' => 'number',
+						'value' => '20',
 					),
 
 					// exclude sites
@@ -147,6 +148,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 							array( 'value' => 'post_count', 'label' => __( 'Most Active', 'wp-network-content-display' ) ),
 							array( 'value' => 'registered', 'label' => __( 'Newest', 'wp-network-content-display' ) ),
 						),
+						'value' => 'blogname',
 					),
 
 					// display style
@@ -159,6 +161,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
 							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
 						),
+						'value' => 'list',
 					),
 
 					// show meta
@@ -169,8 +172,9 @@ class WP_Network_Content_Display_Sites_Shortcode {
 						'type' => 'radio',
 						'options' => array(
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '',
 					),
 
 					// show site header image
@@ -180,10 +184,11 @@ class WP_Network_Content_Display_Sites_Shortcode {
 						'attr' => 'show_image',
 						'type' => 'radio',
 						'options' => array(
-							array( 'value' => '0', 'label' => __( 'No Site Image', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No Site Image', 'wp-network-content-display' ) ),
 							array( 'value' => '1', 'label' => __( 'From Media Library', 'wp-network-content-display' ) ),
 							array( 'value' => '2', 'label' => __( 'From URL', 'wp-network-content-display' ) ),
 						),
+						'value' => '',
 					),
 
 					// default header image URL

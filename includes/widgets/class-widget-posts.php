@@ -103,10 +103,10 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		// Set default values
 		$instance = wp_parse_args( (array) $instance, array(
 			'title' => '',
-			'number_posts' => '',
+			'number_posts' => '10',
 			'exclude_sites' => array(),
 			'include_categories' => array(),
-			'style' => '',
+			'style' => 'list',
 			'posts_per_site' => '',
 			'show_meta' => true,
 			'show_thumbnail' => false,
@@ -117,16 +117,16 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 
 		// Retrieve an existing value from the database
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '';
+		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '10';
 		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
 		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : array();
-		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';
+		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
 		$posts_per_site = ! empty( $instance['posts_per_site'] ) ? $instance['posts_per_site'] : '';
-		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
+		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : true;
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
-		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : false;
-		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '';
-		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
+		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : true;
+		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '20';
+		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : true;
 
 		// get sites
 		$sites = get_sites( array(
@@ -173,8 +173,8 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$instance = $old_instance;
 
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '';
-		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
+		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '10';
+		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : 'list';
 		$instance['posts_per_site'] = ! empty( $new_instance['posts_per_site'] ) ? strip_tags( $new_instance['posts_per_site'] ) : '';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['show_thumbnail'] = ! empty( $new_instance['show_thumbnail'] ) ? true : false;

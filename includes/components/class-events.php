@@ -95,13 +95,13 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *
 	 * @param array $parameters An array of settings with the following options:
 	 *    post_type (string) - post type to display ( default: 'post' )
-	 *    event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future') - ignored if post_type !== 'event'
+	 *    event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future')
 	 *    number_posts (int) - the total number of posts to display ( default: 10 )
 	 *    posts_per_site (int) - the number of posts for each site ( default: no limit )
 	 *    include_categories (array) - the categories of posts to include ( default: all categories )
 	 *    exclude_sites (array) - the sites from which posts should be excluded ( default: all sites ( public sites, except archived, deleted and spam ) )
 	 *    output (string) - HTML or array ( default: HTML )
-	 *    style - (string) list, block or list ( default: list ) - ignored if @output is 'array'
+	 *    style - (string) block or list ( default: 'list' ) - ignored if @output is 'array'
 	 *    id (int) - ID used in list markup ( default: network-posts-RAND ) - ignored if @output is 'array'
 	 *    class (string) - class used in list markup ( default: post-list ) - ignored if @output is 'array'
 	 *    title (string) - title displayed for list ( default: Posts ) - ignored unless @style is 'highlights'
@@ -109,7 +109,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *    show_thumbnail (bool) - display post thumbnail ( default: false ) - ignored if @output is 'array'
 	 *    show_meta (bool) - if meta info should be displayed ( default: true ) - ignored if @output is 'array'
 	 *    show_excerpt (bool) - if excerpt should be displayed ( default: true ) - ignored if @output is 'array' or if @show_meta is false
-	 *    excerpt_length (int) - number of words to display for excerpt ( default: 50 ) - ignored if @show_excerpt is false
+	 *    excerpt_length (int) - number of words to display for excerpt ( default: 20 ) - ignored if @show_excerpt is false
 	 *    show_site_name (bool) - if site name should be displayed ( default: true ) - ignored if @output is 'array'
 	 * @return array $posts_list The array of posts.
 	 */
@@ -129,7 +129,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'show_meta' => (bool) true, // (bool)
 			'show_thumbnail' => (bool) false, // (bool)
 			'show_excerpt' => (bool) true, // (bool)
-			'excerpt_length' => (int) 55, // (int)
+			'excerpt_length' => (int) 20, // (int)
 			'show_site_name' => (bool) true, // (bool)
 			'event_scope' => (string) 'future', // (string) - future, past, all
 			'include_categories' => array(), // (array) - event-category (term name) to include
@@ -487,9 +487,9 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			$post_id = $post_detail['post_id'];
 
 			// Convert strings to booleans
-			$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
-			$show_thumbnail = ( filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) );
-			$show_site_name = ( filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) );
+			$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
+			$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : false;
+			$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : true;
 
 			$venue_id = $post_detail['event_venue']['venue_id'];
 			$venue_name = $post_detail['event_venue']['venue_name'];

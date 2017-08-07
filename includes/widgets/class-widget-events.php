@@ -112,31 +112,30 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		// Set default values
 		$instance = wp_parse_args( (array) $instance, array(
 			'title' => '',
-			'number_posts' => '',
+			'number_posts' => '10',
 			'exclude_sites' => '',
-			'style' => '',
+			'style' => 'list',
 			'show_meta' => true,
 			'show_thumbnail' => false,
 			'show_excerpt' => true,
 			'excerpt_length' => 20,
 			'show_site_name' => true,
-			'event_scope' => '',
+			'event_scope' => 'future',
 			'include_categories' => array(),
 			'include_tags' => array(),
 		) );
 
 		// Retrieve an existing value from the database
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		// $post_type = 'event';
-		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '';
+		$number_posts = ! empty( $instance['number_posts'] ) ? $instance['number_posts'] : '10';
 		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
-		$style = ! empty( $instance['style'] ) ? $instance['style'] : '';
+		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
-		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : false;
-		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '';
-		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
-		$event_scope = ! empty( $instance['event_scope'] ) ? $instance['event_scope'] : '';
+		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : true;
+		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '20';
+		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : true;
+		$event_scope = ! empty( $instance['event_scope'] ) ? $instance['event_scope'] : 'future';
 
 		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : array();
 		$include_tags = ! empty( $instance['include_tags'] ) ? $instance['include_tags'] : array();
@@ -160,7 +159,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		);
 
 		$styles = array(
-			'' => __( 'List (Default)', 'wp-network-content-display' ),
+			'list' => __( 'List (Default)', 'wp-network-content-display' ),
 			'block' => __( 'Block', 'wp-network-content-display' )
 		);
 
@@ -198,11 +197,11 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$instance = $old_instance;
 
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '';
+		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '10';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['show_thumbnail'] = ! empty( $new_instance['show_thumbnail'] ) ? true : false;
-		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : '';
-		$instance['event_scope'] = ! empty( $new_instance['event_scope'] ) ? $new_instance['event_scope'] : '';
+		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : 'list';
+		$instance['event_scope'] = ! empty( $new_instance['event_scope'] ) ? $new_instance['event_scope'] : 'future';
 		$instance['show_excerpt'] = ! empty( $new_instance['show_excerpt'] ) ? true : false;
 		$instance['excerpt_length'] = ! empty( $new_instance['excerpt_length'] ) ? strip_tags( $new_instance['excerpt_length'] ) : 20;
 		$instance['show_site_name'] = ! empty( $new_instance['show_site_name'] ) ? true : false;

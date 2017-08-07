@@ -116,6 +116,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'description' => __( 'Please enter the maximum number of Events to show.', 'wp-network-content-display' ),
 						'attr' => 'number_posts',
 						'type' => 'number',
+						'value' => '10',
 					),
 
 					// exclude sites
@@ -165,6 +166,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 							'past' => __( 'Past', 'wp-network-content-display' ),
 							'all' => __( 'All', 'wp-network-content-display' ),
 						),
+						'value' => 'future',
 					),
 
 					// display style
@@ -177,6 +179,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
 							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
 						),
+						'value' => 'list',
 					),
 
 					// show meta
@@ -187,8 +190,9 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'type' => 'radio',
 						'options' => array(
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '1',
 					),
 
 					// show thumbnail
@@ -199,8 +203,9 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'type' => 'radio',
 						'options' => array(
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '',
 					),
 
 					// show excerpt
@@ -211,8 +216,9 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'type' => 'radio',
 						'options' => array(
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '1',
 					),
 
 					// excerpt length
@@ -221,6 +227,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'description' => __( 'Please enter the maximum number of words in the Event excerpt.', 'wp-network-content-display' ),
 						'attr' => 'excerpt_length',
 						'type' => 'number',
+						'value' => '20',
 					),
 
 					// show site name
@@ -231,8 +238,9 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'type' => 'radio',
 						'options' => array(
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '1',
 					),
 
 				),

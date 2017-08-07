@@ -100,9 +100,9 @@ class WP_Network_Content_Display_Sites {
 	 *
 	 * @param array $parameters An array of settings with the following options:
 	 *    return - Return ( display list of sites or return array of sites ) ( default: display )
-	 *    number_sites - Number of sites to display/return ( default: no limit )
+	 *    number_sites - Number of sites to display/return ( default: 20 )
 	 *    exclude_sites - ID of sites to exclude ( default: 1 ( usually, the main site ) )
-	 *    sort_by - newest, updated, active, alpha ( registered, last_updated, post_count, blogname ) ( default: alpha )
+	 *    sort_by - newest, updated, active, alpha ( registered, last_updated, post_count, blogname ) ( default: blogname )
 	 *    default_image - Default image to display if site doesn't have a custom header image ( default: none )
 	 *    instance_id - ID name for site list instance ( default: network-sites-RAND )
 	 *    class_name - CSS class name( s ) ( default: network-sites-list )
@@ -205,8 +205,8 @@ class WP_Network_Content_Display_Sites {
 		// Extract each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
-		$show_image = ( filter_var( $show_image, FILTER_VALIDATE_BOOLEAN ) );
-		$show_meta = ( filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) );
+		$show_image = ( ! empty( $show_meta ) ) ? (int) $show_image ? false;
+		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
 
 		if ( ! $show_image ) {
 			$class = ' no-site-image';
