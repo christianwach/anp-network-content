@@ -205,7 +205,7 @@ class WP_Network_Content_Display_Sites {
 		// Extract each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
-		$show_image = ( ! empty( $show_meta ) ) ? (int) $show_image ? false;
+		$show_image = ! empty( $show_meta ) ? (int) $show_image : false;
 		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
 
 		if ( ! $show_image ) {
