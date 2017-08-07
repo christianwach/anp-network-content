@@ -107,7 +107,7 @@ class WP_Network_Content_Display_Sites {
 	 *    instance_id - ID name for site list instance ( default: network-sites-RAND )
 	 *    class_name - CSS class name( s ) ( default: network-sites-list )
 	 *    hide_meta - Select in order to update date and latest post. Only relevant when return = 'display'. ( default: false )
-	 *    show_image - Select in order to hide site image. ( default: false )
+	 *    show_icon - Select how to show site icons. ( default: none )
 	 *    show_join - Future
 	 *    join_text - Future
 	 * @return array $sites_list The array of sites.
@@ -122,7 +122,7 @@ class WP_Network_Content_Display_Sites {
 			'sort_by' => 'blogname',
 			'default_image' => '',
 			'show_meta' => false,
-			'show_image' => false,
+			'show_icon' => 'none',
 		);
 
 		// CALL MERGE FUNCTION
@@ -205,10 +205,10 @@ class WP_Network_Content_Display_Sites {
 		// Extract each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
-		$show_image = ! empty( $show_meta ) ? (int) $show_image : false;
+		$show_icon = ! empty( $show_icon ) ? $show_icon : 'none';
 		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
 
-		if ( ! $show_image ) {
+		if ( $show_icon == 'none' ) {
 			$class = ' no-site-image';
 		} else {
 			$class = ' show-site-image';

@@ -40,3 +40,36 @@
 	width: 100%;
 	height: auto;
 }
+
+.wpncd-network-sites .recent-post ul
+{
+	list-style: none;
+	list-style-image: none;
+	margin-bottom: 0;
+}
+
+@media all and (min-width: 460px) {
+
+	.wpncd-network-sites a.item-image.site-image
+	{
+		margin-bottom: 1em;
+		display: block;
+		border: none;
+		text-decoration: none;
+		width: 150px;
+		height: 150px;
+		float: left;
+	}
+
+	.wpncd-network-sites .entry-title,
+	.wpncd-network-sites .entry-meta
+	{
+		margin-left:  180px;
+	}
+
+	.wpncd-network-sites h3.entry-title
+	{
+		clear:  none;
+	}
+
+}

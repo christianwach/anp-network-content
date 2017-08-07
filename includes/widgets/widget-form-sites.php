@@ -38,8 +38,8 @@
 </p>
 
 <p>
-	<label for="<?php echo $this->get_field_id( 'show_image' ); ?>" class="show_image_label"><?php _e( 'Show Site Image', 'wp-network-content-display' ); ?></label>
-	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_image' ); ?>" name="<?php echo $this->get_field_name( 'show_image' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_image, true ); ?>>
+	<label for="<?php echo $this->get_field_id( 'show_icon' ); ?>" class="show_icon_label"><?php _e( 'Show Site Image', 'wp-network-content-display' ); ?></label>
+	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_icon' ); ?>" name="<?php echo $this->get_field_name( 'show_icon' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_icon, true ); ?>>
 </p>
 
 <p>

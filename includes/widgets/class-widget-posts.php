@@ -158,7 +158,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$sites = get_sites( $site_args );
 
 		// get categories
-		$categories = wp_network_content_display()->components->events->get_network_terms( 'category' );
+		$categories = wp_network_content_display()->components->posts->get_network_terms( 'category' );
 
 		/*
 		$e = new Exception;

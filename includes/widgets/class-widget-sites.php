@@ -105,7 +105,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			'sort_by' => 'blogname',
 			'style' => 'list',
 			'show_meta' => false,
-			'show_image' => false,
+			'show_icon' => 'none',
 			'default_image' => '',
 			'attachment_id' => '',
 		) );
@@ -118,7 +118,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
-		$show_image = isset( $instance['show_image'] ) ? (bool) $instance['show_image'] : false;
+		$show_icon = isset( $instance['show_icon'] ) ? (bool) $instance['show_icon'] : 'none';
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
 		$attachment_id = ! empty( $instance['attachment_id'] ) ? $instance['attachment_id'] : '';
 
@@ -177,7 +177,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$instance['sort_by'] = ! empty( $new_instance['sort_by'] ) ? $new_instance['sort_by'] : 'blogname';
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : 'list';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
-		$instance['show_image'] = ! empty( $new_instance['show_image'] ) ? true : false;
+		$instance['show_icon'] = ! empty( $new_instance['show_icon'] ) ? $new_instance['show_icon'] : 'none';
 		$instance['default_image'] = ! empty( $new_instance['default_image'] ) ? strip_tags( $new_instance['default_image'] ) : '';
 		$instance['attachment_id'] = ! empty( $new_instance['attachment_id'] ) ? strip_tags( $new_instance['attachment_id'] ) : '';
 

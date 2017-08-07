@@ -16,7 +16,7 @@
 
 	<header class="entry-header">
 
-		<?php if ( ! empty( $show_image ) AND ! empty( $site['site-image'] ) ) { ?>
+		<?php if ( ! empty( $show_icon ) AND ! empty( $site['site-image'] ) ) { ?>
 			<a href="<?php echo esc_url( $site['siteurl'] ); ?>" class="item-image site-image" title="<?php echo esc_attr( $site['blogname'] ); ?>"><img class="wp-site-image item-image" src="<?php echo $site['site-image']; ?>"></a>
 		<?php } ?>
 

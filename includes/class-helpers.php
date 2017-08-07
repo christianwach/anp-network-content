@@ -74,6 +74,30 @@ class WPNCD_Helpers {
 		// get sites
 		$sites = get_sites( $site_args );
 
+		// default to no icon
+		$default_icon = '';
+
+		// have we selected to show a site icon?
+		if ( ! empty( $options_array['show_icon'] ) ) {
+
+			// choose a source ('none' can be ignored)
+			switch ( $options_array['show_icon'] ) {
+
+				case 'library' :
+					if ( ! empty( $options_array['attachment_id'] ) ) {
+						$icon_data = wp_get_attachment_image_src( $options_array['attachment_id'] );
+						$default_icon = ( isset( $icon_data[0] ) ) ? $icon_data[0] : '';
+					}
+					break;
+
+				case 'url' :
+					$default_icon = ! empty( $options_array['default_image'] ) ? esc_url( $options_array['default_image'] ) : '';
+					break;
+
+			}
+
+		}
+
 		foreach( $sites as $site ) {
 
 			$site_details = get_blog_details( $site->blog_id );
@@ -91,17 +115,10 @@ class WPNCD_Helpers {
 			// switch to blog now so we only switch once per site
 			switch_to_blog( $site->blog_id );
 
-			// get site header image
-			$site_image = self::get_site_header_image( $site->blog_id );
+			// get site icon for this site
+			$site_list[$site->blog_id]['site-image'] = self::get_site_icon( $site->blog_id, $default_icon );
 
-			if ( $site_image ) {
-				$site_list[$site->blog_id]['site-image'] = $site_image;
-			} elseif ( isset( $default_image ) ) {
-				$site_list[$site->blog_id]['site-image'] = $default_image;
-			} else {
-				$site_list[$site->blog_id]['site-image'] = '';
-			}
-
+			// add recent post
 			$site_list[$site->blog_id]['recent_post'] = self::get_latest_post( $site->blog_id );
 
 			// switch back
@@ -212,12 +229,13 @@ class WPNCD_Helpers {
 
 
 	/**
-	 * Get the image for a site.
+	 * Get the icon for a site.
 	 *
 	 * @param int $site_id The numeric ID of the site.
+	 * @param str $default The path to the default icon.
 	 * @return str $thumbnail_url The URL of the site image.
 	 */
-	public static function get_site_header_image( $site_id ) {
+	public static function get_site_icon( $site_id, $default = null ) {
 
 		// get current site ID
 		$blog_id = get_current_blog_id();
@@ -230,7 +248,8 @@ class WPNCD_Helpers {
 		}
 
 		// get site header
-		$site_image = get_custom_header();
+		//$site_icon = get_custom_header();
+		$site_icon = get_site_icon_url( 150, $default );
 
 		// switch back if needed
 		if ( $switched === true ) {
@@ -238,7 +257,7 @@ class WPNCD_Helpers {
 		}
 
 		// --<
-		return $site_image->thumbnail_url;
+		return $site_icon;
 
 	}
 

@@ -166,30 +166,30 @@ class WP_Network_Content_Display_Sites_Shortcode {
 
 					// show site header image
 					array(
-						'label' => __( 'Show Site Image', 'wp-network-content-display' ),
-						'description' => __( 'Choose whether to show Site Images and (if so) from which source.', 'wp-network-content-display' ),
-						'attr' => 'show_image',
-						'type' => 'radio',
+						'label' => __( 'Show Site Icon', 'wp-network-content-display' ),
+						'description' => __( 'Choose whether to show Site Icons and (if shown and the Site has no Site Icon) from which source a default icon should be shown.', 'wp-network-content-display' ),
+						'attr' => 'show_icon',
+						'type' => 'select',
 						'options' => array(
-							array( 'value' => '', 'label' => __( 'No Site Image', 'wp-network-content-display' ) ),
-							array( 'value' => '1', 'label' => __( 'From Media Library', 'wp-network-content-display' ) ),
-							array( 'value' => '2', 'label' => __( 'From URL', 'wp-network-content-display' ) ),
+							array( 'value' => 'none', 'label' => __( 'Do not show Site Icons', 'wp-network-content-display' ) ),
+							array( 'value' => 'library', 'label' => __( 'Default from Media Library', 'wp-network-content-display' ) ),
+							array( 'value' => 'url', 'label' => __( 'Default from URL', 'wp-network-content-display' ) ),
 						),
-						'value' => '',
+						'value' => 'none',
 					),
 
 					// default header image URL
 					array(
-						'label' => __( 'Default Site Image URL', 'wp-network-content-display' ),
-						'description' => __( 'Please enter the URL of the image.', 'wp-network-content-display' ),
+						'label' => __( 'Default Site Icon URL', 'wp-network-content-display' ),
+						'description' => __( 'Please enter the URL of the icon. Please refer to the "Site Icon" instructions in the Customizer for details about the size of image to link to.', 'wp-network-content-display' ),
 						'attr' => 'default_image',
 						'type' => 'text',
 					),
 
 					// default header image ID
 					array(
-						'label' => __( 'Default Site Image', 'wp-network-content-display' ),
-						'description' => __( 'Please choose an image from the Media Library.', 'wp-network-content-display' ),
+						'label' => __( 'Default Site Icon', 'wp-network-content-display' ),
+						'description' => __( 'Please choose an image from the Media Library. Please refer to the "Site Icon" instructions in the Customizer for details about the size of image to upload.', 'wp-network-content-display' ),
 						'attr' => 'attachment_id',
 						'type' => 'attachment',
 						'libraryType' => array( 'image' ),

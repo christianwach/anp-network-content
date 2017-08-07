@@ -43,8 +43,8 @@ function wpncd_toggle_image_fields( changed, collection, shortcode ) {
 	// if something is selected
 	if ( typeof changed.value != 'undefined' ) {
 
-		// 1 = From Media Library
-		if ( changed.value == '1' ) {
+		// 'library' = From Media Library
+		if ( changed.value == 'library' ) {
 
 			// show fields
 			default_image_field.$el.hide();
@@ -52,8 +52,8 @@ function wpncd_toggle_image_fields( changed, collection, shortcode ) {
 
 		}
 
-		// 2 = From direct URL
-		if ( changed.value == '2' ) {
+		// 'url' = From direct URL
+		if ( changed.value == 'url' ) {
 
 			// show fields
 			default_image_field.$el.show();
@@ -66,7 +66,7 @@ function wpncd_toggle_image_fields( changed, collection, shortcode ) {
 }
 
 // add action for the above
-wp.shortcake.hooks.addAction( 'embed_network_sites.show_image', wpncd_toggle_image_fields );
+wp.shortcake.hooks.addAction( 'embed_network_sites.show_icon', wpncd_toggle_image_fields );
 
 
 

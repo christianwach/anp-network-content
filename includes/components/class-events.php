@@ -352,7 +352,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 				'post_content' => $post_detail['post_content'],
 				'post_excerpt' => strip_shortcodes( $excerpt ),
 				'permalink' => get_permalink( $post_id ),
-				'post_image' => $post_thumbnail[0],
+				'post_image' => ( isset( $post_thumbnail[0] ) ) ? $post_thumbnail[0] : '',
 				'post_class' => get_post_class( 'siteid-' . $site_id, $post_id ),
 				'post_type' => $post_type,
 				'site_id' => $site_id,
