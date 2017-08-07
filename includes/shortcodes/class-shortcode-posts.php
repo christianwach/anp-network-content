@@ -144,6 +144,7 @@ class WP_Network_Content_Display_Posts_Shortcode {
 						'description' => __( 'Please enter the maximum number of Posts to show from each site.', 'wp-network-content-display' ),
 						'attr' => 'posts_per_site',
 						'type' => 'number',
+						'value' => '5',
 					),
 
 					// display style

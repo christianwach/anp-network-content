@@ -155,6 +155,15 @@ class WP_Network_Content_Display_Events_Shortcode {
 						),
 					),
 
+					// events per site
+					array(
+						'label' => __( 'Events per Site', 'wp-network-content-display' ),
+						'description' => __( 'Please enter the maximum number of Events to show from each site.', 'wp-network-content-display' ),
+						'attr' => 'posts_per_site',
+						'type' => 'number',
+						'value' => '5',
+					),
+
 					// event scope
 					array(
 						'label' => __( 'Event Scope', 'wp-network-content-display' ),
@@ -184,7 +193,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 
 					// show meta
 					array(
-						'label' => __( 'Show Post Metadata', 'wp-network-content-display' ),
+						'label' => __( 'Show Event Metadata', 'wp-network-content-display' ),
 						'description' => __( 'Please choose if you want to display additional information for each Event.', 'wp-network-content-display' ),
 						'attr' => 'show_meta',
 						'type' => 'radio',

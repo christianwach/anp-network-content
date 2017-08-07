@@ -107,7 +107,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 			'exclude_sites' => array(),
 			'include_categories' => array(),
 			'style' => 'list',
-			'posts_per_site' => '',
+			'posts_per_site' => '5',
 			'show_meta' => true,
 			'show_thumbnail' => false,
 			'show_excerpt' => true,
@@ -121,7 +121,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
 		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : array();
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
-		$posts_per_site = ! empty( $instance['posts_per_site'] ) ? $instance['posts_per_site'] : '';
+		$posts_per_site = ! empty( $instance['posts_per_site'] ) ? $instance['posts_per_site'] : '5';
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : true;
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : true;
@@ -196,7 +196,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$instance['title'] = ! empty( $new_instance['title'] ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['number_posts'] = ! empty( $new_instance['number_posts'] ) ? strip_tags( $new_instance['number_posts'] ) : '10';
 		$instance['style'] = ! empty( $new_instance['style'] ) ? $new_instance['style'] : 'list';
-		$instance['posts_per_site'] = ! empty( $new_instance['posts_per_site'] ) ? strip_tags( $new_instance['posts_per_site'] ) : '';
+		$instance['posts_per_site'] = ! empty( $new_instance['posts_per_site'] ) ? strip_tags( $new_instance['posts_per_site'] ) : '5';
 		$instance['show_meta'] = ! empty( $new_instance['show_meta'] ) ? true : false;
 		$instance['show_thumbnail'] = ! empty( $new_instance['show_thumbnail'] ) ? true : false;
 		$instance['show_excerpt'] = ! empty( $new_instance['show_excerpt'] ) ? true : false;

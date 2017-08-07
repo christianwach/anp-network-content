@@ -97,7 +97,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *    post_type (string) - post type to display ( default: 'post' )
 	 *    event_scope (string) - timeframe of events, 'future', 'past', 'all' (default: 'future')
 	 *    number_posts (int) - the total number of posts to display ( default: 10 )
-	 *    posts_per_site (int) - the number of posts for each site ( default: no limit )
+	 *    posts_per_site (int) - the number of posts for each site ( default: 5 )
 	 *    include_categories (array) - the categories of posts to include ( default: all categories )
 	 *    exclude_sites (array) - the sites from which posts should be excluded ( default: all sites ( public sites, except archived, deleted and spam ) )
 	 *    output (string) - HTML or array ( default: HTML )
@@ -121,7 +121,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'number_posts' => (int) 10, // (int)
 			'exclude_sites' => array(),
 			'include_categories' => array(),
-			'posts_per_site' => (int) null, // (int)
+			'posts_per_site' => (int) 5, // (int)
 			'output' => (string) 'html', // (string) - html, array
 			'style' => (string) 'list', // (string) - list
 			'title' => (string) 'Posts', // (string)
@@ -194,7 +194,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		// define arguments to fetch recent posts
 		$post_args = array(
 			'post_type' => 'event',
-			'numberposts' => ( isset( $posts_per_site ) ) ? $posts_per_site : 20,
+			'numberposts' => ( isset( $posts_per_site ) ) ? (int) $posts_per_site : 5,
 		);
 
 		// Taxonomy queries default to: relation => 'AND'

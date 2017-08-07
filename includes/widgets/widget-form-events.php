@@ -40,6 +40,11 @@
 </p>
 
 <p>
+	<label for="<?php echo $this->get_field_id( 'posts_per_site' ); ?>" class="posts_per_site_label"><?php _e( 'Events per Site', 'wp-network-content-display' ); ?></label>
+	<input type="number" id="<?php echo $this->get_field_id( 'posts_per_site' ); ?>" name="<?php echo $this->get_field_name( 'posts_per_site' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $posts_per_site ); ?>">
+</p>
+
+<p>
 	<label for="<?php echo $this->get_field_id( 'event_scope' ); ?>" class="event_scope_label"><?php _e( 'Event Scope', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'event_scope' ); ?>" name="<?php echo $this->get_field_name( 'event_scope' ); ?>" class="widefat">
 		<?php foreach( $scopes as $key => $value ) { ?>
