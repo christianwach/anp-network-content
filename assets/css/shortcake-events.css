@@ -15,18 +15,19 @@
 	border-right: 1px solid #ddd;
 }
 
-.wpncd-network-posts.event-list article
+.wpncd-network-posts.event-list article,
+.wpncd-network-posts.event-list li.hentry
 {
 	padding: 1.625em;
 	border-bottom: 1px solid #ddd;
 }
 
-.wpncd-network-posts.event-list article h3.entry-title
+.wpncd-network-posts.event-list h3.entry-title
 {
 	margin-top: 0;
 }
 
-.wpncd-network-posts.event-list article a.entry-image-link
+.wpncd-network-posts.event-list a.entry-image-link
 {
 	margin-bottom: 1em;
 	display: block;
@@ -34,7 +35,7 @@
 	text-decoration: none;
 }
 
-.wpncd-network-posts.event-list article .entry-summary
+.wpncd-network-posts.event-list .entry-summary
 {
 	margin: 1em 0;
 }

@@ -15,7 +15,8 @@
 	border-right: 1px solid #ddd;
 }
 
-.wpncd-network-posts.post-list article
+.wpncd-network-posts.post-list article,
+.wpncd-network-posts.post-list li.hentry
 {
 	padding: 1.625em;
 	border-bottom: 1px solid #ddd;

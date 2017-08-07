@@ -15,7 +15,8 @@
 	border-right: 1px solid #ddd;
 }
 
-.wpncd-network-sites article
+.wpncd-network-sites article,
+.wpncd-network-sites li.hentry
 {
 	padding: 1.625em;
 	border-bottom: 1px solid #ddd;
@@ -26,7 +27,7 @@
 	margin-top: 0;
 }
 
-.wpncd-network-sites article a.item-image.site-image
+.wpncd-network-sites a.item-image.site-image
 {
 	margin-bottom: 1em;
 	display: block;
