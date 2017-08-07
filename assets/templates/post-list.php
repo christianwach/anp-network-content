@@ -22,7 +22,7 @@
 			</div>
 		<?php } ?>
 
-		<h4 class="entry-title"><a href="<?php echo esc_url( $post_detail['permalink'] ); ?>"><?php echo $post_detail['post_title']; ?></a></h4>
+		<h3 class="entry-title"><a href="<?php echo esc_url( $post_detail['permalink'] ); ?>"><?php echo $post_detail['post_title']; ?></a></h3>
 
 		<?php if ( ! empty( $show_meta ) ) { ?>
 			<div class="entry-meta">
