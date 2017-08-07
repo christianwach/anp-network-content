@@ -33,7 +33,7 @@ Display using a shortcode.
 ### Network Sites
 
 ```php
-[embed_network_sites style="block" number_sites="20" exclude_sites="2" sort_by="registered" show_image="1" default_image="/path/to/image.jpg" attachment_id="10" show_meta="1" /]
+[embed_network_sites style="block" number_sites="20" exclude_sites="2" sort_by="registered" show_icon="library" default_image="/path/to/icon.jpg" attachment_id="10" show_meta="1" /]
 ```
 
 ### Revisions
