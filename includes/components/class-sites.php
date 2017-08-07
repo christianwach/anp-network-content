@@ -171,7 +171,7 @@ class WP_Network_Content_Display_Sites {
 	 *
 	 * @param array $sites_array An array of sites data and params.
 	 * @param array $options_array An array of rendering options.
-	 * @return str $rendered_html The data rendered as 'normal' or 'highlight' HTML.
+	 * @return str $rendered_html The data rendered as 'block' or 'list' HTML.
 	 */
 	public function render_html( $sites_array, $options_array ) {
 

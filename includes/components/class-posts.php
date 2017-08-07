@@ -107,7 +107,7 @@ class WP_Network_Content_Display_Posts {
 	 *    include_categories (array) - the categories of posts to include ( default: all categories )
 	 *    exclude_sites (array) - the sites from which posts should be excluded ( default: all sites ( public sites, except archived, deleted and spam ) )
 	 *    output (string) - HTML or array ( default: HTML )
-	 *    style - (string) normal ( list ), block or highlights ( default: normal ) - ignored if @output is 'array'
+	 *    style - (string) list, block or list ( default: list ) - ignored if @output is 'array'
 	 *    id (int) - ID used in list markup ( default: network-posts-RAND ) - ignored if @output is 'array'
 	 *    class (string) - class used in list markup ( default: post-list ) - ignored if @output is 'array'
 	 *    title (string) - title displayed for list ( default: Posts ) - ignored unless @style is 'highlights'
@@ -129,7 +129,7 @@ class WP_Network_Content_Display_Posts {
 			'include_categories' => array(),
 			'posts_per_site' => (int) null, // (int)
 			'output' => (string) 'html', // (string) - html, array
-			'style' => (string) 'normal', // (string) - normal
+			'style' => (string) 'list', // (string) - list
 			'title' => (string) __( 'Posts', 'wp-network-content-display' ), // (string)
 			'title_image' => (string) null, // (string)
 			'show_meta' => (bool) true, // (bool)
@@ -426,7 +426,7 @@ class WP_Network_Content_Display_Posts {
 	 *
 	 * @param array $posts_array An array of posts data and params.
 	 * @param array $options_array An array of rendering options.
-	 * @return str $rendered_html The data rendered as 'normal' or 'highlight' HTML.
+	 * @return str $rendered_html The data rendered as 'block' or 'list' HTML.
 	 */
 	public function render_html( $posts_array, $options_array ) {
 
