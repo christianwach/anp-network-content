@@ -128,13 +128,34 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '20';
 		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : true;
 
-		// get sites
-		$sites = get_sites( array(
+		// init query args
+		$site_args = array(
 			'archived' => 0,
 			'spam' => 0,
 			'deleted' => 0,
 			'public' => 1,
-		) );
+		);
+
+		/**
+		 * Apply plugin-wide $site_args filter.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wpncd_filter_site_args', $site_args );
+
+		/**
+		 * Allow the $site_args to be specifically filtered here.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wpncd_widget_form_sites_for_posts_args', $site_args );
+
+		// get sites
+		$sites = get_sites( $site_args );
 
 		// get categories
 		$categories = wp_network_content_display()->components->events->get_network_terms( 'category' );

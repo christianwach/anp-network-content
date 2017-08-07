@@ -54,7 +54,16 @@ class WPNCD_Helpers {
 		}
 
 		/**
-		 * Allow the $site_args to be filtered.
+		 * Apply plugin-wide $site_args filter.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wpncd_filter_site_args', $site_args );
+
+		/**
+		 * Allow the $site_args to be specifically filtered here.
 		 *
 		 * @since 2.0.0
 		 *

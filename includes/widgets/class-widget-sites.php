@@ -122,13 +122,34 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
 		$attachment_id = ! empty( $instance['attachment_id'] ) ? $instance['attachment_id'] : '';
 
-		// get sites
-		$sites = get_sites( array(
+		// init query args
+		$site_args = array(
 			'archived' => 0,
 			'spam' => 0,
 			'deleted' => 0,
 			'public' => 1,
-		) );
+		);
+
+		/**
+		 * Apply plugin-wide $site_args filter.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wpncd_filter_site_args', $site_args );
+
+		/**
+		 * Allow the $site_args to be specifically filtered here.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $site_args The arguments used to query the sites.
+		 */
+		$site_args = apply_filters( 'wpncd_widget_form_sites_for_sites_args', $site_args );
+
+		// get sites
+		$sites = get_sites( $site_args );
 
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-sites.php' );
