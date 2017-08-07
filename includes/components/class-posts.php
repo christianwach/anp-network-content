@@ -286,7 +286,7 @@ class WP_Network_Content_Display_Posts {
 			$prefix = $post_detail['post_date'] . '-' . $post_detail['post_name'];
 
 			// Returns an array
-			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'medium' );
+			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'large' );
 
 			if ( $post_detail['post_excerpt'] ) {
 				$excerpt = $post_detail['post_excerpt'];
