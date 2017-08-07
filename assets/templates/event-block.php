@@ -36,16 +36,16 @@
 
 	<div class="entry-content event-content">
 
-		<?php if ( ! empty( $venue_id ) ) { ?>
+		<?php if ( ! empty( $post_detail['venue_id'] ) ) { ?>
 			<div class="event-location event-venue">
-				<span class="location-name venue-name"><a href="<?php echo $venue_link; ?>"><?php echo $venue_name; ?></a></span>
-				<span class="street-address"><?php echo $venue_address['address']; ?></span>
+				<span class="location-name venue-name"><a href="<?php echo esc_url( $post_detail['venue_link'] ); ?>"><?php echo esc_html( $post_detail['venue_name'] ); ?></a></span>
+				<span class="street-address"><?php echo esc_html( $post_detail['venue_address']['address'] ); ?></span>
 				<span class="city-state-postalcode">
-					<span class="city"><?php echo $venue_address['city']; ?></span>
-					<span class="state"><?php echo $venue_address['state']; ?></span>
-					<span class="postal-code"><?php echo $venue_address['postcode']; ?></span>
+					<span class="city"><?php echo esc_html( $post_detail['venue_address']['city'] ); ?></span>
+					<span class="state"><?php echo esc_html( $post_detail['venue_address']['state'] ); ?></span>
+					<span class="postal-code"><?php echo esc_html( $post_detail['venue_address']['postcode'] ); ?></span>
 				</span>
-				<span class="country"><?php echo $venue_address['country']; ?></span>
+				<span class="country"><?php echo esc_html( $post_detail['venue_address']['country'] ); ?></span>
 			</div>
 		<?php } ?>
 

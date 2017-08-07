@@ -156,6 +156,14 @@ class WP_Network_Content_Display_Posts {
 		// get posts for those sites
 		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
 
+		// SORT ARRAY
+		$posts_list = WPNCD_Helpers::sort_by_date( $posts_list );
+
+		// CALL LIMIT FUNCTIONS
+		$posts_list = ( isset( $number_posts ) ) ?
+					  WPNCD_Helpers::limit_number_posts( $posts_list, $number_posts ) :
+					  $posts_list;
+
 		// return raw if requested
 		if ( $settings['output'] == 'array' ) {
 			return $posts_list;
@@ -200,18 +208,6 @@ class WP_Network_Content_Display_Posts {
 			restore_current_blog();
 
 		}
-
-		// SORT ARRAY
-		if ( 'event' === $post_type ) {
-			$post_list = WPNCD_Helpers::sort_array_by_key( $post_list, 'event_start_date' );
-		} else {
-			$post_list = WPNCD_Helpers::sort_by_date( $post_list );
-		}
-
-		// CALL LIMIT FUNCTIONS
-		$post_list = ( isset( $number_posts ) ) ?
-					 WPNCD_Helpers::limit_number_posts( $post_list, $number_posts ) :
-					 $post_list;
 
 		// --<
 		return $post_list;
@@ -493,6 +489,16 @@ class WP_Network_Content_Display_Posts {
 
 		foreach( $posts_array as $key => $post_detail ) {
 
+			/*
+			$e = new Exception;
+			$trace = $e->getTraceAsString();
+			error_log( print_r( array(
+				'method' => __METHOD__,
+				'post_detail' => $post_detail,
+				//'backtrace' => $trace,
+			), true ) );
+			*/
+
 			$post_id = $post_detail['post_id'];
 
 			// get post class
@@ -547,6 +553,12 @@ class WP_Network_Content_Display_Posts {
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
+		// Convert strings to booleans
+		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
+		$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : true;
+		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : true;
+
 		$html = '<div class="wpncd-network-posts ' . $post_type . '-list">';
 
 		// find template
@@ -554,13 +566,17 @@ class WP_Network_Content_Display_Posts {
 
 		foreach( $posts_array as $key => $post_detail ) {
 
-			$post_id = $post_detail['post_id'];
+			/*
+			$e = new Exception;
+			$trace = $e->getTraceAsString();
+			error_log( print_r( array(
+				'method' => __METHOD__,
+				'post_detail' => $post_detail,
+				//'backtrace' => $trace,
+			), true ) );
+			*/
 
-			// Convert strings to booleans
-			$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
-			$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : true;
-			$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : false;
-			$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : true;
+			$post_id = $post_detail['post_id'];
 
 			// get post class
 			$post_class = '';

@@ -162,6 +162,14 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		// CALL GET POSTS FUNCTION
 		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
 
+		// SORT ARRAY
+		$posts_list = WPNCD_Helpers::sort_array_by_key( $posts_list, 'event_start_date' );
+
+		// CALL LIMIT FUNCTIONS
+		$posts_list = ( isset( $number_posts ) ) ?
+					  WPNCD_Helpers::limit_number_posts( $posts_list, $number_posts ) :
+					  $post_list;
+
 		// return raw if requested
 		if ( $output == 'array' ) {
 			return $posts_list;
@@ -186,6 +194,22 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		// init return
 		$post_list = array();
 
+		// bail if there are no Event Organiser options on this site
+		$options = get_option( 'eventorganiser_options', array() );
+		if ( empty( $options ) ) {
+			return $post_list;
+		}
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'options' => $options,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
+
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
@@ -195,6 +219,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		$post_args = array(
 			'post_type' => 'event',
 			'numberposts' => ( isset( $posts_per_site ) ) ? (int) $posts_per_site : 5,
+			'output' => ARRAY_A,
 		);
 
 		// Taxonomy queries default to: relation => 'AND'
@@ -234,6 +259,8 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		switch ( $event_scope ) {
 
 			case 'past' :
+
+				/*
 				$post_args['meta_query'] = array(
 					array(
 						'key' => '_eventorganiser_schedule_start_start',
@@ -241,9 +268,16 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 						'compare' => '<',
 					),
 				);
+				*/
+
+				// restrict to events that have finished
+				$post_args['event_end_before'] = 'today';
+
 				break;
 
 			case 'future' :
+
+				/*
 				$post_args['meta_query'] = array(
 					array(
 						'key' => '_eventorganiser_schedule_start_start',
@@ -251,6 +285,10 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 						'compare' => '>=',
 					),
 				);
+				*/
+
+				// allow events that have not yet finished to appear
+				$post_args['event_end_after'] = 'now';
 
 		}
 
@@ -267,10 +305,25 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		*/
 
 		// get recent posts for this site
-		$recent_posts = wp_get_recent_posts( $post_args );
+		//$recent_posts = wp_get_recent_posts( $post_args );
+		$recent_posts = eo_get_events( $post_args );
+
+
+		/*
+		//$e = new Exception;
+		//$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'recent_posts' => $recent_posts,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		// Put all the posts in a single array
-		foreach( $recent_posts as $post => $post_detail ) {
+		foreach( $recent_posts as $post => $post_data ) {
+
+			// convert to ARRAY_A
+			$post_detail = get_object_vars( $post_data );
 
 			$post_id = $post_detail['ID'];
 			$author_id = $post_detail['post_author'];
@@ -312,13 +365,16 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			$post_list[$prefix]['event_end_date'] = get_post_meta( $post_id, '_eventorganiser_schedule_start_finish', true );
 
 			// venue
-			$venue_id = eo_get_venue( $post_id );
-			$post_list[$prefix]['event_venue']['venue_link'] = eo_get_venue_link( $venue_id );
-			$post_list[$prefix]['event_venue']['venue_id'] = $venue_id;
-			$post_list[$prefix]['event_venue']['venue_name'] = eo_get_venue_name( $venue_id );
-			$post_list[$prefix]['event_venue']['venue_location'] = eo_get_venue_address( $venue_id );
-			$post_list[$prefix]['event_venue']['venue_location']['venue_lat'] = eo_get_venue_meta( $venue_id, '_lat' );
-			$post_list[$prefix]['event_venue']['venue_location']['venue_long'] = eo_get_venue_meta( $venue_id, '_lng' );
+			$venue_id = $post_list[$prefix]['venue_id'] = eo_get_venue( $post_id );
+
+			// if the event has a venue
+			if ( ! empty( $venue_id ) ) {
+				$post_list[$prefix]['venue_link'] = eo_get_venue_link( $venue_id );
+				$post_list[$prefix]['venue_name'] = eo_get_venue_name( $venue_id );
+				$post_list[$prefix]['venue_address'] = eo_get_venue_address( $venue_id );
+				$post_list[$prefix]['venue_lat'] = eo_get_venue_meta( $venue_id, '_lat' );
+				$post_list[$prefix]['venue_long'] = eo_get_venue_meta( $venue_id, '_lng' );
+			}
 
 			// Get post categories
 			$event_categories = wp_get_post_terms( $post_id, 'event-category', array( "fields" => "all" ) );
@@ -333,6 +389,16 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			}
 
 		}
+
+		/*
+		//$e = new Exception;
+		//$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'post_list' => $post_list,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		// --<
 		return $post_list;
@@ -389,7 +455,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML list.
 	 */
-	public function _render_events_list( $events_array, $options_array ) {
+	public function _render_html( $events_array, $options_array ) {
 
 	}
 
@@ -413,7 +479,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *    'post_type' => 'event',
 	 * @return str $html The data rendered as an HTML list.
 	 */
-	public function _render_event_list_html( $events_array, $options_array ) {
+	public function _render_html_list( $events_array, $options_array ) {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
@@ -470,7 +536,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 * @param array $options_array An array of rendering options.
 	 * @return str $html The data rendered as an HTML "block".
 	 */
-	public function _render_event_block_html( $posts_array, $options_array ) {
+	public function _render_html_block( $posts_array, $options_array ) {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
