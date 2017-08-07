@@ -115,6 +115,19 @@ class WP_Network_Content_Display_Sites_Shortcode {
 				// window elements
 				'attrs' => array(
 
+					// display style
+					array(
+						'label' => __( 'Display Style', 'wp-network-content-display' ),
+						'description' => __( 'Please select a Display Style.', 'wp-network-content-display' ),
+						'attr'  => 'style',
+						'type'  => 'select',
+						'options' => array(
+							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
+							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
+						),
+						'value' => 'list',
+					),
+
 					// number of sites
 					array(
 						'label' => __( 'Number of Sites', 'wp-network-content-display' ),
@@ -151,32 +164,6 @@ class WP_Network_Content_Display_Sites_Shortcode {
 						'value' => 'blogname',
 					),
 
-					// display style
-					array(
-						'label' => __( 'Display Style', 'wp-network-content-display' ),
-						'description' => __( 'Please select a Display Style.', 'wp-network-content-display' ),
-						'attr'  => 'style',
-						'type'  => 'select',
-						'options' => array(
-							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
-							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
-						),
-						'value' => 'list',
-					),
-
-					// show meta
-					array(
-						'label' => __( 'Show Site Metadata', 'wp-network-content-display' ),
-						'description' => __( 'Please select if you want to display additional information for each site.', 'wp-network-content-display' ),
-						'attr' => 'show_meta',
-						'type' => 'radio',
-						'options' => array(
-							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
-						),
-						'value' => '',
-					),
-
 					// show site header image
 					array(
 						'label' => __( 'Show Site Image', 'wp-network-content-display' ),
@@ -208,6 +195,19 @@ class WP_Network_Content_Display_Sites_Shortcode {
 						'libraryType' => array( 'image' ),
 						'addButton' => __( 'Choose an image', 'wp-network-content-display' ),
 						'frameTitle' => __( 'Use this image', 'wp-network-content-display' ),
+					),
+
+					// show meta
+					array(
+						'label' => __( 'Show Site Metadata', 'wp-network-content-display' ),
+						'description' => __( 'Please select if you want to display additional information for each site.', 'wp-network-content-display' ),
+						'attr' => 'show_meta',
+						'type' => 'radio',
+						'options' => array(
+							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
+						),
+						'value' => '',
 					),
 
 				),

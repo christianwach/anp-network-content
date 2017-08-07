@@ -110,6 +110,33 @@ class WP_Network_Content_Display_Events_Shortcode {
 				// window elements
 				'attrs' => array(
 
+					// display style
+					array(
+						'label' => __( 'Display Style', 'wp-network-content-display' ),
+						'description' => __( 'Please select a Display Style.', 'wp-network-content-display' ),
+						'attr'  => 'style',
+						'type'  => 'select',
+						'options' => array(
+							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
+							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
+						),
+						'value' => 'list',
+					),
+
+					// event scope
+					array(
+						'label' => __( 'Event Scope', 'wp-network-content-display' ),
+						'description' => __( 'Please the time period from which to show Events.', 'wp-network-content-display' ),
+						'attr' => 'event_scope',
+						'type' => 'select',
+						'options' => array(
+							'future' => __( 'Future', 'wp-network-content-display' ),
+							'past' => __( 'Past', 'wp-network-content-display' ),
+							'all' => __( 'All', 'wp-network-content-display' ),
+						),
+						'value' => 'future',
+					),
+
 					// post count
 					array(
 						'label' => __( 'Number of Events', 'wp-network-content-display' ),
@@ -117,6 +144,15 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'attr' => 'number_posts',
 						'type' => 'number',
 						'value' => '10',
+					),
+
+					// events per site
+					array(
+						'label' => __( 'Events per Site', 'wp-network-content-display' ),
+						'description' => __( 'Please enter the maximum number of Events to show from each site.', 'wp-network-content-display' ),
+						'attr' => 'posts_per_site',
+						'type' => 'number',
+						'value' => '5',
 					),
 
 					// exclude sites
@@ -155,55 +191,6 @@ class WP_Network_Content_Display_Events_Shortcode {
 						),
 					),
 
-					// events per site
-					array(
-						'label' => __( 'Events per Site', 'wp-network-content-display' ),
-						'description' => __( 'Please enter the maximum number of Events to show from each site.', 'wp-network-content-display' ),
-						'attr' => 'posts_per_site',
-						'type' => 'number',
-						'value' => '5',
-					),
-
-					// event scope
-					array(
-						'label' => __( 'Event Scope', 'wp-network-content-display' ),
-						'description' => __( 'Please the time period from which to show Events.', 'wp-network-content-display' ),
-						'attr' => 'event_scope',
-						'type' => 'select',
-						'options' => array(
-							'future' => __( 'Future', 'wp-network-content-display' ),
-							'past' => __( 'Past', 'wp-network-content-display' ),
-							'all' => __( 'All', 'wp-network-content-display' ),
-						),
-						'value' => 'future',
-					),
-
-					// display style
-					array(
-						'label' => __( 'Display Style', 'wp-network-content-display' ),
-						'description' => __( 'Please select a Display Style.', 'wp-network-content-display' ),
-						'attr'  => 'style',
-						'type'  => 'select',
-						'options' => array(
-							array( 'value' => '', 'label' => __( 'List', 'wp-network-content-display' ) ),
-							array( 'value' => 'block', 'label' => __( 'Block', 'wp-network-content-display' ) ),
-						),
-						'value' => 'list',
-					),
-
-					// show meta
-					array(
-						'label' => __( 'Show Event Metadata', 'wp-network-content-display' ),
-						'description' => __( 'Please choose if you want to display additional information for each Event.', 'wp-network-content-display' ),
-						'attr' => 'show_meta',
-						'type' => 'radio',
-						'options' => array(
-							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
-						),
-						'value' => '1',
-					),
-
 					// show thumbnail
 					array(
 						'label' => __( 'Show Thumbnail', 'wp-network-content-display' ),
@@ -237,6 +224,19 @@ class WP_Network_Content_Display_Events_Shortcode {
 						'attr' => 'excerpt_length',
 						'type' => 'number',
 						'value' => '20',
+					),
+
+					// show meta
+					array(
+						'label' => __( 'Show Event Metadata', 'wp-network-content-display' ),
+						'description' => __( 'Please choose if you want to display additional information for each Event.', 'wp-network-content-display' ),
+						'attr' => 'show_meta',
+						'type' => 'radio',
+						'options' => array(
+							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
+						),
+						'value' => '1',
 					),
 
 					// show site name

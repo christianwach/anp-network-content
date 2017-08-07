@@ -5,8 +5,31 @@
 </p>
 
 <p>
+	<label for="<?php echo $this->get_field_id( 'style' ); ?>" class="style_label"><?php _e( 'Display Style', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'style' ); ?>" name="<?php echo $this->get_field_name( 'style' ); ?>" class="widefat">
+		<?php foreach( $styles as $key => $value ) { ?>
+			<option value="<?php echo $key; ?>" <?php selected( $style, $key ); ?>><?php echo $value; ?></option>
+		<?php } ?>
+	</select>
+</p>
+
+<p>
+	<label for="<?php echo $this->get_field_id( 'event_scope' ); ?>" class="event_scope_label"><?php _e( 'Event Scope', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'event_scope' ); ?>" name="<?php echo $this->get_field_name( 'event_scope' ); ?>" class="widefat">
+		<?php foreach( $scopes as $key => $value ) { ?>
+			<option value="<?php echo $key; ?>" <?php selected( $event_scope, $key ); ?>><?php echo $value; ?></option>
+		<?php } ?>
+	</select>
+</p>
+
+<p>
 	<label for="<?php echo $this->get_field_id( 'number_posts' ); ?>" class="number_posts_label"><?php _e( 'Number of Events', 'wp-network-content-display' ); ?></label>
 	<input type="number" id="<?php echo $this->get_field_id( 'number_posts' ); ?>" name="<?php echo $this->get_field_name( 'number_posts' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $number_posts ); ?>">
+</p>
+
+<p>
+	<label for="<?php echo $this->get_field_id( 'posts_per_site' ); ?>" class="posts_per_site_label"><?php _e( 'Events per Site', 'wp-network-content-display' ); ?></label>
+	<input type="number" id="<?php echo $this->get_field_id( 'posts_per_site' ); ?>" name="<?php echo $this->get_field_name( 'posts_per_site' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $posts_per_site ); ?>">
 </p>
 
 <p>
@@ -40,34 +63,6 @@
 </p>
 
 <p>
-	<label for="<?php echo $this->get_field_id( 'posts_per_site' ); ?>" class="posts_per_site_label"><?php _e( 'Events per Site', 'wp-network-content-display' ); ?></label>
-	<input type="number" id="<?php echo $this->get_field_id( 'posts_per_site' ); ?>" name="<?php echo $this->get_field_name( 'posts_per_site' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $posts_per_site ); ?>">
-</p>
-
-<p>
-	<label for="<?php echo $this->get_field_id( 'event_scope' ); ?>" class="event_scope_label"><?php _e( 'Event Scope', 'wp-network-content-display' ); ?></label>
-	<select id="<?php echo $this->get_field_id( 'event_scope' ); ?>" name="<?php echo $this->get_field_name( 'event_scope' ); ?>" class="widefat">
-		<?php foreach( $scopes as $key => $value ) { ?>
-			<option value="<?php echo $key; ?>" <?php selected( $event_scope, $key ); ?>><?php echo $value; ?></option>
-		<?php } ?>
-	</select>
-</p>
-
-<p>
-	<label for="<?php echo $this->get_field_id( 'style' ); ?>" class="style_label"><?php _e( 'Display Style', 'wp-network-content-display' ); ?></label>
-	<select id="<?php echo $this->get_field_id( 'style' ); ?>" name="<?php echo $this->get_field_name( 'style' ); ?>" class="widefat">
-		<?php foreach( $styles as $key => $value ) { ?>
-			<option value="<?php echo $key; ?>" <?php selected( $style, $key ); ?>><?php echo $value; ?></option>
-		<?php } ?>
-	</select>
-</p>
-
-<p>
-	<label for="<?php echo $this->get_field_id( 'show_meta' ); ?>" class="show_meta_label"><?php _e( 'Show Meta', 'wp-network-content-display' ); ?></label>
-	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_meta' ); ?>" name="<?php echo $this->get_field_name( 'show_meta' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_meta, true ); ?>>
-</p>
-
-<p>
 	<label for="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>" class="show_thumbnail_label"><?php _e( 'Show Thumbnail', 'wp-network-content-display' ); ?></label>
 	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>" name="<?php echo $this->get_field_name( 'show_thumbnail' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_thumbnail, true ); ?>>
 </p>
@@ -80,6 +75,11 @@
 <p>
 	<label for="<?php echo $this->get_field_id( 'excerpt_length' ); ?>" class="excerpt_length_label"><?php _e( 'Excerpt Length', 'wp-network-content-display' ); ?></label>
 	<input type="number" id="<?php echo $this->get_field_id( 'excerpt_length' ); ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $excerpt_length ); ?>">
+</p>
+
+<p>
+	<label for="<?php echo $this->get_field_id( 'show_meta' ); ?>" class="show_meta_label"><?php _e( 'Show Event Metadata', 'wp-network-content-display' ); ?></label>
+	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_meta' ); ?>" name="<?php echo $this->get_field_name( 'show_meta' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_meta, true ); ?>>
 </p>
 
 <p>

@@ -5,6 +5,14 @@
 </p>
 
 <p>
+	<label for="<?php echo $this->get_field_id( 'style' ); ?>" class="style_label"><?php _e( 'Display Style', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'style' ); ?>" name="<?php echo $this->get_field_name( 'style' ); ?>" class="widefat">
+		<option value="" <?php selected( $style, '' ); ?>><?php _e( 'List (Default)', 'wp-network-content-display' ); ?></option>
+		<option value="block" <?php selected( $style, 'block' ); ?>><?php _e( 'Block', 'wp-network-content-display' ); ?></option>
+	</select>
+</p>
+
+<p>
 	<label for="<?php echo $this->get_field_id( 'number_sites' ); ?>" class="number_sites_label"><?php _e( 'Number of Sites', 'wp-network-content-display' ); ?></label>
 	<input type="number" id="<?php echo $this->get_field_id( 'number_sites' ); ?>" name="<?php echo $this->get_field_name( 'number_sites' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '0-100', 'wp-network-content-display' ); ?>" value="<?php echo esc_attr( $number_sites ); ?>">
 </p>
@@ -30,19 +38,6 @@
 </p>
 
 <p>
-	<label for="<?php echo $this->get_field_id( 'style' ); ?>" class="style_label"><?php _e( 'Display Style', 'wp-network-content-display' ); ?></label>
-	<select id="<?php echo $this->get_field_id( 'style' ); ?>" name="<?php echo $this->get_field_name( 'style' ); ?>" class="widefat">
-		<option value="" <?php selected( $style, '' ); ?>><?php _e( 'List (Default)', 'wp-network-content-display' ); ?></option>
-		<option value="block" <?php selected( $style, 'block' ); ?>><?php _e( 'Block', 'wp-network-content-display' ); ?></option>
-	</select>
-</p>
-
-<p>
-	<label for="<?php echo $this->get_field_id( 'show_meta' ); ?>" class="show_meta_label"><?php _e( 'Show Meta', 'wp-network-content-display' ); ?></label>
-	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_meta' ); ?>" name="<?php echo $this->get_field_name( 'show_meta' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_meta, true ); ?>>
-</p>
-
-<p>
 	<label for="<?php echo $this->get_field_id( 'show_image' ); ?>" class="show_image_label"><?php _e( 'Show Site Image', 'wp-network-content-display' ); ?></label>
 	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_image' ); ?>" name="<?php echo $this->get_field_name( 'show_image' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_image, true ); ?>>
 </p>
@@ -52,4 +47,9 @@
 	<input type="text" id="<?php echo $this->get_field_id( 'default_image' ); ?>" name="<?php echo $this->get_field_name( 'default_image' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter path/url of default image', 'wp-network-content-display' ); ?>" value="<?php echo esc_url( $default_image ); ?>">
 	<input id="<?php echo $this->get_field_id( 'default_image' ); ?>-button" class="upload_image_button button button-primary" type="button" value="<?php esc_attr_e( 'Upload Image', 'wp-network-content-display' ); ?>" />
 	<input id="<?php echo $this->get_field_id( 'attachment_id' ); ?>" name="<?php echo $this->get_field_name( 'attachment_id' ); ?>" class="wpncd_attachment_id" type="hidden" value="<?php echo esc_url( $attachment_id ); ?>" />
+</p>
+
+<p>
+	<label for="<?php echo $this->get_field_id( 'show_meta' ); ?>" class="show_meta_label"><?php _e( 'Show Site Metadata', 'wp-network-content-display' ); ?></label>
+	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_meta' ); ?>" name="<?php echo $this->get_field_name( 'show_meta' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_meta, true ); ?>>
 </p>
