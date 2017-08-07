@@ -22,7 +22,7 @@
 	border-bottom: 1px solid #ddd;
 }
 
-.wpncd-network-sites article h3.entry-title
+.wpncd-network-sites h3.entry-title
 {
 	margin-top: 0;
 }
@@ -33,4 +33,10 @@
 	display: block;
 	border: none;
 	text-decoration: none;
+}
+
+.wpncd-network-sites a.item-image.site-image img
+{
+	width: 100%;
+	height: auto;
 }

@@ -35,6 +35,12 @@
 	text-decoration: none;
 }
 
+.wpncd-network-posts.event-list a.entry-image-link img
+{
+	width: 100%;
+	height: auto;
+}
+
 .wpncd-network-posts.event-list .entry-summary
 {
 	margin: 1em 0;
