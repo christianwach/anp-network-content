@@ -37,7 +37,7 @@
 				</span>
 
 				<span class="entry-author">
-					<span class="label"><?php _e( 'Posted By', 'wp-network-content-display' ); ?></span> <a href="<?php echo esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo $post_detail['post_author']; ?></a>
+					<span class="label"><?php _e( 'Posted By', 'wp-network-content-display' ); ?></span> <a href="<?php echo esc_url( $post_detail['post_author_link'] ); ?>"><?php echo $post_detail['post_author_name']; ?></a>
 				</span>
 			</div>
 		<?php } ?>

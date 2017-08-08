@@ -249,7 +249,7 @@ class WP_Network_Content_Display_Events_Shortcode {
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
 							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
-						'value' => '1',
+						'value' => '',
 					),
 
 				),

@@ -216,8 +216,9 @@ class WP_Network_Content_Display_Posts_Shortcode {
 						'type' => 'radio',
 						'options' => array(
 							array( 'value' => '1', 'label' => __( 'Yes', 'wp-network-content-display' ) ),
-							array( 'value' => '0', 'label' => __( 'No', 'wp-network-content-display' ) ),
+							array( 'value' => '', 'label' => __( 'No', 'wp-network-content-display' ) ),
 						),
+						'value' => '',
 					),
 
 				),

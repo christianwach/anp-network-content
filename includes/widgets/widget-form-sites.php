@@ -38,8 +38,12 @@
 </p>
 
 <p>
-	<label for="<?php echo $this->get_field_id( 'show_icon' ); ?>" class="show_icon_label"><?php _e( 'Show Site Image', 'wp-network-content-display' ); ?></label>
-	<input type="checkbox" id="<?php echo $this->get_field_id( 'show_icon' ); ?>" name="<?php echo $this->get_field_name( 'show_icon' ); ?>" class="widefat" placeholder="<?php esc_attr_e( '', 'wp-network-content-display' ); ?>" value="1" <?php checked( $show_icon, true ); ?>>
+	<label for="<?php echo $this->get_field_id( 'show_icon' ); ?>" class="show_icon_label"><?php _e( 'Show Site Icon', 'wp-network-content-display' ); ?></label>
+	<select id="<?php echo $this->get_field_id( 'show_icon' ); ?>" name="<?php echo $this->get_field_name( 'show_icon' ); ?>" class="widefat">
+		<option value="none" <?php selected( $show_icon, 'none' ); ?>><?php _e( 'Do not show Site Icons', 'wp-network-content-display' ); ?></option>
+		<option value="library" <?php selected( $show_icon, 'library' ); ?>><?php _e( 'Default from Media Library', 'wp-network-content-display' ); ?></option>
+		<option value="url" <?php selected( $show_icon, 'url' ); ?>><?php _e( 'Default from URL', 'wp-network-content-display' ); ?></option>
+	</select>
 </p>
 
 <p>

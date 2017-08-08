@@ -125,11 +125,47 @@ class WP_Network_Content_Display_Sites {
 			'show_icon' => 'none',
 		);
 
-		// CALL MERGE FUNCTION
+		// merge
 		$settings = wp_parse_args( $parameters, $defaults );
 
-		// CALL GET SITES FUNCTION
+		// get sites data
 		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
+
+		// default to no icon
+		$default_icon = '';
+
+		// have we selected to show a site icon?
+		if ( ! empty( $settings['show_icon'] ) ) {
+
+			// choose a source ('none' can be ignored)
+			switch ( $settings['show_icon'] ) {
+
+				case 'library' :
+					if ( ! empty( $settings['attachment_id'] ) ) {
+						$icon_data = wp_get_attachment_image_src( $settings['attachment_id'] );
+						$default_icon = ( isset( $icon_data[0] ) ) ? $icon_data[0] : '';
+					}
+					break;
+
+				case 'url' :
+					$default_icon = ! empty( $settings['default_image'] ) ? esc_url( $settings['default_image'] ) : '';
+					break;
+
+			}
+
+		}
+
+		foreach( $sites_list as $site_id => $site_details ) {
+
+			switch_to_blog( $site_id );
+
+			// add site icon and recent post
+			$sites_list[$site_id]['site_icon'] = WPNCD_Helpers::get_site_icon( $site_id, $default_icon );
+			$sites_list[$site_id]['recent_post'] = WPNCD_Helpers::get_latest_post( $site_id );
+
+			restore_current_blog();
+
+		}
 
 		/*
 		$e = new Exception;
@@ -137,6 +173,7 @@ class WP_Network_Content_Display_Sites {
 		error_log( print_r( array(
 			'method' => __METHOD__,
 			'settings' => $settings,
+			'default_icon' => $default_icon,
 			'sites_list' => $sites_list,
 			//'backtrace' => $trace,
 		), true ) );
@@ -149,6 +186,11 @@ class WP_Network_Content_Display_Sites {
 		if ( $settings['sort_by'] == 'blogname' ) {
 			$sites_list = WPNCD_Helpers::sort_array_by_key( $sites_list, 'blogname' );
 		}
+
+		// limit to requested number
+		$sites_list = ( isset( $settings['number_sites'] ) ) ?
+					  WPNCD_Helpers::limit_number_items( $sites_list, $settings['number_sites'] ) :
+					  $sites_list;
 
 		// return raw data if requested
 		if ( isset( $settings['return'] ) AND $settings['return'] == 'array' ) {
@@ -224,7 +266,7 @@ class WP_Network_Content_Display_Sites {
 
 			$site_id = $site['blog_id'];
 
-			// CALL GET SLUG FUNCTION
+			// get a slug for this item
 			$slug = WPNCD_Helpers::get_site_slug( $site['path'] );
 
 			// prevent immediate output

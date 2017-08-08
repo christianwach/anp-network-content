@@ -12,12 +12,12 @@
 
 ?>
 
-<article id="site-<?php echo $site_id; ?>" class="site-item hentry" role="article">
+<article id="site-<?php echo $site_id; ?>" data-posts="<?php echo $site['post_count']; ?>" data-slug="<?php echo $slug; ?>" data-id="<?php echo $site_id; ?>" data-updated="<?php echo $site['last_updated']; ?>" class="site-item hentry" role="article">
 
 	<header class="entry-header">
 
-		<?php if ( ! empty( $show_icon ) AND ! empty( $site['site-image'] ) ) { ?>
-			<a href="<?php echo esc_url( $site['siteurl'] ); ?>" class="item-image site-image" title="<?php echo esc_attr( $site['blogname'] ); ?>"><img class="wp-site-image item-image" src="<?php echo $site['site-image']; ?>"></a>
+		<?php if ( $show_icon != 'none' AND ! empty( $site['site_icon'] ) ) { ?>
+			<a href="<?php echo esc_url( $site['siteurl'] ); ?>" class="item-image site-image" title="<?php echo esc_attr( $site['blogname'] ); ?>"><img class="wp-site-image item-image" src="<?php echo $site['site_icon']; ?>"></a>
 		<?php } ?>
 
 		<h3 class="entry-title"><a href="<?php echo esc_url( $site['siteurl'] ); ?>"><?php echo $site['blogname']; ?></a></h3>

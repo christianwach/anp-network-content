@@ -110,7 +110,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 	 *    show_meta (bool) - if meta info should be displayed ( default: true ) - ignored if @output is 'array'
 	 *    show_excerpt (bool) - if excerpt should be displayed ( default: true ) - ignored if @output is 'array' or if @show_meta is false
 	 *    excerpt_length (int) - number of words to display for excerpt ( default: 20 ) - ignored if @show_excerpt is false
-	 *    show_site_name (bool) - if site name should be displayed ( default: true ) - ignored if @output is 'array'
+	 *    show_site_name (bool) - if site name should be displayed ( default: false ) - ignored if @output is 'array'
 	 * @return array $posts_list The array of posts.
 	 */
 	public function get_posts_from_network( $parameters = array() ) {
@@ -130,7 +130,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			'show_thumbnail' => (bool) false, // (bool)
 			'show_excerpt' => (bool) true, // (bool)
 			'excerpt_length' => (int) 20, // (int)
-			'show_site_name' => (bool) true, // (bool)
+			'show_site_name' => (bool) false, // (bool)
 			'event_scope' => (string) 'future', // (string) - future, past, all
 			'include_categories' => array(), // (array) - event-category (term name) to include
 			'include_tags' => array(), // (array) - event-tag (term name) to include
@@ -153,25 +153,19 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		// merge params with defaults
 		$settings = WPNCD_Helpers::get_merged_settings( $parameters, $defaults );
 
-		// Extract each parameter as its own variable
-		extract( $settings, EXTR_SKIP );
+		// get posts
+		$posts_list = $this->get_posts_for_sites( $settings );
 
-		// CALL SITES FUNCTION
-		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
-
-		// CALL GET POSTS FUNCTION
-		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
-
-		// SORT ARRAY
+		// sort them
 		$posts_list = WPNCD_Helpers::sort_array_by_key( $posts_list, 'event_start_date' );
 
-		// CALL LIMIT FUNCTIONS
-		$posts_list = ( isset( $number_posts ) ) ?
-					  WPNCD_Helpers::limit_number_posts( $posts_list, $number_posts ) :
+		// limit to requested number
+		$posts_list = ( isset( $settings['number_posts'] ) ) ?
+					  WPNCD_Helpers::limit_number_items( $posts_list, $settings['number_posts'] ) :
 					  $post_list;
 
 		// return raw if requested
-		if ( $output == 'array' ) {
+		if ( $settings['output'] == 'array' ) {
 			return $posts_list;
 		}
 
@@ -212,8 +206,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
-
-		$site_details = get_blog_details( $site_id );
 
 		// define arguments to fetch recent posts
 		$post_args = array(
@@ -259,34 +251,11 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		switch ( $event_scope ) {
 
 			case 'past' :
-
-				/*
-				$post_args['meta_query'] = array(
-					array(
-						'key' => '_eventorganiser_schedule_start_start',
-						'value' => date_i18n( 'Y-m-d' ),
-						'compare' => '<',
-					),
-				);
-				*/
-
 				// restrict to events that have finished
 				$post_args['event_end_before'] = 'today';
-
 				break;
 
 			case 'future' :
-
-				/*
-				$post_args['meta_query'] = array(
-					array(
-						'key' => '_eventorganiser_schedule_start_start',
-						'value' => date_i18n( 'Y-m-d' ),
-						'compare' => '>=',
-					),
-				);
-				*/
-
 				// allow events that have not yet finished to appear
 				$post_args['event_end_after'] = 'now';
 
@@ -303,6 +272,11 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			//'backtrace' => $trace,
 		), true ) );
 		*/
+
+		// get site data if site name is requested
+		if ( ! empty( $options_array['show_site_name'] ) ) {
+			$site_details = get_blog_details( $site_id );
+		}
 
 		// get recent posts for this site
 		//$recent_posts = wp_get_recent_posts( $post_args );
@@ -326,7 +300,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			$post_detail = get_object_vars( $post_data );
 
 			$post_id = $post_detail['ID'];
-			$author_id = $post_detail['post_author'];
 
 			// Prefix the array key with event start date
 			$prefix = get_post_meta( $post_id, '_eventorganiser_schedule_start_start', true ) . '-' . $post_detail['post_name'];
@@ -348,7 +321,9 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 				'post_id' => $post_id,
 				'post_title' => $post_detail['post_title'],
 				'post_date' => $post_detail['post_date'],
-				'post_author' => get_the_author_meta( 'display_name', $post_detail['post_author'] ),
+				'post_author' => $post_detail['post_author'],
+				'post_author_name' => get_the_author_meta( 'display_name', $post_detail['post_author'] ),
+				'post_author_link' => get_author_posts_url( $post_detail['post_author'] ),
 				'post_content' => $post_detail['post_content'],
 				'post_excerpt' => strip_shortcodes( $excerpt ),
 				'permalink' => get_permalink( $post_id ),
@@ -356,9 +331,13 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 				'post_class' => get_post_class( 'siteid-' . $site_id, $post_id ),
 				'post_type' => $post_type,
 				'site_id' => $site_id,
-				'site_name' => $site_details->blogname,
-				'site_link' => $site_details->siteurl,
 			);
+
+			// add site name if requested
+			if ( ! empty( $options_array['show_site_name'] ) ) {
+				$post_list[$prefix]['site_name'] = $site_details->blogname;
+				$post_list[$prefix]['site_link'] = $site_details->siteurl;
+			}
 
 			// start and end
 			$post_list[$prefix]['event_start_date'] = get_post_meta( $post_id, '_eventorganiser_schedule_start_start', true );
@@ -555,7 +534,7 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			// Convert strings to booleans
 			$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
 			$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : false;
-			$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : true;
+			$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : false;
 
 			$venue_id = $post_detail['event_venue']['venue_id'];
 			$venue_name = $post_detail['event_venue']['venue_name'];

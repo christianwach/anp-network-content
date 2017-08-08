@@ -120,7 +120,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 			'show_thumbnail' => false,
 			'show_excerpt' => true,
 			'excerpt_length' => 20,
-			'show_site_name' => true,
+			'show_site_name' => false,
 			'event_scope' => 'future',
 			'include_categories' => array(),
 			'include_tags' => array(),
@@ -136,7 +136,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : true;
 		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '20';
-		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : true;
+		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
 		$event_scope = ! empty( $instance['event_scope'] ) ? $instance['event_scope'] : 'future';
 
 		$include_categories = ! empty( $instance['include_categories'] ) ? $instance['include_categories'] : array();

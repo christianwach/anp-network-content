@@ -116,7 +116,7 @@ class WP_Network_Content_Display_Posts {
 	 *    show_meta (bool) - if meta info should be displayed ( default: true ) - ignored if @output is 'array'
 	 *    show_excerpt (bool) - if excerpt should be displayed ( default: true ) - ignored if @output is 'array' or if @show_meta is false
 	 *    excerpt_length (int) - number of words to display for excerpt ( default: 20 ) - ignored if @show_excerpt is false
-	 *    show_site_name (bool) - if site name should be displayed ( default: true ) - ignored if @output is 'array'
+	 *    show_site_name (bool) - if site name should be displayed ( default: false ) - ignored if @output is 'array'
 	 * @return array $posts_list The array of posts.
 	 */
 	public function get_posts_from_network( $parameters = array() ) {
@@ -136,7 +136,7 @@ class WP_Network_Content_Display_Posts {
 			'show_thumbnail' => (bool) false, // (bool)
 			'show_excerpt' => (bool) true, // (bool)
 			'excerpt_length' => (int) 20, // (int)
-			'show_site_name' => (bool) true, // (bool)
+			'show_site_name' => (bool) false, // (bool)
 		);
 
 		// sanitize params
@@ -150,18 +150,15 @@ class WP_Network_Content_Display_Posts {
 		// merge params with defaults
 		$settings = WPNCD_Helpers::get_merged_settings( $parameters, $defaults );
 
-		// get sites data
-		$sites_list = WPNCD_Helpers::get_data_for_sites( $settings );
-
 		// get posts for those sites
-		$posts_list = $this->get_posts_for_sites( $sites_list, $settings );
+		$posts_list = $this->get_posts_for_sites( $settings );
 
-		// SORT ARRAY
+		// sort them
 		$posts_list = WPNCD_Helpers::sort_by_date( $posts_list );
 
-		// CALL LIMIT FUNCTIONS
-		$posts_list = ( isset( $number_posts ) ) ?
-					  WPNCD_Helpers::limit_number_posts( $posts_list, $number_posts ) :
+		// limit to requested number
+		$posts_list = ( isset( $settings['number_posts'] ) ) ?
+					  WPNCD_Helpers::limit_number_items( $posts_list, $settings['number_posts'] ) :
 					  $posts_list;
 
 		// return raw if requested
@@ -179,28 +176,26 @@ class WP_Network_Content_Display_Posts {
 	/**
 	 * Get an array of posts from the specified sites.
 	 *
-	 * @param array $sites_array The array of sites to include.
 	 * @param array $options_array The options for post retrieval.
 	 * @return array $post_list The array of posts with site information, sorted by post_date.
 	 */
-	public function get_posts_for_sites( $sites_array, $options_array ) {
+	public function get_posts_for_sites( $options_array ) {
 
 		// init return
 		$post_list = array();
 
-		// Make each parameter as its own variable
-		extract( $options_array, EXTR_SKIP );
+		// get sites data
+		$sites_array = WPNCD_Helpers::get_data_for_sites( $options_array );
 
 		// For each site, get the posts
-		foreach( $sites_array as $site ) {
+		foreach( $sites_array as $site_id => $site ) {
 
-			// Switch to the site to get details and posts
-			switch_to_blog( $site['blog_id'] );
+			// Switch to the site to get posts
+			switch_to_blog( $site_id );
 
 			// And add to array of posts
-			$site_posts = $this->get_posts_for_site( $site['blog_id'], $options_array );
-
-			if ( is_array( $site_posts ) ) {
+			$site_posts = $this->get_posts_for_site( $site_id, $options_array );
+			if ( is_array( $site_posts ) AND ! empty( $site_posts ) ) {
 				$post_list = $post_list + $site_posts;
 			}
 
@@ -233,8 +228,6 @@ class WP_Network_Content_Display_Posts {
 
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
-
-		$site_details = get_blog_details( $site_id );
 
 		// define arguments to fetch recent posts
 		$post_args = array(
@@ -269,6 +262,11 @@ class WP_Network_Content_Display_Posts {
 		), true ) );
 		*/
 
+		// get site data if site name is requested
+		if ( ! empty( $options_array['show_site_name'] ) ) {
+			$site_details = get_blog_details( $site_id );
+		}
+
 		// get recent posts for this site
 		$recent_posts = wp_get_recent_posts( $post_args );
 
@@ -298,7 +296,9 @@ class WP_Network_Content_Display_Posts {
 				'post_id' => $post_id,
 				'post_title' => $post_detail['post_title'],
 				'post_date' => $post_detail['post_date'],
-				'post_author' => get_the_author_meta( 'display_name', $post_detail['post_author'] ),
+				'post_author' => $post_detail['post_author'],
+				'post_author_name' => get_the_author_meta( 'display_name', $post_detail['post_author'] ),
+				'post_author_link' => get_author_posts_url( $post_detail['post_author'] ),
 				'post_content' => $post_detail['post_content'],
 				'post_excerpt' => strip_shortcodes( $excerpt ),
 				'permalink' => get_permalink( $post_id ),
@@ -306,9 +306,13 @@ class WP_Network_Content_Display_Posts {
 				'post_class' => get_post_class( 'siteid-' . $site_id, $post_id ),
 				'post_type' => $post_type,
 				'site_id' => $site_id,
-				'site_name' => $site_details->blogname,
-				'site_link' => $site_details->siteurl,
 			);
+
+			// add site name if requested
+			if ( ! empty( $options_array['show_site_name'] ) ) {
+				$post_list[$prefix]['site_name'] = $site_details->blogname;
+				$post_list[$prefix]['site_link'] = $site_details->siteurl;
+			}
 
 			// Get post categories
 			$post_categories = wp_get_post_categories( $post_id );
@@ -480,7 +484,7 @@ class WP_Network_Content_Display_Posts {
 		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
 		$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : true;
 		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : true;
+		$show_site_name = ( ! empty( $show_site_name ) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : false;
 
 		$html = '<ul class="wpncd-network-posts ' . $post_type . '-list">';
 
@@ -557,7 +561,7 @@ class WP_Network_Content_Display_Posts {
 		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
 		$show_excerpt = ( ! empty( $show_excerpt ) ) ? filter_var( $show_excerpt, FILTER_VALIDATE_BOOLEAN ) : true;
 		$show_thumbnail = ( ! empty( $show_thumbnail ) ) ? filter_var( $show_thumbnail, FILTER_VALIDATE_BOOLEAN ) : false;
-		$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : true;
+		$show_site_name = ( ! empty( $show_site_name) ) ? filter_var( $show_site_name, FILTER_VALIDATE_BOOLEAN ) : false;
 
 		$html = '<div class="wpncd-network-posts ' . $post_type . '-list">';
 

@@ -35,7 +35,7 @@
 					<span class="meta-label"><?php _e( 'Posted On', 'wp-network-content-display' ); ?></span> <time class="entry-date" datetime="<?php echo $post_detail['post_date']; ?>"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $post_detail['post_date'] ) ); ?></time>
 				</span>
 				<span class="entry-author">
-					<span class="meta-label"><?php _e( 'Posted By', 'wp-network-content-display' ); ?></span> <a href="<?php echo esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo esc_html( $post_detail['post_author'] ); ?></a>
+					<span class="label"><?php _e( 'Posted By', 'wp-network-content-display' ); ?></span> <a href="<?php echo esc_url( $post_detail['post_author_link'] ); ?>"><?php echo $post_detail['post_author_name']; ?></a>
 				</span>
 			</div>
 		<?php } ?>

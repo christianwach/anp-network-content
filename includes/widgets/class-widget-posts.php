@@ -112,7 +112,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 			'show_thumbnail' => false,
 			'show_excerpt' => true,
 			'excerpt_length' => 20,
-			'show_site_name' => true,
+			'show_site_name' => false,
 		) );
 
 		// Retrieve an existing value from the database
@@ -126,7 +126,7 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : true;
 		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '20';
-		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : true;
+		$show_site_name = isset( $instance['show_site_name'] ) ? (bool) $instance['show_site_name'] : false;
 
 		// init query args
 		$site_args = array(

@@ -63,7 +63,7 @@
 				<?php if ( ! empty( $show_site_name ) ) { ?>
 					<span class="site-name"><a href="<?php echo esc_url( $post_detail['site_link'] ); ?>"><?php echo $post_detail['site_name']; ?></a></span>
 				<?php } ?>
-				<span class="event-author"><a href="<?php echo esc_url( $post_detail['site_link'] . '/author/' . $post_detail['post_author'] ); ?>"><?php echo $post_detail['post_author']; ?></a></span>
+				<span class="event-author"><a href="<?php echo esc_url( $post_detail['post_author_link'] ); ?>"><?php echo $post_detail['post_author_name']; ?></a></span>
 				<?php if ( ! empty( $categories ) ) { ?>
 					<span class="meta-label"><?php _e( 'Categories:', 'wp-network-content-display' ); ?></span> <span class="category categories"><?php echo $categories; ?></span>
 				<?php } ?>

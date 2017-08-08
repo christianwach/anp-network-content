@@ -16,7 +16,7 @@ class WPNCD_Helpers {
 
 
 	/**
-	 * Retrieve an array of site data.
+	 * Retrieve an array of basic site data.
 	 *
 	 * @param array $options_array The array of parameters.
 	 * @return array $site_list The array of sites with site information.
@@ -74,55 +74,44 @@ class WPNCD_Helpers {
 		// get sites
 		$sites = get_sites( $site_args );
 
-		// default to no icon
-		$default_icon = '';
-
-		// have we selected to show a site icon?
-		if ( ! empty( $options_array['show_icon'] ) ) {
-
-			// choose a source ('none' can be ignored)
-			switch ( $options_array['show_icon'] ) {
-
-				case 'library' :
-					if ( ! empty( $options_array['attachment_id'] ) ) {
-						$icon_data = wp_get_attachment_image_src( $options_array['attachment_id'] );
-						$default_icon = ( isset( $icon_data[0] ) ) ? $icon_data[0] : '';
-					}
-					break;
-
-				case 'url' :
-					$default_icon = ! empty( $options_array['default_image'] ) ? esc_url( $options_array['default_image'] ) : '';
-					break;
-
-			}
-
-		}
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			//'options_array' => $options_array,
+			//'site_args' => $site_args,
+			'sites' => $sites,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 		foreach( $sites as $site ) {
 
+			// grab details for this site (WP caches this so it's cheap)
 			$site_details = get_blog_details( $site->blog_id );
 
-			$site_list[$site->blog_id] = array(
-				'blog_id' => $site->blog_id,
-				'blogname' => $site_details->blogname,
-				'siteurl' => $site_details->siteurl,
-				'path' => $site_details->path,
-				'registered' => $site_details->registered,
-				'last_updated' => $site_details->last_updated,
-				'post_count' => intval( $site_details->post_count ),
-			);
+			/*
+            [blog_id] => 1
+            [domain] => wp.multinetwork.latest
+            [path] => /
+            [site_id] => 1
+            [registered] => 2015-10-19 11:11:00
+            [last_updated] => 2017-08-07 20:46:58
+            [public] => 1
+            [archived] => 0
+            [mature] => 0
+            [spam] => 0
+            [deleted] => 0
+            [lang_id] => 0
+            [blogname] => WP Multinetwork Latest
+            [siteurl] => http://wp.multinetwork.latest
+            [post_count] => 1
+            [home] => http://wp.multinetwork.latest
+			*/
 
-			// switch to blog now so we only switch once per site
-			switch_to_blog( $site->blog_id );
-
-			// get site icon for this site
-			$site_list[$site->blog_id]['site-image'] = self::get_site_icon( $site->blog_id, $default_icon );
-
-			// add recent post
-			$site_list[$site->blog_id]['recent_post'] = self::get_latest_post( $site->blog_id );
-
-			// switch back
-			restore_current_blog();
+			// preserve compat with existing code
+			$site_list[$site->blog_id] = get_object_vars( $site_details );
 
 		}
 
@@ -131,8 +120,8 @@ class WPNCD_Helpers {
 		$trace = $e->getTraceAsString();
 		error_log( print_r( array(
 			'method' => __METHOD__,
-			'options_array' => $options_array,
-			'site_args' => $site_args,
+			//'options_array' => $options_array,
+			//'site_args' => $site_args,
 			'sites' => $sites,
 			'site_list' => $site_list,
 			//'backtrace' => $trace,
@@ -154,12 +143,9 @@ class WPNCD_Helpers {
 	 */
 	public static function get_latest_post( $site_id ) {
 
-		// get current site ID
-		$blog_id = get_current_blog_id();
-
 		// do we need to switch?
 		$switched = false;
-		if ( $blog_id != $site_id ) {
+		if ( $site_id != get_current_blog_id() ) {
 			switch_to_blog( $site_id );
 			$switched = true;
 		}
@@ -235,20 +221,16 @@ class WPNCD_Helpers {
 	 * @param str $default The path to the default icon.
 	 * @return str $thumbnail_url The URL of the site image.
 	 */
-	public static function get_site_icon( $site_id, $default = null ) {
-
-		// get current site ID
-		$blog_id = get_current_blog_id();
+	public static function get_site_icon( $site_id, $default = '' ) {
 
 		// do we need to switch?
 		$switched = false;
-		if ( $blog_id != $site_id ) {
+		if ( $site_id != get_current_blog_id() ) {
 			switch_to_blog( $site_id );
 			$switched = true;
 		}
 
-		// get site header
-		//$site_icon = get_custom_header();
+		// get site icon
 		$site_icon = get_site_icon_url( 150, $default );
 
 		// switch back if needed
@@ -383,22 +365,20 @@ class WPNCD_Helpers {
 
 
 	/**
-	 * Limit the number of posts in an array.
+	 * Limit the number of items in an array.
 	 *
-	 * @param array $posts_array The array of posts.
-	 * @param int $max_number The number to limit the array of posts to.
-	 * @return array $posts The limited array of posts.
+	 * @param array $items The array of items.
+	 * @param int $limit The number to limit the array of items to.
+	 * @return array $posts The limited array of items.
 	 */
-	public static function limit_number_posts( $posts_array, $max_number ) {
+	public static function limit_number_items( $items, $limit = null ) {
 
-		$posts = $posts_array;
-		$limit = $max_number;
-
-		if ( $limit && ( count( $posts ) > $limit ) ) {
-			array_splice( $posts, $limit );
+		if ( ! is_null( $limit ) AND ( count( $items ) > $limit ) ) {
+			array_splice( $items, $limit );
 		}
 
-		return $posts;
+		// --<
+		return $items;
 
 	}
 
