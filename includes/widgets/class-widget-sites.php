@@ -118,9 +118,12 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
+
 		$show_icon = isset( $instance['show_icon'] ) ? $instance['show_icon'] : 'none';
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
 		$attachment_id = ! empty( $instance['attachment_id'] ) ? $instance['attachment_id'] : '';
+		$icon_data = wp_get_attachment_image_src( $attachment_id );
+		$attachment_icon = ( isset( $icon_data[0] ) ) ? $icon_data[0] : '';
 
 		// init query args
 		$site_args = array(

@@ -53,7 +53,10 @@
 
 <p class="attachment_id_container">
 	<label for="<?php echo $this->get_field_id( 'attachment_id' ); ?>" class="attachment_id_label"><?php _e( 'Default Image from Media Library', 'wp-network-content-display' ); ?></label><br>
-	<input id="<?php echo $this->get_field_id( 'default_image' ); ?>-button" class="upload_image_button button button-primary" type="button" value="<?php esc_attr_e( 'Choose an image', 'wp-network-content-display' ); ?>" />
+	<span class="attachment_id_preview" style="display: block;">
+		<?php if ( ! empty( $attachment_icon ) ) { ?><img src="<?php echo $attachment_icon; ?>"><?php } ?>
+	</span>
+	<input id="<?php echo $this->get_field_id( 'attachment_id' ); ?>-button" class="upload_image_button button button-primary" type="button" value="<?php esc_attr_e( 'Choose an image', 'wp-network-content-display' ); ?>" />
 	<input id="<?php echo $this->get_field_id( 'attachment_id' ); ?>" name="<?php echo $this->get_field_name( 'attachment_id' ); ?>" class="wpncd_attachment_id" type="hidden" value="<?php echo esc_url( $attachment_id ); ?>" />
 </p>
 

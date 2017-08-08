@@ -36,25 +36,25 @@ jQuery(document).ready( function($) {
 		var value = select.val(), default_image_field, attachment_field;
 
 		// get Default Image and Attachment ID containers
-		default_image_field = select.parent().siblings( '.default_image_container' )[0];
-		attachment_field = select.parent().siblings( '.attachment_id_container' )[0];
+		default_image_field = select.parent().siblings( '.default_image_container' ).eq(0);
+		attachment_field = select.parent().siblings( '.attachment_id_container' ).eq(0);
 
 		// 'none' = Hide them
 		if ( value == 'none' ) {
-			$(default_image_field).hide();
-			$(attachment_field).hide();
+			default_image_field.hide();
+			attachment_field.hide();
 		}
 
 		// 'library' = From Media Library
 		if ( value == 'library' ) {
-			$(default_image_field).hide();
-			$(attachment_field).show();
+			default_image_field.hide();
+			attachment_field.show();
 		}
 
 		// 'url' = From direct URL
 		if ( value == 'url' ) {
-			$(default_image_field).show();
-			$(attachment_field).hide();
+			default_image_field.show();
+			attachment_field.hide();
 		}
 
 	}
@@ -127,7 +127,7 @@ jQuery(document).ready( function($) {
 		 */
 		media_modal.on( 'select', function(e) {
 
-			var image_object, image_data;
+			var image_object, image_data, image_preview;
 
 			// get selected image object from the Media Uploader
 			image_object = media_modal.state().get( 'selection' ).first();
@@ -137,6 +137,12 @@ jQuery(document).ready( function($) {
 
 			// assign Attachment ID to subsequent input field
 			button.next( 'input' ).val( image_data.id );
+
+			// show a preview
+			if ( 'undefined' != typeof image_data.sizes.thumbnail.url ) {
+				image_preview = button.prev( 'span' ).children( 'img' ).eq(0);
+				image_preview.attr( 'src', image_data.sizes.thumbnail.url );
+			}
 
 		});
 
