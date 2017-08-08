@@ -46,10 +46,14 @@
 	</select>
 </p>
 
-<p>
-	<label for="<?php echo $this->get_field_id( 'default_image' ); ?>" class="default_image_label"><?php _e( 'Default Image', 'wp-network-content-display' ); ?></label>
-	<input type="text" id="<?php echo $this->get_field_id( 'default_image' ); ?>" name="<?php echo $this->get_field_name( 'default_image' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter path/url of default image', 'wp-network-content-display' ); ?>" value="<?php echo esc_url( $default_image ); ?>">
-	<input id="<?php echo $this->get_field_id( 'default_image' ); ?>-button" class="upload_image_button button button-primary" type="button" value="<?php esc_attr_e( 'Upload Image', 'wp-network-content-display' ); ?>" />
+<p class="default_image_container">
+	<label for="<?php echo $this->get_field_id( 'default_image' ); ?>" class="default_image_label"><?php _e( 'Default Image from URL', 'wp-network-content-display' ); ?></label>
+	<input type="text" id="<?php echo $this->get_field_id( 'default_image' ); ?>" name="<?php echo $this->get_field_name( 'default_image' ); ?>" class="widefat" placeholder="<?php esc_attr_e( 'Enter URL of default image', 'wp-network-content-display' ); ?>" value="<?php echo esc_url( $default_image ); ?>">
+</p>
+
+<p class="attachment_id_container">
+	<label for="<?php echo $this->get_field_id( 'attachment_id' ); ?>" class="attachment_id_label"><?php _e( 'Default Image from Media Library', 'wp-network-content-display' ); ?></label><br>
+	<input id="<?php echo $this->get_field_id( 'default_image' ); ?>-button" class="upload_image_button button button-primary" type="button" value="<?php esc_attr_e( 'Choose an image', 'wp-network-content-display' ); ?>" />
 	<input id="<?php echo $this->get_field_id( 'attachment_id' ); ?>" name="<?php echo $this->get_field_name( 'attachment_id' ); ?>" class="wpncd_attachment_id" type="hidden" value="<?php echo esc_url( $attachment_id ); ?>" />
 </p>
 
