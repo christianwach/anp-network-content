@@ -38,6 +38,12 @@ Display using a shortcode.
 
 ### Revisions
 
+###### 2.0.1 August 8, 2017
+* First stable version of rewritten plugin
+
+###### 2.0.0 August 8, 2017
+* Plugin rewrite
+
 ###### 1.7.0 September 21, 2016
 * Added template locate function
 * Fixed template from local theme
