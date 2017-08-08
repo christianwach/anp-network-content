@@ -215,7 +215,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			'wpncd-widget-form',
 			WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/js/widget-form.js',
 			array( 'jquery' ),
-			WP_NETWORK_CONTENT_DISPLAY_VERSION . rand()
+			WP_NETWORK_CONTENT_DISPLAY_VERSION
 		);
 
 		// translations
