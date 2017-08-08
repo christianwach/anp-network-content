@@ -287,7 +287,7 @@ class WP_Network_Content_Display_Sites_Shortcode {
 
 		wp_enqueue_script(
 			'wpncd-shortcode-ui',
-			WP_NETWORK_CONTENT_DISPLAY_URL . '/assets/js/shortcake-ui.js',
+			WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/js/shortcake-ui.js',
 			array( 'shortcode-ui' ),
 			WP_NETWORK_CONTENT_DISPLAY_VERSION
 		);

@@ -25,7 +25,82 @@ jQuery(document).ready( function($) {
 	}
 
 	/**
-	 * Register clicks on "Choose an image" buttons.
+	 * Common function to toggle the visibility of Default Image fields.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param {Object} select The jQuery select object that controls the toggle.
+	 */
+	function wpncd_toggle_fields( select ) {
+
+		var value = select.val(), default_image_field, attachment_field;
+
+		// get Default Image and Attachment ID containers
+		default_image_field = select.parent().siblings( '.default_image_container' )[0];
+		attachment_field = select.parent().siblings( '.attachment_id_container' )[0];
+
+		// 'none' = Hide them
+		if ( value == 'none' ) {
+			$(default_image_field).hide();
+			$(attachment_field).hide();
+		}
+
+		// 'library' = From Media Library
+		if ( value == 'library' ) {
+			$(default_image_field).hide();
+			$(attachment_field).show();
+		}
+
+		// 'url' = From direct URL
+		if ( value == 'url' ) {
+			$(default_image_field).show();
+			$(attachment_field).hide();
+		}
+
+	}
+
+	/**
+	 * Set up widget forms on document ready.
+	 *
+	 * @since 2.0.0
+	 */
+	$('.show_icon_container select').each( function(i) {
+		var select = $(this);
+		wpncd_toggle_fields( select );
+	});
+
+	/**
+	 * Register changes on "Show Site Icon" dropdown.
+	 *
+	 * @since 2.0.0
+	 */
+	$(document).on( 'change', '.show_icon_container select', function (e) {
+		var select = $(this);
+		wpncd_toggle_fields( select );
+	});
+
+	/**
+	 * Register callback for widget events.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param {Object} event The event details.
+	 * @param {Object} widget The new or updated widget.
+	 */
+	$(document).on( 'widget-updated widget-added', function( event, widget ) {
+
+		var widget_id = $(widget).attr('id'), select;
+
+		// if it's one of our widgets
+		if ( widget_id.match( 'wpncd-network-sites' ) ) {
+			select = $(widget).find('.show_icon_container select');
+			wpncd_toggle_fields( select );
+		}
+
+	});
+
+	/**
+	 * Register callback for clicks on "Choose an image" buttons.
 	 *
 	 * @since 2.0.0
 	 */
@@ -59,9 +134,6 @@ jQuery(document).ready( function($) {
 
 			// convert to JSON object
 			image_data = image_object.toJSON();
-
-			// assign URL to the previous input field
-			button.prev( 'input' ).val( image_data.url );
 
 			// assign Attachment ID to subsequent input field
 			button.next( 'input' ).val( image_data.id );

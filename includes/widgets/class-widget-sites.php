@@ -39,12 +39,12 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 			// args
 			array(
 				'description' => __( 'Display list of sites in your network.', 'wp-network-content-display' ),
-				//'classname'	 => 'widget_wpncd-network-sites',
 			)
 
 		);
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'upload_scripts' ) );
+		// enqueue javascript on Widgets Admin Page
+		add_action( 'admin_enqueue_scripts', array( $this, 'widget_scripts' ) );
 
 	}
 
@@ -118,7 +118,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
 		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
-		$show_icon = isset( $instance['show_icon'] ) ? (bool) $instance['show_icon'] : 'none';
+		$show_icon = isset( $instance['show_icon'] ) ? $instance['show_icon'] : 'none';
 		$default_image = ! empty( $instance['default_image'] ) ? $instance['default_image'] : '';
 		$attachment_id = ! empty( $instance['attachment_id'] ) ? $instance['attachment_id'] : '';
 
@@ -191,21 +191,28 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 
 	/**
-	 * Enqueue what we need for the WordPress Media Uploader.
+	 * Enqueue what we need for the Widget Form.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param str $hook The specific admin page being displayed
 	 */
-	public function upload_scripts() {
+	public function widget_scripts( $hook ) {
 
-		// enable media uploads
+		// bail if not widgets admin page
+		if ( 'widgets.php' != $hook ) {
+			return;
+		}
+
+    	// enable media uploads
 		wp_enqueue_media();
 
 		// enqueue our script
 		wp_enqueue_script(
-			'wpncd-widget-upload',
-			WP_NETWORK_CONTENT_DISPLAY_URL . '/assets/js/upload-media.js',
+			'wpncd-widget-form',
+			WP_NETWORK_CONTENT_DISPLAY_URL . 'assets/js/widget-form.js',
 			array( 'jquery' ),
-			WP_NETWORK_CONTENT_DISPLAY_VERSION
+			WP_NETWORK_CONTENT_DISPLAY_VERSION . rand()
 		);
 
 		// translations
@@ -216,7 +223,7 @@ class WP_Network_Content_Display_Sites_Widget extends WP_Widget {
 
 		// localise the WordPress way
 		wp_localize_script(
-			'wpncd-widget-upload',
+			'wpncd-widget-form',
 			'WP_Network_Content_Display_Settings',
 			$localisation
 		);

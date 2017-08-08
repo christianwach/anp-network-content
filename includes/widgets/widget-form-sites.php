@@ -37,7 +37,7 @@
 	</select>
 </p>
 
-<p>
+<p class="show_icon_container">
 	<label for="<?php echo $this->get_field_id( 'show_icon' ); ?>" class="show_icon_label"><?php _e( 'Show Site Icon', 'wp-network-content-display' ); ?></label>
 	<select id="<?php echo $this->get_field_id( 'show_icon' ); ?>" name="<?php echo $this->get_field_name( 'show_icon' ); ?>" class="widefat">
 		<option value="none" <?php selected( $show_icon, 'none' ); ?>><?php _e( 'Do not show Site Icons', 'wp-network-content-display' ); ?></option>
