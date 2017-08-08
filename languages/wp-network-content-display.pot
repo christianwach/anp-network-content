@@ -1,0 +1,482 @@
+# Copyright (C) 2017 WP Network Content Display
+# This file is distributed under the same license as the WP Network Content Display package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Network Content Display 2.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-network-content-display\n"
+"POT-Creation-Date: 2017-08-08 14:22:33+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: assets/templates/event-block.php:68 assets/templates/event-list.php:68
+#: assets/templates/post-block.php:57 assets/templates/post-list.php:55
+msgid "Categories:"
+msgstr ""
+
+#: assets/templates/event-block.php:71 assets/templates/event-list.php:71
+#: assets/templates/post-block.php:60 assets/templates/post-list.php:58
+msgid "Tags:"
+msgstr ""
+
+#: assets/templates/post-block.php:31 assets/templates/post-list.php:31
+msgid "Posted In"
+msgstr ""
+
+#: assets/templates/post-block.php:36 assets/templates/post-list.php:35
+#: assets/templates/sites-block.php:36 assets/templates/sites-list.php:36
+msgid "Posted On"
+msgstr ""
+
+#: assets/templates/post-block.php:40 assets/templates/post-list.php:38
+msgid "Posted By"
+msgstr ""
+
+#: assets/templates/sites-block.php:29 assets/templates/sites-list.php:29
+msgid "Last Updated"
+msgstr ""
+
+#: assets/templates/sites-block.php:33 assets/templates/sites-list.php:33
+msgid "Latest Post"
+msgstr ""
+
+#: includes/components/class-events.php:283
+#: includes/components/class-posts.php:279
+msgid "... <a href=\"%s\">Read More</a>"
+msgstr ""
+
+#: includes/components/class-posts.php:133
+msgid "Posts"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:105
+#: includes/widgets/class-widget-events.php:37
+msgid "Network Events"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:115
+#: includes/shortcodes/class-shortcode-posts.php:110
+#: includes/shortcodes/class-shortcode-sites.php:120
+#: includes/widgets/widget-form-events.php:8
+#: includes/widgets/widget-form-posts.php:8
+#: includes/widgets/widget-form-sites.php:8
+msgid "Display Style"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:116
+#: includes/shortcodes/class-shortcode-posts.php:111
+#: includes/shortcodes/class-shortcode-sites.php:121
+msgid "Please select a Display Style."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:120
+#: includes/shortcodes/class-shortcode-posts.php:115
+#: includes/shortcodes/class-shortcode-sites.php:125
+msgid "List"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:121
+#: includes/shortcodes/class-shortcode-posts.php:116
+#: includes/shortcodes/class-shortcode-sites.php:126
+#: includes/widgets/class-widget-events.php:186
+#: includes/widgets/widget-form-posts.php:11
+#: includes/widgets/widget-form-sites.php:11
+msgid "Block"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:128
+#: includes/widgets/widget-form-events.php:17
+msgid "Event Scope"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:129
+msgid "Please the time period from which to show Events."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:133
+#: includes/widgets/class-widget-events.php:179
+msgid "Future"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:134
+#: includes/widgets/class-widget-events.php:180
+msgid "Past"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:135
+#: includes/shortcodes/class-shortcode-events.php:334
+#: includes/shortcodes/class-shortcode-events.php:366
+#: includes/shortcodes/class-shortcode-posts.php:303
+#: includes/widgets/class-widget-events.php:181
+#: includes/widgets/widget-form-events.php:48
+#: includes/widgets/widget-form-events.php:58
+#: includes/widgets/widget-form-posts.php:38
+msgid "All"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:142
+#: includes/widgets/widget-form-events.php:26
+msgid "Number of Events"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:143
+msgid "Please enter the maximum number of Events to show."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:151
+#: includes/widgets/widget-form-events.php:31
+msgid "Events per Site"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:152
+msgid "Please enter the maximum number of Events to show from each site."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:160
+#: includes/shortcodes/class-shortcode-posts.php:141
+#: includes/shortcodes/class-shortcode-sites.php:142
+#: includes/widgets/widget-form-events.php:36
+#: includes/widgets/widget-form-posts.php:26
+#: includes/widgets/widget-form-sites.php:21
+msgid "Exclude Sites"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:161
+msgid "Please choose which Sites to exclude."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:172
+#: includes/shortcodes/class-shortcode-posts.php:153
+#: includes/widgets/widget-form-events.php:46
+#: includes/widgets/widget-form-posts.php:36
+msgid "Include Categories"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:173
+msgid "Please choose which categories to include Events from."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:184
+#: includes/widgets/widget-form-events.php:56
+msgid "Include Tags"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:185
+msgid "Please choose which tags to include Events from."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:196
+#: includes/shortcodes/class-shortcode-posts.php:165
+#: includes/widgets/widget-form-events.php:66
+#: includes/widgets/widget-form-posts.php:46
+msgid "Show Thumbnail"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:197
+msgid "Please choose if you want to show Event feature images."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:201
+#: includes/shortcodes/class-shortcode-events.php:214
+#: includes/shortcodes/class-shortcode-events.php:236
+#: includes/shortcodes/class-shortcode-events.php:249
+#: includes/shortcodes/class-shortcode-posts.php:170
+#: includes/shortcodes/class-shortcode-posts.php:183
+#: includes/shortcodes/class-shortcode-posts.php:205
+#: includes/shortcodes/class-shortcode-posts.php:218
+#: includes/shortcodes/class-shortcode-sites.php:207
+msgid "Yes"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:202
+#: includes/shortcodes/class-shortcode-events.php:215
+#: includes/shortcodes/class-shortcode-events.php:237
+#: includes/shortcodes/class-shortcode-events.php:250
+#: includes/shortcodes/class-shortcode-posts.php:171
+#: includes/shortcodes/class-shortcode-posts.php:184
+#: includes/shortcodes/class-shortcode-posts.php:206
+#: includes/shortcodes/class-shortcode-posts.php:219
+#: includes/shortcodes/class-shortcode-sites.php:208
+msgid "No"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:209
+#: includes/shortcodes/class-shortcode-posts.php:178
+#: includes/widgets/widget-form-events.php:71
+#: includes/widgets/widget-form-posts.php:51
+msgid "Show Excerpt"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:210
+msgid "Please choose if you want to show Event excerpts."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:222
+#: includes/shortcodes/class-shortcode-posts.php:191
+#: includes/widgets/widget-form-events.php:76
+#: includes/widgets/widget-form-posts.php:56
+msgid "Excerpt Length"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:223
+msgid "Please enter the maximum number of words in the Event excerpt."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:231
+#: includes/widgets/widget-form-events.php:81
+msgid "Show Event Metadata"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:232
+msgid "Please choose if you want to display additional information for each Event."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:244
+#: includes/shortcodes/class-shortcode-posts.php:213
+#: includes/widgets/widget-form-events.php:86
+#: includes/widgets/widget-form-posts.php:66
+msgid "Show Site Name"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:245
+msgid "Please choose if you want to show the site that an Event is published in."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-events.php:276
+#: includes/shortcodes/class-shortcode-posts.php:245
+#: includes/shortcodes/class-shortcode-sites.php:234
+#: includes/widgets/widget-form-events.php:38
+#: includes/widgets/widget-form-posts.php:28
+#: includes/widgets/widget-form-sites.php:23
+msgid "None"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:100
+#: includes/widgets/class-widget-posts.php:37
+msgid "Network Posts"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:123
+#: includes/widgets/widget-form-posts.php:16
+msgid "Number of Posts"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:124
+msgid "Please enter the maximum number of Posts to show."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:132
+#: includes/widgets/widget-form-posts.php:21
+msgid "Posts per Site"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:133
+msgid "Please enter the maximum number of Posts to show from each site."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:142
+#: includes/shortcodes/class-shortcode-sites.php:143
+msgid "Please choose which sites to exclude."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:154
+msgid "Please choose which categories to include Posts from."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:166
+msgid "Please choose if you want to show Post feature images."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:179
+msgid "Please choose if you want to show Post excerpts."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:192
+msgid "Please enter the maximum number of words in the Post excerpt."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:200
+#: includes/widgets/widget-form-posts.php:61
+msgid "Show Post Metadata"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:201
+msgid "Please choose if you want to display additional information for each Post."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-posts.php:214
+msgid "Please choose if you want to show the site that a Post is published in."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:110
+#: includes/widgets/class-widget-sites.php:37
+msgid "Network Sites"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:133
+#: includes/widgets/widget-form-sites.php:16
+msgid "Number of Sites"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:134
+msgid "Please enter the maximum number of sites to show."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:154
+#: includes/widgets/widget-form-sites.php:31
+msgid "Sort By"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:155
+msgid "Please select how you want the sites sorted."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:159
+#: includes/widgets/widget-form-sites.php:33
+msgid "Alphabetical"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:160
+#: includes/widgets/widget-form-sites.php:34
+msgid "Recently Active"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:161
+#: includes/widgets/widget-form-sites.php:35
+msgid "Most Active"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:162
+#: includes/widgets/widget-form-sites.php:36
+msgid "Newest"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:169
+#: includes/widgets/widget-form-sites.php:41
+msgid "Show Site Icon"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:170
+msgid "Choose whether to show Site Icons and (if shown and the Site has no Site Icon) from which source a default icon should be shown."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:174
+#: includes/widgets/widget-form-sites.php:43
+msgid "Do not show Site Icons"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:175
+#: includes/widgets/widget-form-sites.php:44
+msgid "Default from Media Library"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:176
+#: includes/widgets/widget-form-sites.php:45
+msgid "Default from URL"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:183
+msgid "Default Site Icon URL"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:184
+msgid "Please enter the URL of the icon. Please refer to the \"Site Icon\" instructions in the Customizer for details about the size of image to link to."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:191
+msgid "Default Site Icon"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:192
+msgid "Please choose an image from the Media Library. Please refer to the \"Site Icon\" instructions in the Customizer for details about the size of image to upload."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:196
+#: includes/widgets/class-widget-sites.php:223
+#: includes/widgets/widget-form-sites.php:59
+msgid "Choose an image"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:197
+#: includes/widgets/class-widget-sites.php:224
+msgid "Use this image"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:202
+#: includes/widgets/widget-form-sites.php:64
+msgid "Show Site Metadata"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-sites.php:203
+msgid "Please select if you want to display additional information for each site."
+msgstr ""
+
+#: includes/widgets/class-widget-events.php:41
+msgid "Display list of events from your network."
+msgstr ""
+
+#: includes/widgets/class-widget-events.php:185
+#: includes/widgets/widget-form-posts.php:10
+#: includes/widgets/widget-form-sites.php:10
+msgid "List (Default)"
+msgstr ""
+
+#: includes/widgets/class-widget-posts.php:41
+msgid "Display list of posts from your network."
+msgstr ""
+
+#: includes/widgets/class-widget-sites.php:41
+msgid "Display list of sites in your network."
+msgstr ""
+
+#: includes/widgets/widget-form-events.php:3
+#: includes/widgets/widget-form-posts.php:3
+#: includes/widgets/widget-form-sites.php:3
+msgid "Title"
+msgstr ""
+
+#: includes/widgets/widget-form-events.php:4
+#: includes/widgets/widget-form-posts.php:4
+#: includes/widgets/widget-form-sites.php:4
+msgid "Enter Widget Title"
+msgstr ""
+
+#: includes/widgets/widget-form-events.php:27
+#: includes/widgets/widget-form-events.php:32
+#: includes/widgets/widget-form-events.php:77
+#: includes/widgets/widget-form-posts.php:17
+#: includes/widgets/widget-form-posts.php:22
+#: includes/widgets/widget-form-posts.php:57
+#: includes/widgets/widget-form-sites.php:17
+msgid "0-100"
+msgstr ""
+
+#: includes/widgets/widget-form-sites.php:50
+msgid "Default Image from URL"
+msgstr ""
+
+#: includes/widgets/widget-form-sites.php:51
+msgid "Enter URL of default image"
+msgstr ""
+
+#: includes/widgets/widget-form-sites.php:55
+msgid "Default Image from Media Library"
+msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "WP Network Content Display"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Provides Widgets and Shortcodes that display network content on your multi-site or multi-network install."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Pea, Glocal"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://glocal.coop"
+msgstr ""
