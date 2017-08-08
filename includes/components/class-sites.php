@@ -167,18 +167,6 @@ class WP_Network_Content_Display_Sites {
 
 		}
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'settings' => $settings,
-			'default_icon' => $default_icon,
-			'sites_list' => $sites_list,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// sorting that can't be done in the query
 		if ( $settings['sort_by'] == 'active' ) {
 			$sites_list = WPNCD_Helpers::sort_array_by_key( $sites_list, 'post_count', 'DESC' );

@@ -194,16 +194,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			return $post_list;
 		}
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'options' => $options,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// Make each parameter as its own variable
 		extract( $options_array, EXTR_SKIP );
 
@@ -261,18 +251,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 
 		}
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'site_id' => $site_id,
-			'options_array' => $options_array,
-			'post_args' => $post_args,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// get site data if site name is requested
 		if ( ! empty( $options_array['show_site_name'] ) ) {
 			$site_details = get_blog_details( $site_id );
@@ -281,17 +259,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 		// get recent posts for this site
 		//$recent_posts = wp_get_recent_posts( $post_args );
 		$recent_posts = eo_get_events( $post_args );
-
-
-		/*
-		//$e = new Exception;
-		//$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'recent_posts' => $recent_posts,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
 
 		// Put all the posts in a single array
 		foreach( $recent_posts as $post => $post_data ) {
@@ -368,16 +335,6 @@ class WP_Network_Content_Display_Events extends WP_Network_Content_Display_Posts
 			}
 
 		}
-
-		/*
-		//$e = new Exception;
-		//$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'post_list' => $post_list,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
 
 		// --<
 		return $post_list;

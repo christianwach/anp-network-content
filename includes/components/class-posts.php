@@ -250,18 +250,6 @@ class WP_Network_Content_Display_Posts {
 
 		}
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'site_id' => $site_id,
-			'options_array' => $options_array,
-			'post_args' => $post_args,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// get site data if site name is requested
 		if ( ! empty( $options_array['show_site_name'] ) ) {
 			$site_details = get_blog_details( $site_id );
@@ -439,17 +427,6 @@ class WP_Network_Content_Display_Posts {
 	 */
 	public function render_html( $posts_array, $options_array ) {
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'posts_array' => $posts_array,
-			'options_array' => $options_array,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// choose how to render
 		if ( ! empty( $options_array['style'] ) ) {
 			if( 'list'	== $options_array['style'] ) {
@@ -492,16 +469,6 @@ class WP_Network_Content_Display_Posts {
 		$template = WPNCD_Helpers::find_template( $post_type . '-list.php' );
 
 		foreach( $posts_array as $key => $post_detail ) {
-
-			/*
-			$e = new Exception;
-			$trace = $e->getTraceAsString();
-			error_log( print_r( array(
-				'method' => __METHOD__,
-				'post_detail' => $post_detail,
-				//'backtrace' => $trace,
-			), true ) );
-			*/
 
 			$post_id = $post_detail['post_id'];
 
@@ -569,16 +536,6 @@ class WP_Network_Content_Display_Posts {
 		$template = WPNCD_Helpers::find_template( $post_type . '-block.php' );
 
 		foreach( $posts_array as $key => $post_detail ) {
-
-			/*
-			$e = new Exception;
-			$trace = $e->getTraceAsString();
-			error_log( print_r( array(
-				'method' => __METHOD__,
-				'post_detail' => $post_detail,
-				//'backtrace' => $trace,
-			), true ) );
-			*/
 
 			$post_id = $post_detail['post_id'];
 

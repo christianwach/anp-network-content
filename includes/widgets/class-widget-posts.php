@@ -160,18 +160,6 @@ class WP_Network_Content_Display_Posts_Widget extends WP_Widget {
 		// get categories
 		$categories = wp_network_content_display()->components->posts->get_network_terms( 'category' );
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			'include_categories' => $include_categories,
-			'categories' => $categories,
-			'sites' => $sites,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		// include form template
 		include( WP_NETWORK_CONTENT_DISPLAY_DIR . 'includes/widgets/widget-form-posts.php' );
 

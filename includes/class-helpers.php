@@ -74,59 +74,15 @@ class WPNCD_Helpers {
 		// get sites
 		$sites = get_sites( $site_args );
 
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			//'options_array' => $options_array,
-			//'site_args' => $site_args,
-			'sites' => $sites,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
-
 		foreach( $sites as $site ) {
 
 			// grab details for this site (WP caches this so it's cheap)
 			$site_details = get_blog_details( $site->blog_id );
 
-			/*
-            [blog_id] => 1
-            [domain] => wp.multinetwork.latest
-            [path] => /
-            [site_id] => 1
-            [registered] => 2015-10-19 11:11:00
-            [last_updated] => 2017-08-07 20:46:58
-            [public] => 1
-            [archived] => 0
-            [mature] => 0
-            [spam] => 0
-            [deleted] => 0
-            [lang_id] => 0
-            [blogname] => WP Multinetwork Latest
-            [siteurl] => http://wp.multinetwork.latest
-            [post_count] => 1
-            [home] => http://wp.multinetwork.latest
-			*/
-
 			// preserve compat with existing code
 			$site_list[$site->blog_id] = get_object_vars( $site_details );
 
 		}
-
-		/*
-		$e = new Exception;
-		$trace = $e->getTraceAsString();
-		error_log( print_r( array(
-			'method' => __METHOD__,
-			//'options_array' => $options_array,
-			//'site_args' => $site_args,
-			'sites' => $sites,
-			'site_list' => $site_list,
-			//'backtrace' => $trace,
-		), true ) );
-		*/
 
 		// --<
 		return $site_list;
