@@ -15,7 +15,7 @@ Plugin Name: WP Network Content Display
 Description: Provides Widgets and Shortcodes that display network content on your multi-site or multi-network install.
 Author: Pea, Glocal
 Author URI: http://glocal.coop
-Version: 2.0.1
+Version: 2.0.2
 License: GPLv3
 Text Domain: wp-network-content-display
 Domain Path: /languages
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * ---------------------------------- */
 
 // set our version here
-define( 'WP_NETWORK_CONTENT_DISPLAY_VERSION', '2.0.1' );
+define( 'WP_NETWORK_CONTENT_DISPLAY_VERSION', '2.0.2' );
 
 if ( ! defined( 'WP_NETWORK_CONTENT_DISPLAY_DIR' ) ) {
     define( 'WP_NETWORK_CONTENT_DISPLAY_DIR', plugin_dir_path( __FILE__ ) );

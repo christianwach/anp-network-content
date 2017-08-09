@@ -4,7 +4,7 @@
 * Tags: multi-site, content
 * Requires at least: 4.6
 * Tested up to: 4.8
-* Version: 2.0.1
+* Version: 2.0.2
 * License: GPLv3 or later
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

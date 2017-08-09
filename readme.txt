@@ -3,7 +3,7 @@ Contributors: misfist, needle
 Tags: multi-network, multi-site, content, widget, shortcode, sites, posts, events
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
