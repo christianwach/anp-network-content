@@ -8,11 +8,11 @@
 * License: GPLv3 or later
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-A WordPress plugin that provides widgets and shortcodes to display network content on your multi-site or multi-network install.
+A WordPress plugin that provides widgets and shortcodes to display content listings from across your multi-site or multi-network install.
 
 ## Description
 
-A plugin that enables you to display posts, events and a site listing from all sites within a multi-site or multi-network instance.
+A plugin that enables you to display posts, events and site listings from sites across a multi-site or multi-network instance. Both widgets and shortcodes are provided for each kind of listing. To display events, this plugin requires [Event Organiser](http://wordpress.org/plugins/event-organiser/) version 3.0 or greater.
 
 ## Usage
 
