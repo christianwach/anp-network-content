@@ -140,8 +140,25 @@ jQuery(document).ready( function($) {
 
 			// show a preview
 			if ( 'undefined' != typeof image_data.sizes.thumbnail.url ) {
+
+				// get thumbnail URL
 				image_preview = button.prev( 'span' ).children( 'img' ).eq(0);
-				image_preview.attr( 'src', image_data.sizes.thumbnail.url );
+
+				// if there's an existing image
+				if ( image_preview.length ) {
+
+					// update it
+					image_preview.attr( 'src', image_data.sizes.thumbnail.url );
+
+				} else {
+
+					// create new preview image
+					$('<img/>', {
+						'src': image_data.sizes.thumbnail.url
+					}).appendTo( button.prev( 'span' ) );
+
+				}
+
 			}
 
 		});
