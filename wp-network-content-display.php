@@ -19,6 +19,7 @@ Version: 2.0.1
 License: GPLv3
 Text Domain: wp-network-content-display
 Domain Path: /languages
+Network: true
 */
 
 
