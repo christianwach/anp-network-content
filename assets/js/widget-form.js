@@ -74,7 +74,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 2.0.0
 	 */
-	$(document).on( 'change', '.show_icon_container select', function (e) {
+	$(document).on( 'change', '.show_icon_container select', function(e) {
 		var select = $(this);
 		wpncd_toggle_fields( select );
 	});
@@ -104,7 +104,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 2.0.0
 	 */
-	$(document).on( 'click', '.upload_image_button', function (e) {
+	$(document).on( 'click', '.upload_image_button', function(e) {
 
 		var button = $(this),
 			media_modal;
@@ -157,6 +157,12 @@ jQuery(document).ready( function($) {
 						'src': image_data.sizes.thumbnail.url
 					}).appendTo( button.prev( 'span' ) );
 
+				}
+
+				// trigger Customizer refresh
+				if ( wp.customize ) {
+					button.next( 'input' ).trigger( 'change' );
+					wp.customize.previewer.refresh();
 				}
 
 			}
