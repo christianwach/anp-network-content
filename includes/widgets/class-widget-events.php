@@ -132,7 +132,7 @@ class WP_Network_Content_Display_Events_Widget extends WP_Widget {
 		$exclude_sites = ! empty( $instance['exclude_sites'] ) ? $instance['exclude_sites'] : array();
 		$style = ! empty( $instance['style'] ) ? $instance['style'] : 'list';
 		$posts_per_site = ! empty( $instance['posts_per_site'] ) ? $instance['posts_per_site'] : '5';
-		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : false;
+		$show_meta = isset( $instance['show_meta'] ) ? (bool) $instance['show_meta'] : true;
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : true;
 		$excerpt_length = ! empty( $instance['excerpt_length'] ) ? $instance['excerpt_length'] : '20';

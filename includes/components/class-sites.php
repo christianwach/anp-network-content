@@ -236,7 +236,7 @@ class WP_Network_Content_Display_Sites {
 		extract( $options_array, EXTR_SKIP );
 
 		$show_icon = ! empty( $show_icon ) ? $show_icon : 'none';
-		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : true;
+		$show_meta = ( ! empty( $show_meta ) ) ? filter_var( $show_meta, FILTER_VALIDATE_BOOLEAN ) : false;
 
 		if ( $show_icon == 'none' ) {
 			$class = ' no-site-image';
