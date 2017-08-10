@@ -38,6 +38,10 @@ Display using a shortcode.
 
 ### Revisions
 
+###### 2.0.2 August 10, 2017
+* Fix display of Default Image preview when none previously exists
+* Fix saving of Default Image data in Customizer
+
 ###### 2.0.1 August 8, 2017
 * First stable version of rewritten plugin
 

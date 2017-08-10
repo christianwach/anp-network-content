@@ -48,6 +48,11 @@ Display using a shortcode.
 
 == Changelog ==
 
+<h4>2.0.2</h4>
+
+* Fix display of Default Image preview when none previously exists
+* Fix saving of Default Image data in Customizer
+
 <h4>2.0.1</h4>
 
 * First stable version of rewritten plugin
