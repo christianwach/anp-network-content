@@ -46,7 +46,11 @@
 
 	<?php if ( ! empty( $show_excerpt ) ) { ?>
 		<div class="entry-summary">
-			<?php echo $post_detail['post_excerpt']; ?>
+			<?php if ( empty( $post_detail['post_password'] ) ) { ?>
+				<?php echo $post_detail['post_excerpt']; ?>
+			<?php } else { ?>
+				<?php echo __( 'This post is password protected.', 'wp-network-content-display' ); ?>
+			<?php } ?>
 		</div><!-- /.entry-summary -->
 	<?php } ?>
 

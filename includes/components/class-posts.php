@@ -294,6 +294,7 @@ class WP_Network_Content_Display_Posts {
 				'post_image' => ( isset( $post_thumbnail[0] ) ) ? $post_thumbnail[0] : '',
 				'post_class' => get_post_class( 'siteid-' . $site_id, $post_id ),
 				'post_type' => $post_type,
+				'post_password' => $post_detail['post_password'],
 				'site_id' => $site_id,
 			);
 
