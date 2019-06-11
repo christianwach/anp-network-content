@@ -231,6 +231,7 @@ class WP_Network_Content_Display_Posts {
 
 		// define arguments to fetch recent posts
 		$post_args = array(
+			'post_status' => 'publish',
 			'post_type' => ( isset( $post_type ) ) ? $post_type : 'post',
 			'numberposts' => ( isset( $posts_per_site ) ) ? $posts_per_site : 5,
 		);
